@@ -1,0 +1,50 @@
+:root{
+    --primary-color :#f8f8f2;
+    --secondary-color:#ffffff;
+    --Text-color:#000000;
+
+}
+
+/* Basic Styles */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: var(--primary-color);
+    color: var(--Text-color);
+}
+
+.sidebar{
+    width: 20%;
+}
+
+
+/* Display */
+.d-none{display: none;}
+.d-block{display: block;}
+.d-flex{display: flex;}
+.d-grid{display: grid;}
+
+
+/* center classes  */
+.align-center{align-items: center;}
+.justify-center{justify-content: center;}
+.justify-between{justify-content: space-between;}
+
+/* flex classes */
+.flex-direction{flex-direction: column;}
+.flex-wrap{flex-wrap: wrap;}
+
+/* position */
+.relative{position: relative;}
+.absolute{position: absolute;}
+
+/* width & height */
+.w-100{width: 100%;}
+.h-100{height: 100%;}
