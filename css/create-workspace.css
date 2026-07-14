@@ -1,0 +1,189 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+.content {
+    margin-left: 21%;
+    width: 80%;
+    padding: 30px;
+}
+
+.breadcrumb {
+    margin-bottom: 30px;
+}
+
+.breadcrumb ol {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 10px;
+}
+
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+
+.breadcrumb-separator {
+    color: #999;
+}
+
+.active-page {
+    color: #555;
+    font-weight: bold;
+}
+
+
+.workspace-form-section {
+    display: flex;
+    justify-content: center;
+}
+
+
+.form-wrapper {
+    width: 700px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+}
+
+.form-header {
+    margin-bottom: 30px;
+}
+
+
+.form-header h1 {
+    color: rgb(60, 154, 249);
+    margin-bottom: 8px;
+}
+
+
+.form-header p {
+    color: #666;
+}
+
+form>div {
+    margin-bottom: 22px;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+label span {
+    color: red;
+}
+
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+textarea {
+    height: 120px;
+    resize: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #3b66c5;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+}
+
+.workspace-form-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.workspace-form-btns button {
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: .3s;
+
+}
+
+.reset-btn {
+    color: rgb(60, 154, 249);
+    border: 1px solid rgb(60, 154, 249);
+    background: white;
+}
+
+.create-btn {
+   background: rgb(60, 154, 249);
+   color: #fff;
+   border: none;
+}
+
+.create-btn:hover {
+    background: rgb(2, 128, 254)
+}
+
+@media screen and (max-width:1024px) {
+    .content {
+        width: calc(100% - 70px);
+        margin-left: 70px;
+        padding: 25px;
+    }
+    .form-wrapper {
+        width: 100%;
+        max-width: 700px;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .content {
+        width: 100%;
+        margin-left: 0;
+        padding: 15px;
+        padding-bottom: 90px;
+    }
+    .breadcrumb {
+        margin-bottom: 20px;
+    }
+    .breadcrumb ol {
+        flex-wrap: wrap;
+        font-size: 14px;
+    }
+    .form-wrapper {
+        width: 100%;
+        padding: 20px;
+    }
+    .workspace-form-btns {
+        flex-direction: column;
+    }
+    .workspace-form-btns button {
+        width: 100%;
+    }
+
+}
