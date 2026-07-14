@@ -26,7 +26,7 @@ body{
 
 
 /* Display */
-.d-none{display: none;}
+.d-none{display: none !important;}
 .d-block{display: block;}
 .d-flex{display: flex;}
 .d-grid{display: grid;}
@@ -54,11 +54,9 @@ body{
 .button{
 padding: 6px 12px;
 border-radius: 6px;
-transition: all 0.2s ease;
+transition: scale 0.2s ease;
 }
-.button:hover{
-transform: scale(1.15);
-}
+
 
 
 /* gap classes */
@@ -69,6 +67,7 @@ transform: scale(1.15);
 
 
 /* a class */
-a{
-    text-decoration: none;
-}
+a{ text-decoration: none; }
+
+/* cursor */
+.pointer{cursor: pointer;}
