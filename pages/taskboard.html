@@ -5,25 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasks | Smart Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../css/taskboard.css">
     <link rel="stylesheet" href="../css/utility.css">
+    <link rel="stylesheet" href="../css/sidebar.css" />
 </head>
 
 <body>
-    <div class="sidebar">
-        sidebar
-    </div>
-    <div class="main-content">
-        <div class="header">
-            <h2 class="board-title">Task Board</h2>
+
+    <!-- Side bar -->
+    <div class="app-sidebar">sidebar</div>
+
+    <div class="section">
+        <div class="container">
+
+            <div class="header">
+                <h2 class="board-title">Task Board</h2>
             <div class="header-controls">
-            <div class="dropdown-wrapper">
-                <select class="workspace-select">
-                    <option value="all">All Workspaces</option>
-                    <option value="personal">Personal</option>
-                    <option value="work">Work</option>
-                </select>
-            </div>
+                <div class="dropdown-wrapper">
+                    <select class="workspace-select">
+                        <option value="all">All Workspaces</option>
+                        <option value="personal">Personal</option>
+                        <option value="work">Work</option>
+                    </select>
+                </div>
 
             <div class="search-wrapper">
                 <span id="search-icon">
@@ -42,41 +47,42 @@
         <a href="#/tasks/create" class="global-add-btn">+ Add Task</a>
             </div>
 
-        </div>
-        <div class="task-cards">
-            <div class="todo-card">
-                <div class="title-flex">
-                    <h4 class="card-title">To Do</h4>
-                    <span class="task-count">6</span>
-                </div>
-                <div class="task-banner"></div>
-                <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
             </div>
-            <div class="inprogress-card">
-                <div class="title-flex">
-                    <h4 class="card-title">In Progress</h4>
-                    <span class="task-count">7</span>
+            <div class="task-cards">
+                <div class="todo-card">
+                    <div class="title-flex">
+                        <h4 class="card-title">To Do</h4>
+                        <span class="task-count">6</span>
+                    </div>
+                    <div class="task-banner"></div>
+                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
                 </div>
-                <div class="task-banner"></div>
-                <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
-            </div>
-            <div class="completed-card">
-                <div class="title-flex">
-                    <h4 class="card-title">Completed</h4>
-                    <span class="task-count">1</span>
+                <div class="inprogress-card">
+                    <div class="title-flex">
+                        <h4 class="card-title">In Progress</h4>
+                        <span class="task-count">7</span>
+                    </div>
+                    <div class="task-banner"></div>
+                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
                 </div>
-                <div class="task-banner"></div>
-                <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
-            </div>
-            <div class="overdue-card">
-                <div class="title-flex">
-                    <h4 class="card-title">Overdue</h4>
-                    <span class="task-count">6</span>
+                <div class="completed-card">
+                    <div class="title-flex">
+                        <h4 class="card-title">Completed</h4>
+                        <span class="task-count">1</span>
+                    </div>
+                    <div class="task-banner"></div>
+                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
                 </div>
-                <div class="task-banner"></div>
-                <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
-            </div>
+                <div class="overdue-card">
+                    <div class="title-flex">
+                        <h4 class="card-title">Overdue</h4>
+                        <span class="task-count">6</span>
+                    </div>
+                    <div class="task-banner"></div>
+                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
+                </div>
 
+            </div>
         </div>
     </div>
 
@@ -132,7 +138,7 @@
                 </div>
             </form>
         </div>
-
+        <script src="../script.js"></script>
         <script src="../js/taskboard.js"></script>
 </body>
 
