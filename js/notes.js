@@ -11,9 +11,8 @@ const getDate = ()=>{
     noteType.value = "";
     const orderItemBoxes = document.getElementById("order-item-box");
 
-    orderItemBoxes.classList.add("d-none")
-    noteTextArea.classList.add("d-none")
-    
+    orderItemBoxes.classList.add("d-none");
+    noteTextArea.classList.add("d-none");
  }
 
 //function of capitalize

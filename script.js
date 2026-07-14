@@ -1,6 +1,6 @@
 
 // function for showing Side bar
-showSideBar = () => {
+const showSideBar = () => {
   try {
     const sideBar = document.querySelector(".app-sidebar");
     sideBar.innerHTML = `  <h2>Smart Task</h2>
@@ -50,11 +50,45 @@ showSideBar = () => {
   }
 }
 
+// function for showing navbar
+const showNavbar = () =>{
+  const header = document.querySelector(".header");
+  header.innerHTML = `
+                <h2 class="board-heading">Task Board</h2>
+                <div class="header-box">
+                    <div class="header-select">
+                        <select class="workspace-select">
+                            <option value="all">All Workspaces</option>
+                            <option value="personal">Personal</option>
+                            <option value="work">Work</option>
+                        </select>
+                    </div>
+
+                    <div class="header-search">
+                        <span id="search-icon">
+                            <img src="../assets/icons/search_icon.svg" alt="search icon"/>
+                        </span>
+                        <input type="text" id="search-board" placeholder="Tasks" oninput="renderTasks()">
+                    </div>
+                    <button class="header-filter">
+                    <span class="filter-icon">
+                    <img src="../assets/icons/filter-icon.svg" alt="filter icon"/>
+                        </span> Filters
+                    </button>
+
+                    <a href="#/tasks/create" class="header-button">+ Add Task</a>
+                </div>
+  `
+  const headerBox = document.querySelector(".header-box");
+}
+
+
 
 
 // main function 
 const main = () => {
   showSideBar();
+  showNavbar();
 }
 main()
 
