@@ -98,7 +98,6 @@ body {
     width: fit-content;
     padding: 10px 15px;
     border-radius: 5px;
-    background: rgb(0, 162, 255);
     color: #fff;
     font-size: 30px;
 }
@@ -112,11 +111,31 @@ body {
     font-size: 10px;
 }
 
-.workspace-action-btn button {
+.workspace-action-btn >button {
     border: none;
     background: transparent;
-    font-size: 30px;
+    font-size: 16px;
     cursor: pointer;
+    display: none;
+}
+.action-btns{
+    display: flex;
+  
+    gap: 10px;
+    top: 0;
+    right: 10px;
+    border:0
+}
+.action-btns button{
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+.delete-icon{
+    color: red;
+}
+.edit-icon{
+    color: #00b5ff;;
 }
 
 @media screen and (max-width:1024px) {
