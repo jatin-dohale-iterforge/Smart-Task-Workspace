@@ -1,9 +1,4 @@
 
-
-.sidebar{
-    background-color: aqua;
-}
-
 .main-box{
     padding: 1rem;
 }
@@ -67,7 +62,7 @@ background-color: var(--primary-color);
 /* Main Styling */
 main{
 
-    height: 80vh;
+    height: 70vh;
     padding: 2rem;
 
 }

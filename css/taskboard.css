@@ -4,6 +4,77 @@
     box-sizing: border-box;
 }
 
+/*------ NAVBAR ------*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.board-title {
+    font-size: 28px;
+    font-weight:bolder;
+    color: #000;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.workspace-select {
+    padding: 8px 32px 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding-left: 12px;
+    
+}
+
+#search-board {
+    border: none;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.global-add-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ff6666;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s ease;
+}
+
 /*---- TASK BOARD ----*/
 .main-content {
     width: 75%;
@@ -12,7 +83,7 @@
 .task-cards {
     display: flex;
     justify-content:space-between;
-    align-items: center;
+    align-items: flex-start;
     margin: 10px;
     width: 100%;
     gap: 10px;

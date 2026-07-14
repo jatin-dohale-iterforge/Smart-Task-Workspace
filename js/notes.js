@@ -29,8 +29,8 @@ return str.charAt(0).toUpperCase() + str.slice(1);
     notesList.forEach(item =>{
   
         if(item.noteType == "simple"){
-            notesBox.innerHTML +=`<div class="box">
-              <div class="d-flex justify-between">
+            notesBox.innerHTML +=`<div data-type="simple" class="box" onclick="editNote(this)">
+              <div class="d-flex justify-between" >
                 <h3>${capitalizeFirstLetter(item.header)}</h3>
                 <span class="icon-container">
                   <svg
@@ -64,7 +64,7 @@ return str.charAt(0).toUpperCase() + str.slice(1);
             
             
         }else if(item.noteType== "unordered"){
-            notesBox.innerHTML += `<div class="box">
+            notesBox.innerHTML += `<div data-type="unordered" class="box" onclick="editNote(this)">
               <div class="d-flex justify-between">
                 <h3>Project Idea</h3>
                 <span class="icon-container">
@@ -96,7 +96,7 @@ return str.charAt(0).toUpperCase() + str.slice(1);
             </div>`
             
         }else if(item.noteType == "checkbox"){
-            notesBox.innerHTML +=` <div class="box">
+            notesBox.innerHTML +=` <div data-type="checkbox" class="box" onclick="editNote(this)">
               <div class="d-flex justify-between">
                 <h3>Meeting Notes</h3>
                 <span class="icon-container">
@@ -240,5 +240,18 @@ const cancelHandler = () =>{
   clearFrom();
   toggleCreateWindow();
   
+}
+
+const editNote = (ele) =>{
+toggleCreateWindow();
+
+noteHeaderInput.value = ele.children[0].children[0].innerText;
+if(ele.dataset.type == "simple"){
+  noteType.value = "simple";
+  noteTextArea.classList.remove("d-none")
+  noteTextArea.children[0].value = ele.children[1].innerText
+}
+
+
 }
 
