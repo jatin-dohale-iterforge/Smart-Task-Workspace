@@ -58,5 +58,39 @@
 }
 
 .stat-info {
-    font-size: 32px;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.color-completed { 
+    color: #22c55e;
+}
+
+.color-inprogress {
+    color: #f97316;
+}
+
+.color-todo {
+    color: #2563eb;
+}
+
+.color-overdue {
+    color: #ef4444;
+}
+
+.chart-statistics {
+    display: flex;
+    gap: 5px;
+
+}
+
+.chart-card {
+    padding: 12px;
+    background-color: #fff;
+    margin: 15px;
+    width: 33%;
+    height: 50%;
+    border-radius: 6px;
+    flex: 1;
 }

@@ -30,39 +30,52 @@
             <div class="number-statistics">
                 <div class="stat-card">
                     <h3 class="stat-heading">Workpaces</h3>
-                    <span class="stat-info">12</span>
+                    <span class="stat-info" >0</span>
                     <h3 class="stat-category">Total</h3>
                 </div>
                 <div class="stat-card">
                     <h3 class="stat-heading">Tasks</h3>
-                    <span class="stat-info">12</span>
+                    <span class="stat-info" id="count-total">0</span>
                     <h3 class="stat-category">Total</h3>
                 </div>
                 <div class="stat-card">
                     <h3 class="stat-heading">Completed</h3>
-                    <span class="stat-info">12</span>
+                    <span class="stat-info color-completed" id="count-completed">0</span>
                     <h3 class="stat-category">Tasks</h3>
                 </div>
                 <div class="stat-card">
                     <h3 class="stat-heading">In Progress</h3>
-                    <span class="stat-info">12</span>
+                    <span class="stat-info color-inprogress" id="count-inprogress">0</span>
                     <h3 class="stat-category">Tasks</h3>
                 </div>
                 <div class="stat-card">
                     <h3 class="stat-heading">To Do</h3>
-                    <span class="stat-info">12</span>
+                    <span class="stat-info color-todo" id="count-todo">0</span>
                     <h3 class="stat-category">Tasks</h3>
                 </div>
                 <div class="stat-card">
                     <h3 class="stat-heading">Overdue</h3>
-                    <span class="stat-info">12</span>
+                    <span class="stat-info color-overdue" id="count-overdue">0</span>
                     <h3 class="stat-category">Tasks</h3>
                 </div>
             </div>
             <div class="chart-statistics">
-                
+                <div class="chart-card">
+                    <h3 class="stat-heading">Task Progress</h3>
+                    <canvas id="progressChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="stat-heading">Task by Priority</h3>
+                    <canvas id="priorityChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3 class="stat-heading">Recent Activities</h3>
+                    <div></div>
+                </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>
