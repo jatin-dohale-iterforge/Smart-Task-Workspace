@@ -1,0 +1,107 @@
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    opacity: 0;
+    transform: translateX(100%);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast.success {
+    background-color: #22c55e;
+}
+
+.toast.error {
+    background-color: #ef4444;
+}
+
+.delete-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+
+.delete-modal.show {
+    display: flex;
+}
+
+
+.delete-box {
+    background: white;
+    width: 350px;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+
+.cancel-btn,
+.confirm-delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.cancel-btn {
+    background: #ddd;
+}
+
+
+.confirm-delete-btn {
+    background: #ef4444;
+    color: white;
+}
+
+
+.breadcrumb {
+    margin-bottom: 30px;
+}
+
+.breadcrumb ol {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 10px;
+}
+
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 600;
+}
+
+
+.breadcrumb-separator {
+    color: #999;
+}
+
+.active-page {
+    color: #787878;
+    font-weight: bold;
+}

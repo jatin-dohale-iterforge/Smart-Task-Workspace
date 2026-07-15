@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/utility.css">
     <link rel="stylesheet" href="../css/create-workspace.css">
+    <link rel="stylesheet" href="../css/toast.css">
     <title>Smart Task Workspace</title>
 </head>
 
@@ -40,7 +42,7 @@
                 <li class="breadcrumb-separator">/</li>
                 <li><a href="workspace.html">Workspace</a></li>
                 <li class="breadcrumb-separator">/</li>
-                <li class="active-page">Create</li>
+                <li class="active-page" id="breadcrumb-action">Create</li>
             </ol>
         </nav>
 
@@ -48,8 +50,8 @@
             <div class="form-wrapper">
 
                 <div class="form-header">
-                    <h1>Create Workspace</h1>
-                    <p>Create a new workspace to organize your tasks.</p>
+                    <h1 id="workspace-form-title">Create Workspace</h1>
+                    <p id="workspace-form-description">Create a new workspace to organize your tasks.</p>
                 </div>
 
                 <form>
@@ -143,7 +145,7 @@
         </div>
 
     </nav>
-
+    <div id="toast" class="toast"></div>
     <script src="../js/workspace.js"></script>
 
 </body>
