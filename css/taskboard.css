@@ -303,3 +303,12 @@ input[type="text"], textarea, select, input[type="date"] {
     cursor: pointer;
 }
 
+@media screen and (max-width: 767px) {
+    .task-cards {
+        flex-direction: column;
+    }
+
+    .todo-card, .completed-card, .overdue-card, .inprogress-card {
+        width: 95%;
+    }
+}
