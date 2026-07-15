@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../css/notes.css" />
    <link rel="stylesheet" href="../css/sidebar.css" />
    <link rel="stylesheet" href="../css/header.css">
+   <link rel="stylesheet" href="../css/setting.css">
 </head>
 
 <body>
@@ -31,7 +32,17 @@
       <!--Main Content -->
       <main>
         <!-- write settign code here -->
-
+        <div class="session-card">
+    <h3 class="session-title">Session (This Browser)</h3>
+  
+    
+    <div class="session-group">
+        <label class="session-label">Last Visit</label>
+        <div class="session-time-text" id="session-last-time"></div>
+    </div>
+    
+    <button class="clear-session-btn" id="clear-session-trigger" onclick="clearSessionStorage()">Clear Session Data</button>
+    <button class="logout-btn" ><i class="fa fa-sign-out"></i>Logout</button>
 
 
     </main>
@@ -47,3 +58,5 @@
 </body>
 
 </html>
+
+

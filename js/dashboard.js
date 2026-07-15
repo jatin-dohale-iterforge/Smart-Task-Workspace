@@ -59,4 +59,28 @@ const ctx2 = document.getElementById('priorityChart');
       }
     }
   });
-})
+  
+  const activityBox = document.getElementById("activity-box");
+  activityBox.innerHTML = "";
+  
+  if(tasks.lenghth === 0) {
+    activityBox.innerHTML = `<p style="color: #64748b; font-size: 14px;">No recent tasks added yet.</p>`;
+  } else {
+    const recentTasks = [...tasks].reverse().slice(0, 5);
+    
+    recentTasks.forEach(task => {
+      const item = document.createElement("div");
+      item.classList.add("activity-item");
+      item.innerHTML = `
+      <div class="activity-left">
+        <span class="activity-badge-icon">📌</span>
+        <div class="activity-info">
+        <h5>${task.name}</h5>
+        <small>Moved to ${task.type.toUpperCase()}</small>
+        </div>
+      </div>
+      `;
+      activityBox.appendChild(item);
+    });
+      }
+  })

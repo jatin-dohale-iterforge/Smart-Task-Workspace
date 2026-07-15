@@ -1,0 +1,71 @@
+.session-card {
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+.session-title {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.session-group {
+    margin-bottom: 20px;
+}
+
+.session-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 8px;
+}
+
+.session-input {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #334155;
+}
+
+.session-time-text {
+    font-size: 14px;
+    color: #334155;
+    font-weight: 500;
+    padding-left: 2px;
+}
+
+.clear-session-btn {
+    display: flex;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #f87171;
+    color: #ef4444;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.logout-btn {
+    display: flex;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #f87171;
+    color: #ef4444;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.clear-session-btn:hover {
+    background: #fef2f2;
+}
