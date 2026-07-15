@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+</head>
+<style>
+    .error-page-container{
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+    .error-page-container a{
+        text-decoration: none;
+        background: rgb(0, 115, 255);
+        padding: 5px 10px;
+        color: rgb(243, 241, 241);
+        box-shadow: 0px 0px 5px grey;
+    }
+    img{
+        width: 60%;
+    }
+
+    @media screen and (max-width:768px){
+         img{
+        width: 100%;
+    }
+    }
+
+</style>
+<body>
+    <main class="error-page-container">
+        <img src="../assets/img-err.jpg" alt="404 error page not found">
+         <a href="dashboard.html" class="error-page-btn">Go back to home</a>
+    </main>
+    
+</body>
+</html>
