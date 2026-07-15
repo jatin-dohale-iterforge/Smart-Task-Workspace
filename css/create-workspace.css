@@ -14,36 +14,6 @@ body {
     padding: 30px;
 }
 
-.breadcrumb {
-    margin-bottom: 30px;
-}
-
-.breadcrumb ol {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    gap: 10px;
-}
-
-
-.breadcrumb a {
-    text-decoration: none;
-    color: #000000;
-    font-weight: 600;
-    font-size: 15px;
-}
-
-
-.breadcrumb-separator {
-    color: #999;
-}
-
-.active-page {
-    color: #555;
-    font-weight: bold;
-}
-
-
 .workspace-form-section {
     display: flex;
     justify-content: center;
@@ -167,13 +137,6 @@ select:focus {
         margin-left: 0;
         padding: 15px;
         padding-bottom: 90px;
-    }
-    .breadcrumb {
-        margin-bottom: 20px;
-    }
-    .breadcrumb ol {
-        flex-wrap: wrap;
-        font-size: 14px;
     }
     .form-wrapper {
         width: 100%;
