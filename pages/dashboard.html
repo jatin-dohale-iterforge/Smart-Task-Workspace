@@ -1,81 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard | Smart Task Manager</title>
-    <link rel="stylesheet" href="../css/utility.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
-</head>
-<body>
-    <div class="sidebar">
-        sidebar
-    </div>
-    <div class="main-content">
-        <div class="header">
-            <h2 class="board-title">Dashboard</h2>
-            <div class="header-controls">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="../css/utility.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <link rel="stylesheet" href="../css/sidebar.css" />
+  </head>
+  <body>
+    <!-- Side bar -->
+    <div class="app-sidebar">sidebar</div>
 
+    <!-- main Content -->
+    <div class="section">
+      <div class="container">
+        <div class="header">
+          <h2 class="board-title">Dashboard</h2>
+          <div class="header-controls">
             <div class="search-wrapper">
-                <span class="search-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+              <span class="search-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-search"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+                  />
                 </svg>
-                </span>
-                <input type="text" id="search-board" placeholder="Search tasks, workspaces, notes">
+              </span>
+              <input
+                type="text"
+                id="search-board"
+                placeholder="Search tasks, workspaces, notes"
+              />
             </div>
-            </div>
+          </div>
         </div>
         <div class="statistics">
-            <div class="number-statistics">
-                <div class="stat-card">
-                    <h3 class="stat-heading">Workpaces</h3>
-                    <span class="stat-info" >0</span>
-                    <h3 class="stat-category">Total</h3>
-                </div>
-                <div class="stat-card">
-                    <h3 class="stat-heading">Tasks</h3>
-                    <span class="stat-info" id="count-total">0</span>
-                    <h3 class="stat-category">Total</h3>
-                </div>
-                <div class="stat-card">
-                    <h3 class="stat-heading">Completed</h3>
-                    <span class="stat-info color-completed" id="count-completed">0</span>
-                    <h3 class="stat-category">Tasks</h3>
-                </div>
-                <div class="stat-card">
-                    <h3 class="stat-heading">In Progress</h3>
-                    <span class="stat-info color-inprogress" id="count-inprogress">0</span>
-                    <h3 class="stat-category">Tasks</h3>
-                </div>
-                <div class="stat-card">
-                    <h3 class="stat-heading">To Do</h3>
-                    <span class="stat-info color-todo" id="count-todo">0</span>
-                    <h3 class="stat-category">Tasks</h3>
-                </div>
-                <div class="stat-card">
-                    <h3 class="stat-heading">Overdue</h3>
-                    <span class="stat-info color-overdue" id="count-overdue">0</span>
-                    <h3 class="stat-category">Tasks</h3>
-                </div>
+          <div class="number-statistics">
+            <div class="stat-card">
+              <h3 class="stat-heading">Workpaces</h3>
+              <span class="stat-info">0</span>
+              <h3 class="stat-category">Total</h3>
             </div>
-            <div class="chart-statistics">
-                <div class="chart-card">
-                    <h3 class="stat-heading">Task Progress</h3>
-                    <canvas id="progressChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h3 class="stat-heading">Task by Priority</h3>
-                    <canvas id="priorityChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h3 class="stat-heading">Recent Activities</h3>
-                    <div></div>
-                </div>
+            <div class="stat-card">
+              <h3 class="stat-heading">Tasks</h3>
+              <span class="stat-info" id="count-total">0</span>
+              <h3 class="stat-category">Total</h3>
             </div>
+            <div class="stat-card">
+              <h3 class="stat-heading">Completed</h3>
+              <span class="stat-info color-completed" id="count-completed"
+                >0</span
+              >
+              <h3 class="stat-category">Tasks</h3>
+            </div>
+            <div class="stat-card">
+              <h3 class="stat-heading">In Progress</h3>
+              <span class="stat-info color-inprogress" id="count-inprogress"
+                >0</span
+              >
+              <h3 class="stat-category">Tasks</h3>
+            </div>
+            <div class="stat-card">
+              <h3 class="stat-heading">To Do</h3>
+              <span class="stat-info color-todo" id="count-todo">0</span>
+              <h3 class="stat-category">Tasks</h3>
+            </div>
+            <div class="stat-card">
+              <h3 class="stat-heading">Overdue</h3>
+              <span class="stat-info color-overdue" id="count-overdue">0</span>
+              <h3 class="stat-category">Tasks</h3>
+            </div>
+          </div>
+          <div class="chart-statistics">
+            <div class="chart-card">
+              <h3 class="stat-heading">Task Progress</h3>
+              <canvas id="progressChart"></canvas>
+            </div>
+            <div class="chart-card">
+              <h3 class="stat-heading">Task by Priority</h3>
+              <canvas id="priorityChart"></canvas>
+            </div>
+            <div class="chart-card">
+              <h3 class="stat-heading">Recent Activities</h3>
+              <div></div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../script.js"></script>
     <script src="../js/dashboard.js"></script>
-</body>
+  </body>
 </html>
