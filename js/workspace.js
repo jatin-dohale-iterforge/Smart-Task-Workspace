@@ -175,6 +175,7 @@ function datashow() {
             const index = workspaces.indexOf(elem);
             workspaceCard.innerHTML += `
        <div class="workspace-card">
+       <a href="taskboard.html?workspace=${encodedName}" class="workspace-link-wrapper" style="text-decoration: none; color: inherit; flex-grow: 1;">
         <div class="main-workspace-info">
             <i class="${elem.workspaceIcon}" style="background-color:${elem.workspaceColor}"></i>
             <h3 class="workspace-title">${elem.workspaceName}</h3>

@@ -1,9 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart Task Workspace</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/sidebar.css">
@@ -11,51 +10,106 @@
     <link rel="stylesheet" href="../css/workspace.css">
     <link rel="stylesheet" href="../css/toast.css">
 </head>
+    <link rel="stylesheet" href="../css/utility.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="../css/sidebar.css" />
+    <link rel="stylesheet" href="../css/workspace.css" />
+  </head>
 
-<body>
+  <body>
 
-    <aside class="app-sidebar">
+    <!-- Side bar -->
+     <div class="app-sidebar">sidebar</div>
+    
+    <main class="section">
+      <div class="container">
+        <div class="workspace-header">
+          <h2>Workspaces</h2>
+          <div class="workspace-search-section">
+            <i class="fa fa-search" id="workspace-search-icon"></i>
+            <input
+              type="text"
+              id="search-bar"
+              placeholder="Search workspace..."
+            />
 
-        <h2>Smart Task</h2>
-
-        <ul class="sidebar-menu">
-            <li><i class="fa fa-home"></i><span>Dashboard</span></li>
-            <li class="active"><i class="fa fa-folder"></i><span>Workspace</span></li>
-            <li><i class="fa fa-tasks"></i><span>Tasks</span></li>
-            <li><i class="fa fa-pencil-square-o"></i><span>Notes</span></li>
-            <li><i class="fa fa-cog"></i><span>Settings</span></li>
-            <li><i class="fa fa-info-circle"></i><span>About</span></li>
-        </ul>
-
-        <a href="login.html" class="logout-btn">
-            <i class="fa fa-sign-out"></i>
-            <span>Logout</span>
-        </a>
-
-    </aside>
-    <main class="workspace-section ">
-        <nav class="breadcrumb">
-            <ol>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li class="breadcrumb-separator">/</li>
-                <li class="active-page">Workspace</li>
-            </ol>
-        </nav>
-        <div class="workspace-container">
-            <div class="workspace-header">
-                <h2>Workspaces</h2>
-                <div class="workspace-search-section">
-                    <i class="fa fa-search" id="workspace-search-icon"></i>
-                    <input type="text" id="search-bar" placeholder="Search workspace..." oninput="searchWorkspace()">
-
-                    <a class="add-workspace-btn" href="create-workspace.html"> <i class="fa fa-plus"></i> <span>Create
-                            Workspace</span></a>
-                </div>
-            </div>
-            <div class="workspace-lists">
-
-            </div>
+            <a class="add-workspace-btn" href="create-workspace.html">
+              <i class="fa fa-plus"></i> <span>Create Workspace</span></a
+            >
+          </div>
         </div>
+        <div class="workspace-lists">
+          <div class="workspace-card">
+            <div class="main-workspace-info">
+              <i class="fa fa-user"></i>
+              <h3 class="workspace-title">XYZ</h3>
+              <h4 class="workspace-task-count">task count</h4>
+              <p class="workspace-update-time">updated: 2 hours ago</p>
+            </div>
+            <div class="workspace-action-btn">
+              <button><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+          </div>
+          <div class="workspace-card">
+            <div class="main-workspace-info">
+              <i class="fa fa-user"></i>
+              <h3 class="workspace-title">XYZ</h3>
+              <h4 class="workspace-task-count">task count</h4>
+              <p class="workspace-update-time">updated: 2 hours ago</p>
+            </div>
+            <div class="workspace-action-btn">
+              <button><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+          </div>
+          <div class="workspace-card">
+            <div class="main-workspace-info">
+              <i class="fa fa-user"></i>
+              <h3 class="workspace-title">XYZ</h3>
+              <h4 class="workspace-task-count">task count</h4>
+              <p class="workspace-update-time">updated: 2 hours ago</p>
+            </div>
+            <div class="workspace-action-btn">
+              <button><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+          </div>
+          <div class="workspace-card">
+            <div class="main-workspace-info">
+              <i class="fa fa-user"></i>
+              <h3 class="workspace-title">XYZ</h3>
+              <h4 class="workspace-task-count">task count</h4>
+              <p class="workspace-update-time">updated: 2 hours ago</p>
+            </div>
+            <div class="workspace-action-btn">
+              <button><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+          </div>
+          <div class="workspace-card">
+            <div class="main-workspace-info">
+              <i class="fa fa-user"></i>
+              <h3 class="workspace-title">XYZ</h3>
+              <h4 class="workspace-task-count">task count</h4>
+              <p class="workspace-update-time">updated: 2 hours ago</p>
+            </div>
+            <div class="workspace-action-btn">
+              <button><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+          </div>
+          <div class="workspace-card">
+            <div class="main-workspace-info">
+              <i class="fa fa-user"></i>
+              <h3 class="workspace-title">XYZ</h3>
+              <h4 class="workspace-task-count">task count</h4>
+              <p class="workspace-update-time">updated: 2 hours ago</p>
+            </div>
+            <div class="workspace-action-btn">
+              <button><i class="fa fa-ellipsis-v"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <nav class="mobile-nav">
         <a href="#">
@@ -84,19 +138,8 @@
         </div>
 
     </nav>
-    <div id="toast" class="toast"></div>
-    <div class="delete-modal" id="deleteModal">
-        <div class="delete-box">
-            <h3>Delete Workspace</h3>
-            <p>Are you sure you want to delete this workspace?</p>
-            <div class="delete-actions">
-                <button class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
-                <button class="confirm-delete-btn" onclick="deleteWorkspace()">Delete</button>
-            </div>
-        </div>
-    </div>
 
+    <script src="../script.js"></script>
     <script src="../js/workspace.js"></script>
-</body>
-
+  </body>
 </html>
