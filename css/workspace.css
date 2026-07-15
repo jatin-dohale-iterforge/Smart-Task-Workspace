@@ -10,14 +10,7 @@ body {
     background: #f5f7fb;
 }
 
-.workspace-section {
-    flex: 1;
-    margin-left: 21%;
-    width: 80%;
-    padding: 30px;
-    display: flex;
-    background: #f5f7fb;
-}
+
 
 .workspace-container {
     flex: 1;
@@ -60,7 +53,7 @@ body {
 .add-workspace-btn {
     padding: 5px;
     border-radius: 5px;
-    background: rgb(60, 154, 249);
+    background: #3c9af9;
     color: #fff;
     text-decoration: none;
     cursor: pointer;
