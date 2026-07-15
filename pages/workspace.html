@@ -11,6 +11,7 @@
     />
     <link rel="stylesheet" href="../css/sidebar.css" />
     <link rel="stylesheet" href="../css/workspace.css" />
+    <link rel="stylesheet" href="../css/header.css">
   </head>
 
   <body>
@@ -20,21 +21,11 @@
     
     <main class="section">
       <div class="container">
-        <div class="workspace-header">
-          <h2>Workspaces</h2>
-          <div class="workspace-search-section">
-            <i class="fa fa-search" id="workspace-search-icon"></i>
-            <input
-              type="text"
-              id="search-bar"
-              placeholder="Search workspace..."
-            />
 
-            <a class="add-workspace-btn" href="create-workspace.html">
-              <i class="fa fa-plus"></i> <span>Create Workspace</span></a
-            >
-          </div>
-        </div>
+      <!-- Notes Page Header -->
+       <div class="header"></div>
+
+       <!-- main content -->
         <div class="workspace-lists">
           <div class="workspace-card">
             <div class="main-workspace-info">
@@ -105,32 +96,10 @@
         </div>
       </div>
     </main>
-    <nav class="mobile-nav">
-        <a href="#">
-            <i class="fa fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="#">
-            <i class="fa fa-folder"></i>
-            <span>Workspace</span>
-        </a>
-        <a href="#">
-            <i class="fa fa-tasks"></i>
-            <span>Tasks</span>
-        </a>
-        <div class="mobile-more">
-            <button id="moreBtn">
-                <i class="fa fa-bars"></i>
-                <span>More</span>
-            </button>
-            <div class="more-menu" id="moreMenu">
-                <a href="#"><i class="fa fa-pencil-square-o"></i> Notes</a>
-                <a href="#"><i class="fa fa-cog"></i> Settings</a>
-                <a href="#"><i class="fa fa-info-circle"></i> About</a>
-                <a href="login.html"><i class="fa fa-sign-out"></i> Logout</a>
-            </div>
-        </div>
 
+
+    <!-- Bottom Bar -->
+    <nav class="mobile-nav">
     </nav>
 
     <script src="../script.js"></script>

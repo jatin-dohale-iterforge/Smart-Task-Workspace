@@ -11,40 +11,19 @@
     <link rel="stylesheet" href="../css/utility.css" />
     <link rel="stylesheet" href="../css/dashboard.css" />
     <link rel="stylesheet" href="../css/sidebar.css" />
+    <link rel="stylesheet" href="../css/header.css">
   </head>
   <body>
     <!-- Side bar -->
     <div class="app-sidebar">sidebar</div>
 
-    <!-- main Content -->
-    <div class="section">
-      <div class="container">
-        <div class="header">
-          <h2 class="board-title">Dashboard</h2>
-          <div class="header-controls">
-            <div class="search-wrapper">
-              <span class="search-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-search"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-                  />
-                </svg>
-              </span>
-              <input
-                type="text"
-                id="search-board"
-                placeholder="Search tasks, workspaces, notes"
-              />
-            </div>
-          </div>
-        </div>
+   <!-- content -->
+  <div class="section">
+    <div class="container">
+
+      <!-- Notes Page Header -->
+       <div class="header"></div>
+
         <div class="statistics">
           <div class="number-statistics">
             <div class="stat-card">
@@ -99,6 +78,10 @@
         </div>
       </div>
     </div>
+
+    <!-- Bottom Bar -->
+    <nav class="mobile-nav">
+    </nav>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../script.js"></script>
     <script src="../js/dashboard.js"></script>
