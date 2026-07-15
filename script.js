@@ -124,7 +124,7 @@ const showNavbar = () => {
     if (page.select) {
       headerBox.innerHTML += `
       <div class="header-select">
-      <select class="workspace-select">
+      <select class="workspace-select"  id="board-workspace-filter">
       <option value="all">All Workspaces</option>
       <option value="personal">Personal</option>
       <option value="work">Work</option>
@@ -150,7 +150,7 @@ const showNavbar = () => {
 
     if (page.filter) {
       headerBox.innerHTML += `
-      <button class="header-filter">
+      <button class="header-filter" id="sort-priority-btn">
       <span class="filter-icon">
                     <img src="../assets/icons/filter-icon.svg" alt="filter icon"/>
                         </span> Filters
