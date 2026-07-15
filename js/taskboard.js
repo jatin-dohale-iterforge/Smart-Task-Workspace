@@ -2,7 +2,7 @@ let tasks = JSON.parse(localStorage.getItem("smart_tasks")) || [];
 const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
 
 const urlParams = new URLSearchParams(window.location.search);
-let currentWorkspaceFilter = urlParams.get('workspace') || "all"; 
+let currentWorkspaceFilter = urlParams.get('workspace') || "all";
 
 let currentSearchQuery = "";
 let sortByPriorityMode = false;
@@ -55,9 +55,9 @@ function populateWorkspaceDropdowns() {
     }
 
     if (taskAssignSelect) {
-        taskAssignSelect.innerHTML = "";
+        taskAssignSelect.innerHTML = `<option value="" selected disabled>Select Workspace</option>`;
         if (workspaces.length === 0) {
-            taskAssignSelect.innerHTML = `<option value="Default">Default Workspace</option>`;
+            taskAssignSelect.innerHTML += `<option value="Default">Default Workspace</option>`;
         } else {
             workspaces.forEach(ws => {
                 taskAssignSelect.innerHTML += `<option value="${ws.workspaceName}">${ws.workspaceName}</option>`;
@@ -118,16 +118,16 @@ function openTaskForm(id = null) {
             document.getElementById("task-type").value = targetTask.type;
             document.getElementById("task-priority").value = targetTask.priority;
             document.getElementById("task-date").value = targetTask.date;
-
-            form.dataset.workspace = targetTask.workspace || "Default";
-        } else {
+            document.getElementById("task-workspace-assign").value = targetTask.workspace || "Default";
+        }
+        else {
             window.location.hash = "/tasks";
         }
     } else {
         title.innerText = "Create New Task";
         document.getElementById("task-id").value = "";
 
-        form.dataset.workspace = currentWorkspaceFilter === "all" ? "Default" : currentWorkspaceFilter;
+        document.getElementById("task-workspace-assign").value = "";
     }
 }
 
@@ -144,7 +144,7 @@ function handleFormSubmit(e) {
     const type = document.getElementById("task-type").value;
     const priority = document.getElementById("task-priority").value;
     const date = document.getElementById("task-date").value;
-    const workspace = e.target.dataset.workspace || "Default";
+    const workspace = document.getElementById("task-workspace-assign").value;
 
     const todayStr = new Date().toISOString().split('T')[0];
     if (date < todayStr) {
@@ -156,7 +156,7 @@ function handleFormSubmit(e) {
     if (idValue) {
         const taskId = parseInt(idValue, 10);
         tasks = tasks.map(task => task.id === taskId ? {
-            ...task, name, description, type, priority, date
+            ...task, name, description, type, priority, date, workspace
         } : task);
     } else {
         const newTask = {
