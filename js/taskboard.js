@@ -1,7 +1,38 @@
 let tasks = JSON.parse(localStorage.getItem("smart_tasks")) || [];
+const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
+
+const urlParams = new URLSearchParams(window.location.search);
+let currentWorkspaceFilter = urlParams.get('workspace') || "all"; 
+
+let currentSearchQuery = "";
+let sortByPriorityMode = false;
 
 document.addEventListener("DOMContentLoaded", () => {
+    populateWorkspaceDropdowns();
+
+    const boardTitleElement = document.querySelector(".board-title");
+    if (boardTitleElement) {
+        boardTitleElement.innerText = currentWorkspaceFilter === "all" 
+            ? "Global Task Board" 
+            : `${currentWorkspaceFilter} Board`;
+    }
+
+    const boardFilterSelect = document.getElementById("board-workspace-filter");
+    if (boardFilterSelect) {
+        boardFilterSelect.value = currentWorkspaceFilter;
+        boardFilterSelect.addEventListener("change", handleWorkspaceFilterChange);
+    }
+
+    const dateInputElement = document.getElementById("task-date");
+    if (dateInputElement) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        dateInputElement.min = todayStr;
+    }
+
     document.getElementById("task-form").addEventListener("submit", handleFormSubmit);
+
+    document.getElementById("sort-priority-btn").addEventListener("click", togglePrioritySort);
+
 
     window.addEventListener("hashchange", handleRouting);
 
@@ -11,6 +42,43 @@ document.addEventListener("DOMContentLoaded", () => {
         handleRouting();
     }
 });
+
+function populateWorkspaceDropdowns() {
+    const boardFilterSelect = document.getElementById("board-workspace-filter");
+    const taskAssignSelect = document.getElementById("task-workspace-assign");
+
+    if (boardFilterSelect) {
+        boardFilterSelect.innerHTML = `<option value="all">All Workspaces</option>`;
+        workspaces.forEach(ws => {
+            boardFilterSelect.innerHTML += `<option value="${ws.workspaceName}">${ws.workspaceName}</option>`;
+        });
+    }
+
+    if (taskAssignSelect) {
+        taskAssignSelect.innerHTML = "";
+        if (workspaces.length === 0) {
+            taskAssignSelect.innerHTML = `<option value="Default">Default Workspace</option>`;
+        } else {
+            workspaces.forEach(ws => {
+                taskAssignSelect.innerHTML += `<option value="${ws.workspaceName}">${ws.workspaceName}</option>`;
+            });
+        }
+    }
+}
+
+function handleWorkspaceFilterChange(e) {
+    currentWorkspaceFilter = e.target.value;
+    
+    const boardTitleElement = document.querySelector(".board-title");
+    if (boardTitleElement) {
+        boardTitleElement.innerText = currentWorkspaceFilter === "all" ? "Global Task Board" : `${currentWorkspaceFilter} Board`;
+    }
+
+    const newUrl = currentWorkspaceFilter === "all" ? "tasks.html" : `tasks.html?workspace=${encodeURIComponent(currentWorkspaceFilter)}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+
+    renderTasks();
+}
 
 function saveTasks() {
     localStorage.setItem("smart_tasks", JSON.stringify(tasks));
@@ -50,12 +118,16 @@ function openTaskForm(id = null) {
             document.getElementById("task-type").value = targetTask.type;
             document.getElementById("task-priority").value = targetTask.priority;
             document.getElementById("task-date").value = targetTask.date;
+
+            form.dataset.workspace = targetTask.workspace || "Default";
         } else {
             window.location.hash = "/tasks";
         }
     } else {
         title.innerText = "Create New Task";
         document.getElementById("task-id").value = "";
+
+        form.dataset.workspace = currentWorkspaceFilter === "all" ? "Default" : currentWorkspaceFilter;
     }
 }
 
@@ -72,6 +144,14 @@ function handleFormSubmit(e) {
     const type = document.getElementById("task-type").value;
     const priority = document.getElementById("task-priority").value;
     const date = document.getElementById("task-date").value;
+    const workspace = e.target.dataset.workspace || "Default";
+
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (date < todayStr) {
+        alert("Due date cannot be in the past! Please choose a valid target deadline.");
+        document.getElementById("task-date").focus();
+        return; 
+    }
 
     if (idValue) {
         const taskId = parseInt(idValue, 10);
@@ -85,7 +165,8 @@ function handleFormSubmit(e) {
             type: type,
             description: description,
             priority: priority,
-            date: date
+            date: date,
+            workspace: workspace
         };
         tasks.push(newTask);
     }
@@ -93,6 +174,20 @@ function handleFormSubmit(e) {
     saveTasks();
     window.location.hash = "/tasks";
 }
+
+function togglePrioritySort() {
+    sortByPriorityMode = !sortByPriorityMode;
+    
+    const btn = document.getElementById("sort-priority-btn");
+    if (btn) {
+        btn.style.background = sortByPriorityMode ? "#e0e7ff" : "";
+        btn.style.color = sortByPriorityMode ? "#4f46e5" : "";
+        btn.style.borderColor = sortByPriorityMode ? "#4f46e5" : "";
+    }
+    
+    renderTasks();
+}
+
 
 function renderTasks() {
     const todoBanner = document.querySelector(".todo-card .task-banner");
@@ -106,10 +201,28 @@ function renderTasks() {
     if (overdueBanner) overdueBanner.innerHTML = "";
 
     let counts = { todo: 0, inprogress: 0, completed: 0, overdue: 0 };
+    const todayStr = new Date().toISOString().split('T')[0];
 
-    tasks.forEach(task => {
-        if (counts.hasOwnProperty(task.type)) {
-            counts[task.type]++;
+    let processedTasks = tasks.filter(task => {
+        const matchesWorkspace = (currentWorkspaceFilter === "all" || task.workspace === currentWorkspaceFilter);
+        const matchesSearch = task.name.toLowerCase().includes(currentSearchQuery) || 
+                              (task.description && task.description.toLowerCase().includes(currentSearchQuery));
+        return matchesWorkspace && matchesSearch;
+    });
+
+    if (sortByPriorityMode) {
+        const priorityWeight = { "High": 3, "Medium": 2, "Low": 1 };
+        processedTasks.sort((a, b) => (priorityWeight[b.priority] || 0) - (priorityWeight[a.priority] || 0));
+    }
+
+    processedTasks.forEach(task => {
+        let targetType = task.type;
+        if (task.type !== "completed" && task.date && task.date < todayStr) {
+            targetType = "overdue";
+        }
+
+        if (counts.hasOwnProperty(targetType)) {
+            counts[targetType]++;
         }
 
         const taskElement = document.createElement("a");
@@ -128,13 +241,13 @@ function renderTasks() {
             </div>
         `;
 
-        if (task.type === "todo" && todoBanner) {
+        if (targetType === "todo" && todoBanner) {
             todoBanner.appendChild(taskElement);
-        } else if (task.type === "inprogress" && inprogressBanner) {
+        } else if (targetType === "inprogress" && inprogressBanner) {
             inprogressBanner.appendChild(taskElement);
-        } else if (task.type === "completed" && completedBanner) {
+        } else if (targetType === "completed" && completedBanner) {
             completedBanner.appendChild(taskElement);
-        } else if (task.type === "overdue" && overdueBanner) {
+        } else if (targetType === "overdue" && overdueBanner) {
             overdueBanner.appendChild(taskElement);
         }
     });
