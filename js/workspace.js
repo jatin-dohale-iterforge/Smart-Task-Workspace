@@ -172,22 +172,24 @@ function datashow() {
     return;
 }
         filteredWorkspaces.forEach((elem) => {
+            const encodedName=encodeURIComponent(elem.workspaceName)
             const index = workspaces.indexOf(elem);
             workspaceCard.innerHTML += `
        <div class="workspace-card">
-       <a href="taskboard.html?workspace=${encodedName}" class="workspace-link-wrapper" style="text-decoration: none; color: inherit; flex-grow: 1;">
+         <a href="taskboard.html?workspace=${encodedName}" class="workspace-link-wrapper" style="text-decoration: none; color: inherit; flex-grow: 1;">
         <div class="main-workspace-info">
             <i class="${elem.workspaceIcon}" style="background-color:${elem.workspaceColor}"></i>
             <h3 class="workspace-title">${elem.workspaceName}</h3>
             <h4 class="workspace-task-count">Task count: ${getTaskCount(elem.id)}</h4>
             <p class="workspace-update-time">Updated: ${formatDate(elem.updatedAt)}</p>
             </div>
+            </a>
             <div class="workspace-action-btn">
                         <div class="action-btns">
                            <button class="edit-icon" onclick="editWorkspace(${index})"><i class="fa fa-edit"></i></button>
                            <button class="delete-icon" onclick="openDeleteModal(${index})"><i class="fa fa-trash"></i></button>
                         </div>
-            </div>
+            </div>           
         </div>
         `
         });
