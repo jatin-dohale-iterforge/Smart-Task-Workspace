@@ -1,3 +1,60 @@
+// json for pages Data
+const pageData = [
+  {
+    name: "DashBoard",
+    select: false,
+    search: true,
+    filter: false,
+    addButton: false,
+    rootPath: "dashboard.html",
+    child: "",
+  },
+  {
+    name: "Workspace",
+    select: false,
+    search: true,
+    filter: false,
+    addButton: true,
+    rootPath: "create-workspace.html",
+    child: "Workspace",
+  },
+  {
+    name: "TaskBoard",
+    select: true,
+    search: false,
+    filter: true,
+    addButton: true,
+    rootPath: "#/tasks/create",
+    child: "Task",
+  },
+  {
+    name: "Notes",
+    select: false,
+    search: true,
+    filter: false,
+    addButton: true,
+    rootPath: "notes.html",
+    child: "Note",
+  },
+  {
+    name: "Setting",
+    select: false,
+    search: false,
+    filter: false,
+    addButton: false,
+    rootPath: "/",
+    child: "",
+  },
+  {
+    name: "Notes",
+    select: false,
+    search: true,
+    filter: false,
+    addButton: true,
+    rootPath: "notes.html",
+    child: "Note",
+  },
+];
 
 // function for showing Side bar
 const showSideBar = () => {
@@ -37,59 +94,135 @@ const showSideBar = () => {
     const anchorBox = document.querySelectorAll(".sidebar-menu a");
 
     anchorBox.forEach((anchor) => {
-     anchor.children[0].classList.remove("active")
+      anchor.children[0].classList.remove("active");
     });
     anchorBox.forEach((anchor) => {
       if (anchor.getAttribute("href") === check) {
         anchor.children[0].classList.add("active");
       }
     });
-
   } catch (error) {
-    console.log("error", error.message)
+    console.log("error", error.message);
+  }
+};
+
+// function for showing navbar
+const showNavbar = () => {
+  try {
+    const header = document.querySelector(".header");
+    const path = window.location.pathname.split("/")[2];
+    const page = pageData.find(
+      (item) => item.name.toLowerCase() == path.split(".")[0],
+    );
+    header.innerHTML = `
+    <h2 class="board-heading">${page.name}</h2>
+                <div class="header-box">
+                </div>
+  `;
+    const headerBox = document.querySelector(".header-box");
+
+    if (page.select) {
+      headerBox.innerHTML += `
+      <div class="header-select">
+      <select class="workspace-select"  id="board-workspace-filter">
+      <option value="all">All Workspaces</option>
+      <option value="personal">Personal</option>
+      <option value="work">Work</option>
+      </select>
+      </div>
+      `;
+    }
+
+    if (page.search) {
+      headerBox.innerHTML += `
+      <div class="header-search">
+      <span id="search-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+      class="bi bi-search" viewBox="0 0 16 16">
+      <path
+      d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+      </svg>
+                        </span>
+                        <input type="text" id="search-board" placeholder="Search ${page.name == "DashBoard" ? "" : page.child + "s..."}" oninput="renderTasks()">
+                    </div>
+    `;
+    }
+
+    if (page.filter) {
+      headerBox.innerHTML += `
+      <button class="header-filter" id="sort-priority-btn">
+      <span class="filter-icon">
+                    <img src="../assets/icons/filter-icon.svg" alt="filter icon"/>
+                        </span> Filters
+    </button>
+    `;
+    }
+
+    if (page.addButton) {
+      if (page.name == "Notes") {
+        headerBox.innerHTML += `
+         <a onclick="toggleCreateWindow()" class="header-button">+ Add ${page.child}</a>
+      `;
+      } else {
+        headerBox.innerHTML += `
+         <a href=${page.rootPath} class="header-button">+ Add ${page.child}</a>
+      `;
+      }
+    }
+  } catch (error) {
+    console.log("error :", error.message);
+  }
+};
+
+
+// function for showing bottom bar 
+const showBottomBar = () => {
+  try {
+    const navBox = document.querySelector(".mobile-nav");
+    navBox.innerHTML = `
+    <a href="dashboard.html">
+            <i class="fa fa-home"></i>
+            <span>DashBoard</span>
+        </a>
+        <a href="workspace.html">
+            <i class="fa fa-folder"></i>
+            <span>Workspace</span>
+        </a>
+        <a href="taskboard.html">
+            <i class="fa fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="notes.html">
+            <i class="fa fa-pencil-square-o"></i>
+            <span>Notes</span>
+        </a>
+        <a href="setting.html">
+            <i class="fa fa-cog"></i>
+            <span>Setting</span>
+        </a>
+
+  `
+    const check = window.location.pathname.split("/")[2];
+    const anchorBox = document.querySelectorAll(".mobile-nav > a");
+
+    anchorBox.forEach((anchor) => {
+      anchor.classList.remove("active");
+    });
+    anchorBox.forEach((anchor) => {
+      if (anchor.getAttribute("href") === check) {
+        anchor.classList.add("active");
+      }
+    });
+  } catch (error) {
+    console.log("error : ", error.message)
   }
 }
 
-// function for showing navbar
-const showNavbar = () =>{
-  const header = document.querySelector(".header");
-  header.innerHTML = `
-                <h2 class="board-heading">Task Board</h2>
-                <div class="header-box">
-                    <div class="header-select">
-                        <select class="workspace-select" id="board-workspace-filter">
-                            <option value="all">All Workspaces</option>
-                            <option value="personal">Personal</option>
-                            <option value="work">Work</option>
-                        </select>
-                    </div>
-
-                    <div class="header-search">
-                        <span id="search-icon">
-                            <img src="../assets/icons/search_icon.svg" alt="search icon"/>
-                        </span>
-                        <input type="text" id="search-board" placeholder="Tasks" oninput="renderTasks()">
-                    </div>
-                    <button class="header-filter" id="sort-priority-btn">
-                    <span class="filter-icon">
-                    <img src="../assets/icons/filter-icon.svg" alt="filter icon"/>
-                        </span> Filters
-                    </button>
-
-                    <a href="#/tasks/create" class="header-button">+ Add Task</a>
-                </div>
-  `
-  const headerBox = document.querySelector(".header-box");
-}
-
-
-
-
-// main function 
+// main function
 const main = () => {
   showSideBar();
   showNavbar();
-}
-main()
+  showBottomBar();
+};
+main();
 
-console.log("run")

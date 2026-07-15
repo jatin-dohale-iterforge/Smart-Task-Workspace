@@ -43,7 +43,7 @@ return str.charAt(0).toUpperCase() + str.slice(1);
                     style="opacity: 1; transform: rotate(0deg)"
                   >
                     <path
-                      fill="none"
+                      fill="currentColor"
                       stroke="currentColor"
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -66,7 +66,7 @@ return str.charAt(0).toUpperCase() + str.slice(1);
             notesBox.innerHTML += `<div data-type="unordered" class="box" onclick="editNote(this)">
               <div class="d-flex justify-between">
                 <h3>Project Idea</h3>
-                <span class="icon-container">
+                <span class="icon-container" onclick="pinnedList(this)">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -78,7 +78,7 @@ return str.charAt(0).toUpperCase() + str.slice(1);
                     style="opacity: 1; transform: rotate(0deg)"
                   >
                     <path
-                      fill="none"
+                      fill="currentColor"
                       stroke="currentColor"
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -110,7 +110,7 @@ return str.charAt(0).toUpperCase() + str.slice(1);
                     style="opacity: 1; transform: rotate(0deg)"
                   >
                     <path
-                      fill="none"
+                      fill="currentColor"
                       stroke="currentColor"
                       stroke-linecap="round"
                       stroke-linejoin="round"
@@ -247,8 +247,11 @@ toggleCreateWindow();
 noteHeaderInput.value = ele.children[0].children[0].innerText;
 if(ele.dataset.type == "simple"){
   noteType.value = "simple";
-  noteTextArea.classList.remove("d-none")
+  noteTextArea.classList.remove("d-none");
   noteTextArea.children[0].value = ele.children[1].innerText
+}else if(ele.dataset.type == "unordered"){
+  noteType.value = "unordered";
+  console.log(noteHeaderInput)
 }
 
 
