@@ -23,7 +23,7 @@
                 <h2 class="board-title">Task Board</h2>
                 <div class="header-controls">
                     <div class="dropdown-wrapper">
-                        <select class="workspace-select">
+                        <select class="workspace-select" id="board-workspace-filter">
                             <option value="all">All Workspaces</option>
                             <option value="personal">Personal</option>
                             <option value="work">Work</option>
@@ -40,7 +40,7 @@
                         </span>
                         <input type="text" id="search-board" placeholder="Tasks" oninput="renderTasks()">
                     </div>
-                    <button class="filter-btn">
+                    <button class="filter-btn" id="sort-priority-btn">
                         <span class="filter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                 fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                                 <path
@@ -129,6 +129,10 @@
                             <option value="Low">Low</option>
                         </select>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-workspace-assign">Assign to Workspace</label>
+                    <select id="task-workspace-assign" required></select>
                 </div>
 
                 <div class="form-group">

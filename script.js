@@ -57,7 +57,7 @@ const showNavbar = () =>{
                 <h2 class="board-heading">Task Board</h2>
                 <div class="header-box">
                     <div class="header-select">
-                        <select class="workspace-select">
+                        <select class="workspace-select" id="board-workspace-filter">
                             <option value="all">All Workspaces</option>
                             <option value="personal">Personal</option>
                             <option value="work">Work</option>
@@ -70,7 +70,7 @@ const showNavbar = () =>{
                         </span>
                         <input type="text" id="search-board" placeholder="Tasks" oninput="renderTasks()">
                     </div>
-                    <button class="header-filter">
+                    <button class="header-filter" id="sort-priority-btn">
                     <span class="filter-icon">
                     <img src="../assets/icons/filter-icon.svg" alt="filter icon"/>
                         </span> Filters
