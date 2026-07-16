@@ -10,7 +10,7 @@
 }
 
 /* --- HEADER --- */
-.header {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,7 +22,7 @@
     position: relative;
     width: 320px;
 }
-.search-icon {
+.searchIcon {
     position: absolute;
     left: 12px;
     top: 50%;
@@ -114,7 +114,7 @@ canvas{
     padding: 4px;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 790px) {
 
     .chart-statistics {
         flex-direction: column;
