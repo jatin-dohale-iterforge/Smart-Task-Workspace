@@ -42,6 +42,7 @@
 /* ----- STATISTICS -----*/
 .number-statistics {
     display: flex;
+    flex-wrap: wrap;
     justify-content:space-between;
     align-items: flex-start;
     margin: 10px;
@@ -53,7 +54,7 @@
     border: 1px solid var(--br-color);
     padding: 15px;
     border-radius: 10px;
-    width: 30%;
+    flex: 1;
 }
 
 .stat-info {
@@ -84,6 +85,11 @@
 
 }
 
+.mobile-card {
+    display: flex;
+    flex-direction: row;
+}
+
 .chart-card {
     padding: 12px;
     background-color: var(--primary-color);
@@ -98,4 +104,28 @@
 canvas{
     height: 80% !important;
     width: 80% !important;
+}
+
+.activity-left {
+    display: flex;
+}
+
+.activity-info {
+    padding: 4px;
+}
+
+@media screen and (max-width: 767px) {
+
+    .chart-statistics {
+        flex-direction: column;
+    }
+
+    .chart-card {
+        width: 90%;
+    }
+
+    .stat-card h3 {
+        font-size: 12px;
+    }
+
 }

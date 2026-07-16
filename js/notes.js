@@ -41,6 +41,20 @@ const capitalizeFirstLetter = (str) => {
 const showNotes = (pinnedNoteList, notesList) => {
   notesBox.innerHTML = "";
 
+  if(notesList.length == 0 && pinnedNoteList.length == 0){
+    notesBox.innerHTML = `<div class="empty-workspace">
+            <i class="fa fa-pencil-square-o"></i>
+            <h3>No Note Found</h3>
+            <p>
+                Create a Note to start organizing your tasks.
+            </p>
+        
+        </div>`
+  }
+
+
+  
+
   if (pinnedNoteList.length > 0) {
     let pinnedId = 0;
     pinnedNoteList.forEach((item) => {
@@ -66,11 +80,11 @@ const showNotes = (pinnedNoteList, notesList) => {
                     ? `<ul class="ordered-list">
                ${item.data.map((i) => ` <li>${i}</li>`).join("")}
               </ul>`
-                    : ` <ul class="checkbox-list">
+                    : ` <ul class="checkbox-list" onclick="event.stopPropagation()">
               ${item.data
                 .map(
-                  (i) => `<li class="d-flex align-center gap-1">
-                  <input type="checkbox" name="" id="1" />
+                  (i) => `<li class="d-flex align-center gap-1 >
+                  <input type="checkbox" name="" id="1"  onclick="event.stopPropagation()" />
                   <label for="1">${i}</label>
                 </li>`,
                 )
@@ -178,6 +192,7 @@ const handleSubmit = (event) => {
       date: "last updated at " + getDate(),
       createdAt: Date.now(),
     };
+    showToast("Note Edited Successfully")
   } else {
     if (noteType.value == "simple") {
       notesList.push({
@@ -205,6 +220,7 @@ const handleSubmit = (event) => {
         createdAt: Date.now(),
       });
     }
+    showToast("Note Created Successfully")
   }
   edit = null;
   clearFrom();
@@ -280,6 +296,7 @@ const deleteNote = () => {
   localStorage.setItem("notesList", JSON.stringify(notesList));
   closeDeleteModal();
   showNotes(pinnedNoteList,notesList);
+  showToast("Note Deleted Successfully")
 };
 
 // function for handle pinned note
@@ -350,3 +367,24 @@ const renderItem = (str) => {
     showNotes(filteredPinnedList,filteredNoteList);
   }
 };
+
+
+// Function for showing toast
+function showToast(message, type = "success") {
+    try {
+        const toast = document.querySelector("#toast");
+        if (!toast) return;
+        toast.innerHTML = message;
+        toast.className = `toast ${type}`;
+        setTimeout(() => {
+            toast.classList.add("show");
+        }, 10);
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 5000);
+
+    }
+    catch (e) {
+        console.log("Toast error:", e);
+    }
+}
