@@ -99,6 +99,25 @@ function handleRouting() {
     }
 }
 
+function showToast(message, type = "success") {
+    try {
+        const toast = document.querySelector("#toast");
+        if (!toast) return;
+        toast.innerHTML = message;
+        toast.className = `toast ${type}`;
+        setTimeout(() => {
+            toast.classList.add("show");
+        }, 10);
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 5000);
+
+    }
+    catch (e) {
+        console.log("Toast error:", e);
+    }
+}
+
 function openTaskForm(id = null) {
     const modal = document.getElementById("task-modal");
     const form = document.getElementById("task-form");
@@ -170,7 +189,7 @@ function handleFormSubmit(e) {
         };
         tasks.push(newTask);
     }
-
+    showToast("Task created successfully!", "success");
     saveTasks();
     window.location.hash = "/tasks";
 }

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const tasks = JSON.parse(localStorage.getItem('smart_tasks')) || [];
+    const workspaces = JSON.parse(localStorage.getItem('workspaces')) || []; 
 
     let counts = { todo: 0, inprogress: 0, completed: 0, overdue: 0 };
     let priorities = { High: 0, Medium: 0, Low: 0 };
@@ -12,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const totalTasks = tasks.length;
 
+    document.getElementById("count-workspace").innerText = workspaces.length;
     document.getElementById("count-total").innerText = totalTasks;
     document.getElementById("count-todo").innerText = counts.todo;
     document.getElementById("count-inprogress").innerText = counts.inprogress;
