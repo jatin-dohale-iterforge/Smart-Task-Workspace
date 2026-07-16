@@ -17,7 +17,7 @@ let workspace = {
     workspaceIcon: "",
     workspaceColor: ""
 }
-const searchBar = document.querySelector("#search-bar");
+const searchBar = document.querySelector("#search-board");
 let filteredWorkspaces = workspaces;
 let deleteIndex = null;
 
@@ -292,11 +292,13 @@ function closeDeleteModal() {
 
 function renderItem() {
     try {
+        
         if (!searchBar) return;
         const keyword = searchBar.value.toLowerCase().trim();
         filteredWorkspaces = workspaces.filter(workspace =>
             workspace.workspaceName.toLowerCase().includes(keyword)
         );
+        console.log(filteredWorkspaces)
         datashow();
     }
     catch (e) {

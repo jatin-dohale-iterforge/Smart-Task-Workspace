@@ -122,8 +122,7 @@ const showNavbar = () => {
                 <div class="header-box">
                 </div>
   `;
-    const headerBox = document.querySelector(".header-box");
-
+   const headerBox = document.querySelector(".header-box");
     if (page.select) {
       headerBox.innerHTML += `
       <div class="header-select">
