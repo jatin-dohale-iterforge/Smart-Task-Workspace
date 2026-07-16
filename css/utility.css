@@ -4,10 +4,10 @@
   --third-color: #3c9af9;
   --br-color: #b9b9b9;
   --text-color: #1a1a1a;
-  --fs-sm:12;
-  --fs-md:16;
-  --fs-lg:20;
-  --fs-xl:24;
+  --fs-sm:12px;
+  --fs-md:16px;
+  --fs-lg:20px;
+  --fs-xl:24px;
 }
 
 /* Basic Styles */
@@ -44,7 +44,7 @@ body {
   flex-direction: column;
   gap: 20px;
   overflow: auto;
-  height: 90vh;
+  height: 89vh;
   overflow-x: hidden;
 }
 
@@ -141,4 +141,12 @@ a {
 /* cursor */
 .pointer {
   cursor: pointer;
+}
+
+
+@media screen and (max-width:768px) {
+  .section{
+    padding: 0px;
+  }
+  
 }

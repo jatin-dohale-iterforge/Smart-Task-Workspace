@@ -1,100 +1,156 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notes | Smart Task Manager</title>
-  <link
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes | Smart Task Manager</title>
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-  <link rel="stylesheet" href="../css/utility.css" />
-  <link rel="stylesheet" href="../css/notes.css" />
-   <link rel="stylesheet" href="../css/sidebar.css" />
-   <link rel="stylesheet" href="../css/header.css">
-</head>
+    <link rel="stylesheet" href="../css/utility.css" />
+    <link rel="stylesheet" href="../css/notes.css" />
+    <link rel="stylesheet" href="../css/sidebar.css" />
+    <link rel="stylesheet" href="../css/toast.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+  </head>
 
-<body>
-  <!-- <div class="blur"></div> -->
+  <body>
+    <!-- <div class="blur"></div> -->
 
-  <!-- Side bar -->
-  <div class="app-sidebar">sidebar</div>
-  
+    <!-- Side bar -->
+    <div class="app-sidebar">sidebar</div>
 
-  <!-- content -->
-  <div class="section">
-    <div class="container">
+    <!-- content -->
+    <div class="section">
+      <div class="container">
+        <!-- Notes Page Header -->
+        <div class="header"></div>
 
-      <!-- Notes Page Header -->
-       <div class="header"></div>
-       
-      <!--Main Content -->
-      <main>
-        <div id="notes-box" class="d-grid justify-center align-center gap-3">
+        <!--Main Content -->
+        <main>
+          <div
+            id="notes-box"
+            class="d-grid justify-center align-center gap-3"
+          ></div>
+        </main>
 
-        </div>
-      </main>
 
-      <!-- Overlay Creating box -->
-      <div id="overlay-main-box" class="d-none">
-        <div id="note-create-box" >
-          <h3>Creating Note</h3>
-          <form action="" onsubmit="handleSubmit(event)">
-            <div class="d-flex flex-direction">
-              <label for="note-header-input"> Note Name : </label>
-              <input id="note-header-input" type="text" placeholder="Enter Note Header..." required />
-            </div>
-            <div class="d-flex flex-direction">
-              <label for="note-type">Note Type : </label>
-              <select name="note-type" id="note-type" onchange="noteTypeHandler(this)" required>
-                <option value="">Select Note Type</option>
-                <option value="simple">Simple Note</option>
-                <option value="unordered">Unordered Note</option>
-                <option value="checkbox">Checkbox Note</option>
-              </select>
+        <!-- Create Modal -->
+        <div id="overlay-main-box" class="modal-overlay d-none">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h3 id="form-title">Create New Note</h3>
+              <a onclick="cancelHandler()" class="pointer">✕</a>
             </div>
 
-            <div id="note-input-taker" class="d-flex d-none align-center justify-center">
-              <textarea name="" id="" placeholder="Enter Note..."></textarea>
-            </div>
+            <form id="Note-form" onsubmit="handleSubmit(event)">
+              <input type="hidden"/>
 
-            <div id="order-item-box" class="d-flex flex-direction d-none">
-              <label>Note list : </label>
-              <div id="order-item-inputs">
+              <div class="form-group">
+                <label for="note-header-input">Note Name</label>
+                <input
+                  type="text"
+                  id="note-header-input"
+                  required
+                  placeholder="Enter Note name..."
+                />
+              </div>
 
-
-                <div class="d-flex align-center">
-                  <input name="inputListitem" type="text" placeholder="Enter Note list..." />
-                  <span class="icon-container pointer" onclick="deleteItemList(this)">
-                    <img src="../assets/icons/delete-icon.svg" alt="">
-                  </span>
+                <div class="form-group">
+                  <label for="task-type">Note Type</label>
+                  <select
+                    name="note-type"
+                    id="note-type"
+                    onchange="noteTypeHandler(this)"
+                    required
+                  >
+                    <option value="">Select Note Type</option>
+                    <option value="simple">Simple Note</option>
+                    <option value="unordered">Unordered Note</option>
+                    <option value="checkbox">Checkbox Note</option>
+                  </select>
                 </div>
 
-                <div id="#note-add-item-button" class="d-flex align-center justify-center ">
-                  <button type="button" class="button button-blue w-100" onclick="addItemList(this)">
-                    Add Item
-                  </button>
+                <div id="note-input-taker" class="d-none">
+                <label for="note-desc">Description</label>
+                <textarea
+                  id="note-desc"
+                  rows="3"
+                  placeholder="Enter Note description..."
+                ></textarea>
+              </div>
+
+
+              <div id="order-item-box" class="form-group d-none">
+                <label for="task-workspace-assign">Note List Item</label>
+                <div id="order-item-inputs">
+                  <div class="d-flex align-center">
+                    <input
+                      name="inputListitem"
+                      type="text"
+                      placeholder="Enter Note list..."
+                    />
+                    <span
+                      class="icon-container pointer"
+                      onclick="deleteItemList(this)"
+                    >
+                      <img src="../assets/icons/delete-icon.svg" alt="" />
+                    </span>
+                  </div>
+
+                  <div
+                    id="#note-add-item-button"
+                    class="d-flex align-center justify-center"
+                  >
+                    <button
+                      type="button"
+                      class="button button-blue w-100"
+                      onclick="addItemList(this)"
+                    >
+                      Add Item
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div id="submit-button-box" class="d-flex w-100">
-              <button type="submit" class="button button-blue">Save</button>
-              <button type="button" class="button button-blue-reverse" onclick="cancelHandler()">cancel</button>
-            </div>
-          </form>
+
+              <div class="form-actions">
+                <a onclick="cancelHandler()" class="cancel-btn">Cancel</a>
+                <button type="submit" class="button button-blue">Save Task</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-
-
-
     </div>
-  </div>
-  <nav class="mobile-nav">
-    </nav>
-</body>
-<script src="../script.js"></script>
-<script src="../js/notes.js"></script>
 
+    <!-- Bottom Bar -->
+    <nav class="mobile-nav"></nav>
+
+    <!-- Toast Modal -->
+     <div id="toast" class="toast" ></div>
+
+    <!-- Delete Modal -->
+    <div class="delete-modal" id="deleteModal">
+      <div class="delete-box">
+        <h3>Delete Note</h3>
+        <p>Are you sure you want to delete this Note?</p>
+        <div class="delete-actions">
+          <button
+            class="button button-blue-reverse"
+            onclick="closeDeleteModal()"
+          >
+            Cancel
+          </button>
+          <button class="button button-blue" onclick="deleteNote()">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../script.js"></script>
+  <script src="../js/notes.js"></script>
 </html>
