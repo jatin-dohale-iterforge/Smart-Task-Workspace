@@ -72,7 +72,7 @@ const showSideBar = () => {
           </li>
         </a>
         <a href="taskboard.html">
-          <li><i class="fa fa-tasks"></i><span>Tasks</span></li>
+          <li><i class=" fa-tasks"></i><span>Tasks</span></li>
         </a>
         <a href="notes.html">
           <li><i class="fa fa-pencil-square-o"></i><span>Notes</span></li>
@@ -98,11 +98,11 @@ const showSideBar = () => {
     });
     anchorBox.forEach((anchor) => {
       if (anchor.getAttribute("href") === check) {
-        anchor.children[0].classList.add("active");
+        anchor.children[0].classList.add("Active");
       }
     });
   } catch (error) {
-    console.log("error", error.message);
+    console.log("error", error.code);
   }
 };
 
@@ -119,7 +119,6 @@ const showNavbar = () => {
                 <div class="header-box">
                 </div>
   `;
-    const headerBox = document.querySelector(".header-box");
 
     if (page.select) {
       headerBox.innerHTML += `
@@ -203,7 +202,7 @@ const showBottomBar = () => {
 
   `
     const check = window.location.pathname.split("/")[2];
-    const anchorBox = document.querySelectorAll(".mobile-nav > a");
+    const anchorBox = document.querySelectorAll("mobileNav > a");
 
     anchorBox.forEach((anchor) => {
       anchor.classList.remove("active");
