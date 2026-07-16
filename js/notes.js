@@ -37,6 +37,10 @@ const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
+const stopEventPropagation = (event)=>{
+  event.stopPropagation()
+}
+
 //  function for show notes
 const showNotes = (pinnedNoteList, notesList) => {
   notesBox.innerHTML = "";
@@ -80,11 +84,11 @@ const showNotes = (pinnedNoteList, notesList) => {
                     ? `<ul class="ordered-list">
                ${item.data.map((i) => ` <li>${i}</li>`).join("")}
               </ul>`
-                    : ` <ul class="checkbox-list" onclick="event.stopPropagation()">
+                    : ` <ul class="checkbox-list" >
               ${item.data
                 .map(
-                  (i) => `<li class="d-flex align-center gap-1 >
-                  <input type="checkbox" name="" id="1"  onclick="event.stopPropagation()" />
+                  (i) => `<li class="d-flex align-center gap-1  onclick="stopEventPropagation(event)" >
+                  <input type="checkbox" name="" id="1"  />
                   <label for="1">${i}</label>
                 </li>`,
                 )
@@ -255,6 +259,7 @@ const cancelHandler = () => {
 
 // function for handle edit
 const editNote = (ele) => {
+  if(ele.target.closes("input,label")) {return}
   edit = ele;
   toggleCreateWindow();
   noteHeaderInput.value = ele.children[0].children[0].innerText;
