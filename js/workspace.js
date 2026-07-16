@@ -10,22 +10,23 @@ const breadcrumbAction = document.querySelector("#breadcrumb-action");
 const workspaceFormTitle = document.querySelector("#workspace-form-title");
 const workspaceFormDescription = document.querySelector("#workspace-form-description");
 
-const workspaces = JSON.parse(localStorage.setItem("workspace")) || [];
+const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
 let workspace = {
     workspaceName: "",
     workspaceDescription: "",
     workspaceIcon: "",
     workspaceColor: ""
 }
-const searchBar = document.querySelector("#searchBar");
+const searchBar = document.querySelector("#search-board");
 let filteredWorkspaces = workspaces;
 let deleteIndex = null;
 
 
 function showToast(message, type = "success") {
     try {
-        const toast = document.querySelector("toast");
+        const toast = document.querySelector("#toast");
         if (!toast) return;
+        toast.innerHTML = message;
         toast.className = `toast ${type}`;
         setTimeout(() => {
             toast.classList.add("show");
@@ -74,16 +75,16 @@ function getTaskCount(workspaceName) {
 function validate(inputTag, errorMsg) {
     try {
         let value = inputTag.value;
-        let error = inputTag.parentElement.querySelector("error");
+        let error = inputTag.parentElement.querySelector(".error");
         if (!value) {
-            error.innerHTML = errormsg;
+            error.innerHTML = errorMsg;
             return false;
         }
         error.innerHTML = ""
         return true;
     }
     catch (e) {
-        console.log("Validation error:", );
+        console.log("Validation error:", e);
         return false;
     }
 
@@ -289,13 +290,15 @@ function closeDeleteModal() {
     }
 }
 
-function searchWorkspace() {
+function renderItem() {
     try {
+        
         if (!searchBar) return;
         const keyword = searchBar.value.toLowerCase().trim();
         filteredWorkspaces = workspaces.filter(workspace =>
             workspace.workspaceName.toLowerCase().includes(keyword)
         );
+        console.log(filteredWorkspaces)
         datashow();
     }
     catch (e) {

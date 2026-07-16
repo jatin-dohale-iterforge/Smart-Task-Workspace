@@ -1,7 +1,7 @@
 // Function for get current date
 const getDate = ()=>{
     const today = new Date();
-    return today.toLocaleDateString('en-US', { month: 'long' }) + ' ' + today.toLocaleDateString('enUS', { day: '2-digit' });
+    return today.toLocaleDateString('en-US', { month: 'long' }) + ' ' + today.toLocaleDateString('en-US', { day: '2-digit' });
 }
 
 // function for clear form
@@ -42,6 +42,14 @@ return str.charAt(0).toUpperCase() + str.slice(1);
                     viewBox="0 0 24 24"
                     style="opacity: 1; transform: rotate(0deg)"
                   >
+                   <path
+                      fill="currentColor"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4a1 1 0 0 1 1 1z"
+                    ></path>
                   </svg>
                 </span>
               </div>
@@ -111,7 +119,7 @@ return str.charAt(0).toUpperCase() + str.slice(1);
                     ></path>
                   </svg>
                 </span>
-
+              </div>
               <ul class="checkbox-list">
               ${item.data.map(i=>(
                 `<li class="d-flex align-center gap-1">
