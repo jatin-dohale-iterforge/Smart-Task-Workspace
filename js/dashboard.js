@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (priorities.hasOwnProperty(task.priority)) priorities[task.priority]++;
     });
 
-    const totalTasks = tasks;
+    const totalTasks = tasks.length;
+    const totalWorkspace=workspacess.length;
 
     document.getElementById("count-workspace").innerText = workspaces.length;
     document.getElementById("count-total").innerText = totalTasks;
@@ -21,8 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("count-inprogress").innerText = counts.inprogress;
     document.getElementById("count-completed").innerText = counts.completed;
     document.getElementById("count-overdue").innerText = counts.overdue;
+    document.getElementById("workspace-count").innerText= totalWorkspace;
 
-const ctx = document.getElementById('priorityChart');
+const ctx = document.getElementById('progressChart');
 const ctx2 = document.getElementById('priorityChart');
 
   new Chart(ctx, {
@@ -64,13 +66,13 @@ const ctx2 = document.getElementById('priorityChart');
     }
   });
   
-  const activityBox = document.getElementById("activityBox");
+  const activityBox = document.getElementById("activity-box");
   activityBox.innerHTML = "";
   
   if(tasks.lenghth === 0) {
     activityBox.innerHTML = `<p style="color: #64748b; font-size: 14px;">No recent tasks added yet.</p>`;
   } else {
-    const recentTasks = [..tasks].reverse().slice(0, 5);
+    const recentTasks = [...tasks].reverse().slice(0, 5);
     
     recentTasks.forEach(task => {
       const item = document.createElement("div");
