@@ -61,10 +61,10 @@ function formatDate(date) {
 }
 
 
-function getTaskCount(workspaceId) {
+function getTaskCount(workspaceName) {
     try {
         const tasks = JSON.parse(localStorage.getItem("smart_tasks")) || [];
-        return tasks.filter(task => task.workspaceId === workspaceId).length;
+        return tasks.filter(task => task.workspace === workspaceName).length;
     }
     catch (e) {
         console.log("Task count error:", e);
@@ -180,7 +180,7 @@ function datashow() {
         <div class="main-workspace-info">
             <i class="${elem.workspaceIcon}" style="background-color:${elem.workspaceColor}"></i>
             <h3 class="workspace-title">${elem.workspaceName}</h3>
-            <h4 class="workspace-task-count">Task count: ${getTaskCount(elem.id)}</h4>
+            <h4 class="workspace-task-count">Task count: ${getTaskCount(elem.workspaceName)}</h4>
             <p class="workspace-update-time">Updated: ${formatDate(elem.updatedAt)}</p>
             </div>
             </a>
