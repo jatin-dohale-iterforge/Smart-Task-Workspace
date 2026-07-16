@@ -34,17 +34,8 @@
 }
 
 
-.header-search {
-  display: flex;
-  align-items: center;
-  background-color: var(--primary-color);
-  border: 1px solid var(--br-color);
-  border-radius: 6px;
-  padding-inline: 12px;
-   padding: 6px 12px;
-}
 
-.header-search > span,
+
 .header-filter > span{
   height: 16px;
   width: 16px;

@@ -10,7 +10,7 @@ const breadcrumbAction = document.querySelector("#breadcrumb-action");
 const workspaceFormTitle = document.querySelector("#workspace-form-title");
 const workspaceFormDescription = document.querySelector("#workspace-form-description");
 
-const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
+const workspaces = JSON.parse(localStorage.setItem("workspace")) || [];
 let workspace = {
     workspaceName: "",
     workspaceDescription: "",
@@ -24,9 +24,8 @@ let deleteIndex = null;
 
 function showToast(message, type = "success") {
     try {
-        const toast = document.querySelector("#toast");
+        const toast = document.querySelector("toast");
         if (!toast) return;
-        toast.innerHTML = message;
         toast.className = `toast ${type}`;
         setTimeout(() => {
             toast.classList.add("show");
@@ -75,16 +74,16 @@ function getTaskCount(workspaceName) {
 function validate(inputTag, errorMsg) {
     try {
         let value = inputTag.value;
-        let error = inputTag.parentElement.querySelector(".error");
+        let error = inputTag.parentElement.querySelector("error");
         if (!value) {
-            error.innerHTML = errorMsg;
+            error.innerHTML = errormsg;
             return false;
         }
         error.innerHTML = ""
         return true;
     }
     catch (e) {
-        console.log("Validation error:", e);
+        console.log("Validation error:", );
         return false;
     }
 
