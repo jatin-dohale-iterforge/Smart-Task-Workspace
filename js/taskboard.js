@@ -1,8 +1,8 @@
 let tasks = JSON.parse(localStorage.getItem("smart_tasks")) || [];
-const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
+const workspaces = JSON.parse(localStorage.getItem("workspace")) || [];
 
 const urlParams = new URLSearchParams(window.location.search);
-let currentWorkspaceFilter = urlParams.get('workspace') || "all";
+let currentWorkspaceFilter = urlParams.get('Workspace');
 
 let currentSearchQuery = "";
 let sortByPriorityMode = false;
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!window.location.hash || window.location.hash === "#") {
         window.location.hash = "/tasks";
     } else {
-        handleRouting();
+        // handleRouting();
     }
 });
 
@@ -140,7 +140,7 @@ function openTaskForm(id = null) {
             document.getElementById("task-workspace-assign").value = targetTask.workspace || "Default";
         }
         else {
-            window.location.hash = "/tasks";
+            window.location.hash = "tasks";
         }
     } else {
         title.innerText = "Create New Task";
@@ -245,7 +245,7 @@ function renderTasks() {
         }
 
         const taskElement = document.createElement("a");
-        taskElement.href = `#/tasks/edit/${task.id}`;
+        taskElement.href = `tasks/edit/${task.id}`;
         taskElement.classList.add("task-item");
         taskElement.style.textDecoration = "none";
 
@@ -260,7 +260,7 @@ function renderTasks() {
             </div>
         `;
 
-        if (targetType === "todo" && todoBanner) {
+        if (targetType == "todo" && todoBanner) {
             todoBanner.appendChild(taskElement);
         } else if (targetType === "inprogress" && inprogressBanner) {
             inprogressBanner.appendChild(taskElement);
