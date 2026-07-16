@@ -4,10 +4,10 @@
   --third-color: #3c9af9;
   --br-color: #b9b9b9;
   --text-color: #1a1a1a;
-  --fs-sm:12;
-  --fs-md:16;
-  --fs-lg:20;
-  --fs-xl:24;
+  --fs-sm:12px;
+  --fs-md:16px;
+  --fs-lg:20px;
+  --fs-xl:24px;
 }
 
 /* Basic Styles */
@@ -138,4 +138,12 @@ a {
 /* cursor */
 .pointer {
   cursor: pointer;
+}
+
+
+@media screen and (max-width:768px) {
+  .section{
+    padding: 0px;
+  }
+  
 }

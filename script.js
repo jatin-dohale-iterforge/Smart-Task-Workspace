@@ -2,6 +2,7 @@
 const pageData = [
   {
     name: "DashBoard",
+    route: "/dashboard",
     select: false,
     search: true,
     filter: false,
@@ -11,6 +12,7 @@ const pageData = [
   },
   {
     name: "Workspace",
+    route: "/workspace",
     select: false,
     search: true,
     filter: false,
@@ -20,6 +22,7 @@ const pageData = [
   },
   {
     name: "TaskBoard",
+    route: "/tasks",
     select: true,
     search: false,
     filter: true,
@@ -46,13 +49,13 @@ const pageData = [
     child: "",
   },
   {
-    name: "Notes",
+    name: "About",
     select: false,
-    search: true,
+    search: false,
     filter: false,
-    addButton: true,
-    rootPath: "notes.html",
-    child: "Note",
+    addButton: false,
+    rootPath: "/",
+    child: "",
   },
 ];
 
@@ -143,7 +146,7 @@ const showNavbar = () => {
       d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
       </svg>
                         </span>
-                        <input type="text" id="search-board" placeholder="Search ${page.name == "DashBoard" ? "" : page.child + "s..."}" oninput="renderTasks()">
+                        <input type="text" id="search-board" placeholder="Search ${page.name == "DashBoard" ? "" : page.child + "s..."}" oninput="renderItem(this.value)">
                     </div>
     `;
     }
@@ -161,11 +164,11 @@ const showNavbar = () => {
     if (page.addButton) {
       if (page.name == "Notes") {
         headerBox.innerHTML += `
-         <a onclick="toggleCreateWindow()" class="header-button">+ Add ${page.child}</a>
+         <a onclick="toggleCreateWindow()" class="header-button">+ <span class="header-button-span">Add ${page.child}</span></a>
       `;
       } else {
         headerBox.innerHTML += `
-         <a href=${page.rootPath} class="header-button">+ Add ${page.child}</a>
+         <a href=${page.rootPath} class="header-button">+ <span class="header-button-span">Add ${page.child}</a>
       `;
       }
     }
@@ -174,8 +177,7 @@ const showNavbar = () => {
   }
 };
 
-
-// function for showing bottom bar 
+// function for showing bottom bar
 const showBottomBar = () => {
   try {
     const navBox = document.querySelector(".mobile-nav");
@@ -201,7 +203,7 @@ const showBottomBar = () => {
             <span>Setting</span>
         </a>
 
-  `
+  `;
     const check = window.location.pathname.split("/")[2];
     const anchorBox = document.querySelectorAll(".mobile-nav > a");
 
@@ -214,9 +216,10 @@ const showBottomBar = () => {
       }
     });
   } catch (error) {
-    console.log("error : ", error.message)
+    console.log("error : ", error);
   }
-}
+};
+
 
 // main function
 const main = () => {

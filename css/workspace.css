@@ -216,9 +216,13 @@ body {
         padding-top: 5px;
     }
 
+    
+
+
+}
+
+@media screen and (max-width:480px) {
     .workspace-lists {
         justify-content: center;
     }
-
-
 }
