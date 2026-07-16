@@ -90,3 +90,23 @@
     transition: background 0.15s ease;
 }
 
+
+@media screen and (max-width:480px) {
+  .header{
+    flex-direction: column;
+  }
+
+  .board-heading{
+    margin-bottom: 4px;
+  }
+
+  .header-box{
+    width: 100%;
+  }
+  .header-button-span{
+    display: none;
+  }
+  .header-search{
+    width: 100%;;
+  }
+}
