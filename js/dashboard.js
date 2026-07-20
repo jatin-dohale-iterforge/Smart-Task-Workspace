@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 const ctx = document.getElementById('progressChart');
 const ctx2 = document.getElementById('priorityChart');
 
+  // This creates a doughnut chart to show a visual breakdown of task status.
+  // It takes the counted totals for completed, in-progress, todo, and overdue tasks.
   new Chart(ctx, {
       type: 'doughnut',
     data: {
@@ -45,7 +47,8 @@ const ctx2 = document.getElementById('priorityChart');
     }
   });
 
-
+  // This generates a pie chart to display tasks that are divided by priority.
+  // It gives users a quick look at how many High, Medium, and Low items they have.
   new Chart(ctx2, {
     type: 'pie',
     data: {
