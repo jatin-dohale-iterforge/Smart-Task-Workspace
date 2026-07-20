@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// This function fills up the workspace dropdown selectors using the workspaces saved in your data storage.
+// It makes sure users can select from their created workspaces when filtering the board or assigning a new task.
 function populateWorkspaceDropdowns() {
     const boardFilterSelect = document.getElementById("board-workspace-filter");
     const taskAssignSelect = document.getElementById("task-workspace-assign");
@@ -66,6 +68,8 @@ function populateWorkspaceDropdowns() {
     }
 }
 
+// This function triggers whenever the user selects a different workspace filter from the dropdown.
+// It updates the titles, modifies the web browser address bar text, and redraws the matching filtered tasks.
 function handleWorkspaceFilterChange(e) {
     currentWorkspaceFilter = e.target.value;
     
@@ -84,6 +88,8 @@ function saveTasks() {
     localStorage.setItem("smart_tasks", JSON.stringify(tasks));
 }
 
+// This function watches the web address hash fragment to figure out which window state should display.
+// It automatically reads the URL path to open the creation popup, the editing popup, or close everything.
 function handleRouting() {
     const hashPath = window.location.hash.replace("#", ""); 
 
@@ -99,6 +105,7 @@ function handleRouting() {
     }
 }
 
+// This function shows a brief toast notification on successful creation of tasks as well as shows toast notification if there is something wrong.
 function showToast(message, type = "success") {
     try {
         const toast = document.querySelector("#toast");
@@ -118,6 +125,7 @@ function showToast(message, type = "success") {
     }
 }
 
+// This function opens a task modal form, changes the form title, resets the form in the beginning.
 function openTaskForm(id = null) {
     const modal = document.getElementById("task-modal");
     const form = document.getElementById("task-form");
@@ -137,7 +145,9 @@ function openTaskForm(id = null) {
             document.getElementById("task-type").value = targetTask.type;
             document.getElementById("task-priority").value = targetTask.priority;
             document.getElementById("task-date").value = targetTask.date;
-            document.getElementById("task-workspace-assign").value = targetTask.workspace || "Default";
+
+            const workspaceExists = workspaces.some(ws => ws.workspaceName === targetTask.workspace);
+            document.getElementById("task-workspace-assign").value = workspaceExists ? targetTask.workspace : "Default";
         }
         else {
             window.location.hash = "/tasks";
@@ -145,7 +155,6 @@ function openTaskForm(id = null) {
     } else {
         title.innerText = "Create New Task";
         document.getElementById("task-id").value = "";
-
         document.getElementById("task-workspace-assign").value = "";
     }
 }
@@ -154,6 +163,7 @@ function closeTaskFormModal() {
     document.getElementById("task-modal").style.display = "none";
 }
 
+// This function handles form submission by getting all the values from the form and submitting it.
 function handleFormSubmit(e) {
     e.preventDefault();
 
@@ -207,7 +217,7 @@ function togglePrioritySort() {
     renderTasks();
 }
 
-
+// This function filters your entire task collection by workspaces and search matches to clean out columns.
 function renderTasks() {
     const todoBanner = document.querySelector(".todo-card .task-banner");
     const inprogressBanner = document.querySelector(".inprogress-card .task-banner");
