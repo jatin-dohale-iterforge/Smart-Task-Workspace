@@ -1,4 +1,6 @@
+/* ============== */
 /* Toast Styling */
+/* ============ */
 .toast {
     position: fixed;
     top: 20px;
@@ -26,9 +28,14 @@
 .toast.error {
     background-color: #ef4444;
 }
+.toast.warning {
+    background-color: #060ae7;
+}
 
 
+/* ===================== */
 /* Delete MOdal Styling */
+/* =================== */
 .delete-modal {
     display: none;
     position: fixed;
@@ -38,12 +45,7 @@
     align-items: center;
 }
 
-
-
-.delete-modal.show {
-    display: flex;
-}
-
+.delete-modal.show { display: flex; }
 
 .delete-box {
     background: white;
@@ -53,14 +55,12 @@
     text-align: center;
 }
 
-
 .delete-actions {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-top: 20px;
 }
-
 
 .cancel-btn,
 .confirm-delete-btn {
@@ -70,17 +70,14 @@
     cursor: pointer;
 }
 
-
 .cancel-btn {
     background: #ddd;
 }
-
 
 .confirm-delete-btn {
     background: #ef4444;
     color: white;
 }
-
 
 .breadcrumb {
     margin-bottom: 30px;
@@ -93,13 +90,11 @@
     gap: 10px;
 }
 
-
 .breadcrumb a {
     text-decoration: none;
     color: #000000;
     font-weight: 600;
 }
-
 
 .breadcrumb-separator {
     color: #999;

@@ -16,7 +16,6 @@
   </head>
 
   <body>
-    <!-- <div class="blur"></div> -->
 
     <!-- Side bar -->
     <div class="app-sidebar">sidebar</div>
@@ -24,6 +23,7 @@
     <!-- content -->
     <div class="section">
       <div class="container">
+        
         <!-- Notes Page Header -->
         <div class="header"></div>
 
@@ -66,7 +66,7 @@
                     onchange="noteTypeHandler(this)"
                     required
                   >
-                    <option value="">Select Note Type</option>
+                    <option value="" selected hidden disabled >Select Note Type</option>
                     <option value="simple">Simple Note</option>
                     <option value="unordered">Unordered Note</option>
                     <option value="checkbox">Checkbox Note</option>
@@ -150,6 +150,7 @@
         </div>
       </div>
     </div>
+
   </body>
   <script src="../script.js"></script>
   <script src="../js/notes.js"></script>
