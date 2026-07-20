@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Smart Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/utility.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="../css/toast.css">
+</head>
+
+<body>
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+    <div class="auth-card">
+        <div class="auth-header">
+            <h2>Create Account</h2>
+            <p>Create your Smart Task Manager account</p>
+        </div>
+        <form id="signupForm" onsubmit="signup(event)">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name"  onblur="validateNameInput()" oninput="clearNameError()">
+                <small class="error"></small>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email"   onblur="validateEmailInput()" oninput="clearEmailError()">
+                <small class="error"></small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password"  onblur="validatePasswordInput()" oninput="clearPasswordError()">
+                <small class="error"></small>
+            </div>
+
+            <button type="submit" class="auth-btn">
+                Create Account
+            </button>
+
+        </form>
+        <div class="auth-footer">
+            Already have an account?
+            <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <script src="../js/signup.js"></script>
+</body>
+
+</html>
