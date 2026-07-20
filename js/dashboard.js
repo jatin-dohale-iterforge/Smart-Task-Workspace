@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const totalTasks = tasks.length;
-    const totalWorkspace=workspacess.length;
+    const totalWorkspace=workspaces.length;
 
     document.getElementById("count-workspace").innerText = workspaces.length;
     document.getElementById("count-total").innerText = totalTasks;
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("count-inprogress").innerText = counts.inprogress;
     document.getElementById("count-completed").innerText = counts.completed;
     document.getElementById("count-overdue").innerText = counts.overdue;
-    document.getElementById("workspace-count").innerText= totalWorkspace;
+    document.getElementById("count-workspace").innerText= totalWorkspace;
 
 const ctx = document.getElementById('progressChart');
 const ctx2 = document.getElementById('priorityChart');

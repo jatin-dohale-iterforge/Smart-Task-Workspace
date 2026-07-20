@@ -1,4 +1,4 @@
-// json for pages Data
+// Json Data of all pages 
 const pageData = [
   {
     name: "DashBoard",
@@ -59,7 +59,7 @@ const pageData = [
   },
 ];
 
-// function for showing Side bar
+// Showing SideBar in all pages using js innerHtml 
 const showSideBar = () => {
   try {
     const sideBar = document.querySelector(".app-sidebar");
@@ -86,12 +86,10 @@ const showSideBar = () => {
         <a href="about.html">
           <li><i class="fa fa-info-circle"></i><span>About</span></li>
         </a>
-      </ul>
-
-      <a href="login.html" class="logout-btn">
-        <i class="fa fa-sign-out"></i>
-        <span>Logout</span>
-      </a>`;
+        <a onclick="logout()">
+          <li><i class="fa fa-sign-out"></i><span>Logout</span></li>
+        </a>
+      </ul>`;
 
     const check = window.location.pathname.split("/")[2];
     const anchorBox = document.querySelectorAll(".sidebar-menu a");
@@ -109,7 +107,7 @@ const showSideBar = () => {
   }
 };
 
-// function for showing navbar
+// Showing Navbar in all pages using js innerHtml and based on pageData add elements
 const showNavbar = () => {
   try {
     const header = document.querySelector(".header");
@@ -176,7 +174,7 @@ const showNavbar = () => {
   }
 };
 
-// function for showing bottom bar
+// Showing Bottom bar in Mobile version in all pages using js innerHtml 
 const showBottomBar = () => {
   try {
     const navBox = document.querySelector(".mobile-nav");

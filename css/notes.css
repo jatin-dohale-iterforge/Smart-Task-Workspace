@@ -7,10 +7,10 @@
   background-color: var(--secondary-color);
 }
 
+/* ================ */
 /* Header Stylings */
-header > div {
-  width: 50%;
-}
+/* ============== */
+header > div { width: 50%;}
 
 h1 {
   font-weight: bolder;
@@ -57,7 +57,11 @@ h1 {
   background-color: var(--primary-color);
 }
 
+
+
+/* ============== */
 /* Main Styling */
+/* ============*/
 main {
   height: 73vh;
   padding: 2rem;
@@ -94,7 +98,6 @@ main > div::-webkit-scrollbar {
 
 .box > .ordered-list {
   padding-left: 14px;
-  /* overflow-y: auto; */
   margin-block: 4px;
 }
 .box > .ordered-list::-webkit-scrollbar,
@@ -118,7 +121,10 @@ main > div::-webkit-scrollbar {
   align-items: start;
 }
 
-/* notes create div */
+
+/* ========================== */
+/* Note Create Modal Styling */
+/* ======================== */
 #overlay-main-box {
   top: 0;
   left: 0;
@@ -142,12 +148,10 @@ main > div::-webkit-scrollbar {
   border: 2px solid burlywood;
 }
 
-/* Create Notes */
 h3 {
   text-align: center;
 }
 
-/* form styling */
 form {
   display: flex;
   flex-direction: column;
@@ -238,7 +242,11 @@ textarea {
   font-size: var(--fs-sm);
 }
 
-/* Notes different stylings */
+
+/* ====================== */
+/* Different Note Styles */
+/* ==================== */
+
 .simple {
   background-color: #1a1f71;
 }
@@ -284,7 +292,6 @@ input[type="checkbox"]:checked + label{
   color: grey;
 }
 
-/* pinned note styling */
 .box i {
   transition: transform 1s ease-in-out;
 }
@@ -327,11 +334,15 @@ input[type="checkbox"]:checked + label{
 .modal-content {
     background: #ffffff;
     width: 100%;
+    max-height: 90%;
     max-width: 460px;
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     overflow: auto;
+}
+.modal-content::-webkit-scrollbar {
+display: none; 
 }
 
 .modal-header {
@@ -410,9 +421,10 @@ input[type="text"], textarea, select, input[type="date"] {
     cursor: pointer;
 }
 
-
+/* ==================== */
 /* Empty Modal styling */
-.empty-workspace {
+/* ================== */
+.empty-notes {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -435,6 +447,12 @@ input[type="text"], textarea, select, input[type="date"] {
     color: #334155;
 }
 
+
+/* =================== */
+/* Responsive Styling */
+/* ================= */
+
+/* Tab Devices Style */
 @media screen and (max-width: 768px) {
   #notes-box {
     grid-template-columns: 1fr 1fr;
@@ -449,6 +467,7 @@ input[type="text"], textarea, select, input[type="date"] {
 }
 
 
+/* Mobile Devices style */
 @media screen and (max-width: 480px) {
   #notes-box {
     grid-template-columns: 1fr;
