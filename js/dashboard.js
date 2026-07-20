@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const totalTasks = tasks.length;
-    const totalWorkspace=workspacess.length;
+    const totalWorkspace = workspaces.length;
 
     document.getElementById("count-workspace").innerText = workspaces.length;
     document.getElementById("count-total").innerText = totalTasks;
@@ -22,11 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("count-inprogress").innerText = counts.inprogress;
     document.getElementById("count-completed").innerText = counts.completed;
     document.getElementById("count-overdue").innerText = counts.overdue;
-    document.getElementById("workspace-count").innerText= totalWorkspace;
 
 const ctx = document.getElementById('progressChart');
 const ctx2 = document.getElementById('priorityChart');
 
+  // This creates a doughnut chart to show a visual breakdown of task status.
+  // It takes the counted totals for completed, in-progress, todo, and overdue tasks.
   new Chart(ctx, {
       type: 'doughnut',
     data: {
@@ -46,7 +47,8 @@ const ctx2 = document.getElementById('priorityChart');
     }
   });
 
-
+  // This generates a pie chart to display tasks that are divided by priority.
+  // It gives users a quick look at how many High, Medium, and Low items they have.
   new Chart(ctx2, {
     type: 'pie',
     data: {
