@@ -10,7 +10,9 @@ const breadcrumbAction = document.querySelector("#breadcrumb-action");
 const workspaceFormTitle = document.querySelector("#workspace-form-title");
 const workspaceFormDescription = document.querySelector("#workspace-form-description");
 
+// Load saved workspaces from localStorage
 const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
+// Object used to store workspace data before saving
 let workspace = {
     workspaceName: "",
     workspaceDescription: "",
@@ -18,7 +20,9 @@ let workspace = {
     workspaceColor: ""
 }
 const searchBar = document.querySelector("#search-board");
+// Holds the current list shown on the screen
 let filteredWorkspaces = workspaces;
+// Stores the workspace selected for deletion
 let deleteIndex = null;
 
 
@@ -28,9 +32,11 @@ function showToast(message, type = "success") {
         if (!toast) return;
         toast.innerHTML = message;
         toast.className = `toast ${type}`;
+        // Trigger toat animation after updating content
         setTimeout(() => {
             toast.classList.add("show");
         }, 10);
+        // Hide toast after a few seconds
         setTimeout(() => {
             toast.classList.remove("show");
         }, 5000);
@@ -44,6 +50,7 @@ function showToast(message, type = "success") {
 function formatDate(date) {
     try {
         if (!date) return "";
+        // Convert ISO date into a readable format
         return new Date(date).toLocaleString("en-US", {
             month: "numeric",
             day: "numeric",
@@ -64,6 +71,7 @@ function formatDate(date) {
 function getTaskCount(workspaceName) {
     try {
         const tasks = JSON.parse(localStorage.getItem("smart_tasks")) || [];
+        // Count tasks linked to the current workspace
         return tasks.filter(task => task.workspace === workspaceName).length;
     }
     catch (e) {
@@ -76,6 +84,7 @@ function validate(inputTag, errorMsg) {
     try {
         let value = inputTag.value;
         let error = inputTag.parentElement.querySelector(".error");
+        // Show validation message if field is empty
         if (!value) {
             error.innerHTML = errorMsg;
             return false;
@@ -93,10 +102,12 @@ function validate(inputTag, errorMsg) {
 function resetWorkspaceForm() {
     try {
         if (!workspaceName) return;
+        // Clear all form fields
         workspaceName.value = "";
         workspaceDesc.value = "";
         workspaceIcon.value = "";
         workspaceColor.value = "";
+        // Remove previous validation messages
         error.forEach((errorElem) => {
             errorElem.innerHTML = ""
         })
@@ -110,12 +121,14 @@ function resetWorkspaceForm() {
 function submitWorkspace(e) {
     e.preventDefault()
     try {
+        // Validate required inputs before saving
         let name = validate(workspaceName, "Workspace name is required");
         let icon = validate(workspaceIcon, "Icon is required")
         let color = validate(workspaceColor, "Color is required")
         if (!(name && icon && color)) {
             return;
         }
+        // Build the workspace object from form values
         workspace = {
             id: Date.now(),
             workspaceName: workspaceName.value,
@@ -127,10 +140,12 @@ function submitWorkspace(e) {
 
 
         if (editIndex === -1) {
+            // Save a new workspace
             workspaces.push(workspace)
 
         }
         else {
+            // Replace existing workspace during edit
             workspaces[editIndex] = workspace;
             editIndex = -1;
             if (createWorkspaceBtn) {
@@ -138,9 +153,11 @@ function submitWorkspace(e) {
             }
 
         }
+        // Save latest data locally
         localStorage.setItem("workspaces", JSON.stringify(workspaces))
         filteredWorkspaces = workspaces;
         resetWorkspaceForm()
+        // Redirect after successful save
         setTimeout(() => {
             window.location.href = "workspace.html";
         }, 1000);
@@ -155,9 +172,11 @@ function submitWorkspace(e) {
 function datashow() {
     try {
         if (!workspaceCard) return;
+        // Clear old workspace cards before rendering
         workspaceCard.innerHTML = "";
         if (filteredWorkspaces.length === 0) {
 
+            // Show placeholder when no workspaces exist
     workspaceCard.innerHTML = `
         <div class="empty-workspace">
             <i class="fa fa-folder-open"></i>
@@ -172,6 +191,7 @@ function datashow() {
     return;
 }
         filteredWorkspaces.forEach((elem) => {
+            // Encode workspace name for safe URL usage
             const encodedName=encodeURIComponent(elem.workspaceName)
             const index = workspaces.indexOf(elem);
             workspaceCard.innerHTML += `
@@ -201,6 +221,7 @@ function datashow() {
 
 function editWorkspace(index) {
     try {
+        // Open the edit page with the selected workspace index
         window.location.href = `create-workspace.html?id=${index}`;
     }
     catch (e) {
@@ -216,16 +237,18 @@ function loadWorkspaceForEdit() {
         if (!workspaceName) return;
         const params = new URLSearchParams(window.location.search);
         const id = params.get("id");
+        // Skip if the page is opened for creating a new workspace
         if (id === null) return;
         editIndex = Number(id);
         const workspace = workspaces[editIndex];
         if (!workspace) return;
+        // Fill the form with saved workspace details
         workspaceName.value = workspace.workspaceName;
         workspaceDesc.value = workspace.workspaceDescription;
         workspaceIcon.value = workspace.workspaceIcon;
         workspaceColor.value = workspace.workspaceColor;
 
-     
+        // Update page labels for edit mode
         if (createWorkspaceBtn) {
             createWorkspaceBtn.textContent = "Update Workspace";
         }
@@ -249,6 +272,7 @@ function loadWorkspaceForEdit() {
 function deleteWorkspace() {
     try {
         if (deleteIndex === null) return;
+        // Remove selected workspace from the list
         workspaces.splice(deleteIndex, 1);
         localStorage.setItem(
             "workspaces",
@@ -269,6 +293,7 @@ function deleteWorkspace() {
 
 function openDeleteModal(index) {
     try {
+        // Remember which workspace will be deleted
         deleteIndex = index;
         const modal = document.querySelector("#deleteModal");
         modal.classList.add("show");
@@ -281,6 +306,7 @@ function openDeleteModal(index) {
 
 function closeDeleteModal() {
     try {
+        // Reset selection when modal closes
         deleteIndex = null;
         const modal = document.querySelector("#deleteModal");
         modal.classList.remove("show");
@@ -295,6 +321,7 @@ function renderItem() {
         
         if (!searchBar) return;
         const keyword = searchBar.value.toLowerCase().trim();
+        // Filter workspaces by matching the search keyword
         filteredWorkspaces = workspaces.filter(workspace =>
             workspace.workspaceName.toLowerCase().includes(keyword)
         );
@@ -306,6 +333,6 @@ function renderItem() {
     }
 }
 
-
+// Load edit data if available and display workspaces
 loadWorkspaceForEdit();
 datashow();
