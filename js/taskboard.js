@@ -204,6 +204,7 @@ function handleFormSubmit(e) {
     window.location.hash = "/tasks";
 }
 
+// This function switches the task sorting mode between default ordering and high-to-low priority levels.
 function togglePrioritySort() {
     sortByPriorityMode = !sortByPriorityMode;
     

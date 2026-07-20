@@ -57,6 +57,15 @@ const pageData = [
     rootPath: "/",
     child: "",
   },
+    {
+    name: "Users",
+    select: false,
+    search: true,
+    filter: false,
+    addButton: true,
+    rootPath: "users.html",
+    child: "User",
+  },
 ];
 
 // Showing SideBar in all pages using js innerHtml 
@@ -79,6 +88,9 @@ const showSideBar = () => {
         </a>
         <a href="notes.html">
           <li><i class="fa fa-pencil-square-o"></i><span>Notes</span></li>
+        </a>
+        <a href="users.html">
+          <li><i class="fa fa-users"></i><span>Users</span></li>
         </a>
         <a href="setting.html">
           <li><i class="fa fa-cog"></i><span>Settings</span></li>

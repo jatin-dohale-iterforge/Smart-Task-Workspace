@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users | Smart Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/utility.css">
+    <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/users.css">
+</head>
+
+<body>
+
+    <!-- Side bar -->
+    <div class="app-sidebar">sidebar</div>
+
+    <main class="section">
+      <div class="container">
+
+       <div class="header">
+           <h2 class="header-heading">Users</h2>
+           <button class="header-button">
+               <i class="fa fa-plus"></i>&nbsp;<span class="header-button-span">Add User</span>
+           </button>
+       </div>
+
+       <!-- Table Content -->
+        <div class="user-list-content">
+            <div class="user-table-container">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Atharva Phadtare</td>
+                            <td>atharva@gmail.com</td>
+                            <td>Admin</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fa fa-pencil"></i> Edit
+                                    </button>
+                                    <button class="btn-action btn-delete"">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+    </main>
+
+
+    <!-- Bottom Bar -->
+    <nav class="mobile-nav">
+    </nav>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- Delete Modal  -->
+    <div class="delete-modal" id="deleteModal">
+        <div class="delete-box">
+            <h3>Delete User</h3>
+            <p>Are you sure you want to proceed?</p>
+            <div class="delete-actions">
+                <button class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn-action btn-delete" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+</body>
+
+</html>
