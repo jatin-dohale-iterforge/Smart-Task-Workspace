@@ -139,6 +139,18 @@ app.post("/register", async (req, res) => {
 });
 
 //workspace create endpoint
+// only admins are allowed to create workspaces
+// required headers:
+// token: JWT token
+// request body:
+// {
+//   workspaceName:"Personal",
+//   workspaceDesc:"Description of personal workspace",
+//   workspaceColor:"blue",
+//   workspaceIcon:"folder",
+//   managerId:1,
+//   employeeIds:[3,4]
+// }
 app.post("/workspace", verifyToken, authorizeRoles("admin"), (req, res) => {
   const { workspaceName, workspaceDesc, workspaceColor, workspaceIcon, managerId, employeeIds } = req.body;
 
@@ -161,7 +173,9 @@ app.post("/workspace", verifyToken, authorizeRoles("admin"), (req, res) => {
     workspaceDesc,
     workspaceColor,
     workspaceIcon,
+    // manager responsible for this workspace
     managerId: managerId || null,
+    // employees assigned to this workspace
     employeeIds: employeeIds || [],
     createdBy: req.user.id,
     createdAt: now,
@@ -174,6 +188,7 @@ app.post("/workspace", verifyToken, authorizeRoles("admin"), (req, res) => {
 
 
 // get all workspace data endpoint
+// any authenticated user can view workspaces
 
 app.get("/workspace", verifyToken, (req, res) => {
   const workspaces = router.db.get("workspaces").value();
@@ -181,6 +196,10 @@ app.get("/workspace", verifyToken, (req, res) => {
 });
 
 //edit workspace using id 
+//permissions:
+//admin can edit any workspace
+//manager can edit only assigned workspace
+//user cannot edit
 
 app.put("/workspace/:id", verifyToken, authorizeRoles("admin", "manager"), (req, res) => {
   const id = Number(req.params.id);
@@ -191,7 +210,7 @@ app.put("/workspace/:id", verifyToken, authorizeRoles("admin", "manager"), (req,
       message: "Workspace not found",
     });
   }
-  // manager can edit only assigned workspace
+  //manager can edit only assigned workspace
   if (req.user.role === "manager" && workspace.managerId !== req.user.id) {
     return res.status(403).json({ message: "You can edit only your assigned workspace" });
   }
@@ -209,6 +228,7 @@ app.put("/workspace/:id", verifyToken, authorizeRoles("admin", "manager"), (req,
 });
 
 //delete workspace using id if available
+//only admin can delete workspace
 
 app.delete("/workspace/:id", verifyToken, authorizeRoles("admin"), (req, res) => {
   const id = Number(req.params.id);
@@ -216,24 +236,31 @@ app.delete("/workspace/:id", verifyToken, authorizeRoles("admin"), (req, res) =>
   if (!workspace) {
     return res.status(404).json({ message: "Workspace not found" });
   }
+   //permanently remove workspace
   router.db.get("workspaces").remove({ id }).write();
   res.status(200).json({ message: "Workspace deleted successfully" });
 });
 
 
 //task create endpoint
+//permissions:
+//admin can create task anywhere
+//manager can create task only inside assigned workspace
+//user cannot create task
+
 app.post( "/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) => {
   const { taskName, taskDesc, taskType, taskPriority, duedate, workspaceId, assignedTo } = req.body;
+   //validate required fields
     if ( !taskName || !taskDesc || !taskType || !taskPriority || !duedate ||!workspaceId ) {
       return res.status(400).json({message: "taskName, description, type, priority, workspaceId and duedate are required"
       });
     }
-    // check workspace exists
+    //check workspace exists
     const workspace = router.db.get("workspaces").find({ id: Number(workspaceId) }).value();
     if (!workspace) {
       return res.status(404).json({message: "Workspace not found"});
     }
-    // manager can create task only in assigned workspace
+    //manager can create task only in assigned workspace
     if ( req.user.role === "manager" && workspace.managerId !== req.user.id) {
       return res.status(403).json({ message: "You cannot create task in this workspace"});
     }
@@ -241,7 +268,7 @@ app.post( "/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) =
     const tasks = router.db
       .get("tasks")
       .value();
-
+    // generate task id
     const nextId =
       tasks.length > 0
         ? Math.max(...tasks.map(task => task.id)) + 1
@@ -256,7 +283,9 @@ app.post( "/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) =
       taskPriority,
       duedate,
       workspaceId: Number(workspaceId),
+      //user assigned to complete task
       assignedTo: assignedTo || null,
+      //user who created task
       assignedBy: req.user.id,
       createdAt: now,
       updatedAt: now
