@@ -4,7 +4,7 @@ const pageData = [
     name: "DashBoard",
     route: "/dashboard",
     select: false,
-    search: true,
+    search: false,
     filter: false,
     addButton: false,
     rootPath: "dashboard.html",
@@ -98,7 +98,7 @@ const showSideBar = () => {
         <a href="about.html">
           <li><i class="fa fa-info-circle"></i><span>About</span></li>
         </a>
-        <a onclick="logout()">
+        <a href="login.html">
           <li><i class="fa fa-sign-out"></i><span>Logout</span></li>
         </a>
       </ul>`;
