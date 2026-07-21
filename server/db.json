@@ -4,13 +4,27 @@
       "id": "admin",
       "name": "admin",
       "email": "admin@iterforge.com",
-      "password": "admin@123"
+      "password": "admin@123",
+      "role": "Admin"
     },
     {
       "id": 1784540164614,
       "email": "jatin@gmail.com",
       "password": "jatin@1234",
-      "name": "Jatin Dohale"
+      "name": "Jatin Dohale",
+      "role": "User"
+    },
+    {
+      "name": "Jatin Dohale",
+      "email": "jatin@gamil.com",
+      "role": "Manager",
+      "id": 1784624308061
+    },
+    {
+      "name": "Himanshi",
+      "email": "himanshi@gmail.com",
+      "role": "User",
+      "id": "GJecJxn"
     }
   ]
 }
