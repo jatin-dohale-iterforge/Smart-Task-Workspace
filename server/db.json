@@ -1,0 +1,16 @@
+{
+  "employees": [
+    {
+      "id": "admin",
+      "name": "admin",
+      "email": "admin@iterforge.com",
+      "password": "admin@123"
+    },
+    {
+      "id": 1784540164614,
+      "email": "jatin@gmail.com",
+      "password": "jatin@1234",
+      "name": "Jatin Dohale"
+    }
+  ]
+}
