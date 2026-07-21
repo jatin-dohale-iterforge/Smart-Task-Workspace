@@ -97,7 +97,7 @@ function login(e) {
             return;
         }
         // Send login request
-        fetch("http://localhost:3000/login", {
+        fetch(`${API_URL}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -120,6 +120,7 @@ function login(e) {
                 return;
             }
             localStorage.setItem("token",data.token);
+            localStorage.setItem("currentUser",JSON.stringify(data.user))
             showToast("Login successful!");
             setTimeout(() => {
                 window.location.href = "dashboard.html";
