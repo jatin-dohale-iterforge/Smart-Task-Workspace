@@ -120,7 +120,7 @@ function login(e) {
                 return;
             }
             localStorage.setItem("token",data.token);
-            localStorage.setItem("currentUser",JSON.stringify(data.user))
+            localStorage.setItem("user", JSON.stringify(data.user));
             showToast("Login successful!");
             setTimeout(() => {
                 window.location.href = "dashboard.html";

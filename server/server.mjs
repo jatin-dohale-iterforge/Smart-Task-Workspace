@@ -5,14 +5,14 @@ import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 
 import dotenv from "dotenv";
+
 dotenv.config();
 
+const app = jsonServer.create();
+const router = jsonServer.router("db.json");
+const middlewares = jsonServer.defaults();
 
-const app = jsonServer.create();//create Server using json-server module
-const router = jsonServer.router("db.json");//create router using json-server module
-const middlewares = jsonServer.defaults();//Create Middlewares for authenticate the user
-
-const SECRET_KEY = process.env.SECRET_KEY;
+const SECRET_KEY = process.env.SECRET_KEY || "fallback_secret_key";
 const expiresIn = "24h";
 
 // This function create token using jwt module using secret key and expireIn 
@@ -26,7 +26,6 @@ function verifyToken(req, res, next) {
 
   // if token not present in request
   if (!token) {
-    console.log(token)
     return res
       .status(401)
       .json({ message: "Access denied: No token provided." });
@@ -57,6 +56,23 @@ function authorizeRoles(...roles) {
 
 app.use(bodyParser.json());// Parse body data of request using body-parser module
 app.use(middlewares);
+
+// ==========================================
+// Role Route Guard Middleware
+// ==========================================
+function requireAdmin(req, res, next) {
+
+  const role = (req.userTokenData?.role || "").toLowerCase();
+
+  if (role !== "admin") {
+    return res.status(403).json({
+      message: "Only administrators can access this resource."
+    });
+  }
+
+  next();
+}
+
 
 //===========================
 // Authentication endpoints
@@ -338,11 +354,13 @@ app.put("/task/:id", verifyToken, authorizeRoles("admin", "manager", "employee")
   res.status(200).json(updatedTask);
 });
 
+// Protected route
+app.use("/employees", verifyToken, requireAdmin);
 
 // Use JSON Server's router
 app.use(router);
 
 // Start the server
 app.listen(3000, () => {
-  console.log("JSON Server is running on http://localhost:3000");
+  console.log("JSON Server running securely on http://localhost:3000");
 });

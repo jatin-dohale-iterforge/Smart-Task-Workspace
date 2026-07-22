@@ -101,6 +101,7 @@ function signup(e) {
             })
         })
         .then(response => {
+            console.log(response)
             return response.json().then(data => ({
                 status: response.status,
                 data: data
