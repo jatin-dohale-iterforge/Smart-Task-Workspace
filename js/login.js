@@ -93,6 +93,8 @@ function login(e) {
     try {
         const emailValid = validateEmailInput();
         const passwordValid = validatePasswordInput();
+        const token = JSON.parse(localStorage.getItem('token'));
+        console.log(token);
         if (!(emailValid && passwordValid)) {
             return;
         }
@@ -100,7 +102,9 @@ function login(e) {
         fetch(`${API_URL}/login`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "token": token
+                
             },
             body: JSON.stringify({
                 email: emailInput.value.trim(),
