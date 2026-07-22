@@ -1,153 +1,163 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/sidebar.css">
-    <link rel="stylesheet" href="../css/utility.css">
-    <link rel="stylesheet" href="../css/create-workspace.css">
-    <link rel="stylesheet" href="../css/toast.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="../css/sidebar.css" />
+    <link rel="stylesheet" href="../css/utility.css" />
+    <link rel="stylesheet" href="../css/create-workspace.css" />
+    <link rel="stylesheet" href="../css/toast.css" />
     <title>Smart Task Workspace</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <aside class="app-sidebar">
+      <h2>Smart Task</h2>
 
-        <h2>Smart Task</h2>
+      <ul class="sidebar-menu">
+        <li><i class="fa fa-home"></i><span>Dashboard</span></li>
+        <li class="active">
+          <i class="fa fa-folder"></i><span>Workspace</span>
+        </li>
+        <li><i class="fa fa-tasks"></i><span>Tasks</span></li>
+        <li><i class="fa fa-pencil-square-o"></i><span>Notes</span></li>
+        <li><i class="fa fa-cog"></i><span>Settings</span></li>
+        <li><i class="fa fa-info-circle"></i><span>About</span></li>
+      </ul>
 
-        <ul class="sidebar-menu">
-            <li><i class="fa fa-home"></i><span>Dashboard</span></li>
-            <li class="active"><i class="fa fa-folder"></i><span>Workspace</span></li>
-            <li><i class="fa fa-tasks"></i><span>Tasks</span></li>
-            <li><i class="fa fa-pencil-square-o"></i><span>Notes</span></li>
-            <li><i class="fa fa-cog"></i><span>Settings</span></li>
-            <li><i class="fa fa-info-circle"></i><span>About</span></li>
-        </ul>
-
-        <a href="login.html" class="logout-btn">
-            <i class="fa fa-sign-out"></i>
-            <span>Logout</span>
-        </a>
-
+      <a href="login.html" class="logout-btn">
+        <i class="fa fa-sign-out"></i>
+        <span>Logout</span>
+      </a>
     </aside>
 
     <div class="content">
+      <nav class="breadcrumb">
+        <ol>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li class="breadcrumb-separator">/</li>
+          <li><a href="workspace.html">Workspace</a></li>
+          <li class="breadcrumb-separator">/</li>
+          <li class="active-page" id="breadcrumb-action">Create</li>
+        </ol>
+      </nav>
 
-        <nav class="breadcrumb">
-            <ol>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li class="breadcrumb-separator">/</li>
-                <li><a href="workspace.html">Workspace</a></li>
-                <li class="breadcrumb-separator">/</li>
-                <li class="active-page" id="breadcrumb-action">Create</li>
-            </ol>
-        </nav>
+      <main class="workspace-form-section">
+        <div class="form-wrapper">
+          <div class="form-header">
+            <h1 id="workspace-form-title">Create Workspace</h1>
+            <p id="workspace-form-description">
+              Create a new workspace to organize your tasks.
+            </p>
+          </div>
 
-        <main class="workspace-form-section">
-            <div class="form-wrapper">
-
-                <div class="form-header">
-                    <h1 id="workspace-form-title">Create Workspace</h1>
-                    <p id="workspace-form-description">Create a new workspace to organize your tasks.</p>
-                </div>
-
-                <form>
-
-                    <div class="workspace-name">
-                        <label>Workspace Name <span>*</span></label>
-                        <input type="text" class="workspace-name-input">
-                        <small class="error"></small>
-                    </div>
-
-                    <div class="workspace-description">
-                        <label>Description (Optional)</label>
-                        <textarea id="workspace-desc-input"></textarea>
-                        <small class="error"></small>
-                    </div>
-
-                    <div class="workspace-color-option">
-                        <select id="color">
-                            <option value="">Choose Color of Workspace</option>
-                            <option>Blue</option>
-                            <option>Green</option>
-                            <option>Yellow</option>
-                            <option>Red</option>
-                            <option>Pink</option>
-                            <option>Grey</option>
-                            <option>Brown</option>
-                            <option>Orange</option>
-                        </select>
-                        <small class="error"></small>
-                    </div>
-
-                    <div class="workspace-icon">
-                        <select id="workspace-icon-options">
-                            <option value="">Choose Icon of Workspace</option>
-                            <option value="fa fa-folder">Folder</option>
-                            <option value="fa fa-laptop">Laptop</option>
-                            <option value="fa fa-user">Person</option>
-                            <option value="fa fa-book">Book</option>
-                        </select>
-                        <small class="error"></small>
-                    </div>
-
-                    <div class="workspace-form-btns">
-                        <button type="reset" class="reset-btn" onclick="resetWorkspaceForm()">Reset</button>
-                        <button type="submit" class="create-btn" onclick="submitWorkspace(event)">Create Workspace</button>
-                    </div>
-
-                </form>
-
+          <form>
+            <div class="workspace-name">
+              <label>Workspace Name <span>*</span></label>
+              <input type="text" class="workspace-name-input" />
+              <small class="error"></small>
             </div>
 
-        </main>
+            <div class="workspace-description">
+              <label>Description (Optional)</label>
+              <textarea id="workspace-desc-input"></textarea>
+              <small class="error"></small>
+            </div>
 
+            <div class="workspace-manager">
+              <label>Manager <span>*</span></label>
+
+              <select id="manager-select">
+                <option value="">Select Manager</option>
+              </select>
+
+              <small class="error"></small>
+            </div>
+
+            <div class="workspace-color-option">
+              <select id="color">
+                <option value="">Choose Color of Workspace</option>
+                <option>Blue</option>
+                <option>Green</option>
+                <option>Yellow</option>
+                <option>Red</option>
+                <option>Pink</option>
+                <option>Grey</option>
+                <option>Brown</option>
+                <option>Orange</option>
+              </select>
+              <small class="error"></small>
+            </div>
+
+            <div class="workspace-icon">
+              <select id="workspace-icon-options">
+                <option value="">Choose Icon of Workspace</option>
+                <option value="fa fa-folder">Folder</option>
+                <option value="fa fa-laptop">Laptop</option>
+                <option value="fa fa-user">Person</option>
+                <option value="fa fa-book">Book</option>
+              </select>
+              <small class="error"></small>
+            </div>
+
+            <div class="workspace-form-btns">
+              <button
+                type="reset"
+                class="reset-btn"
+                onclick="resetWorkspaceForm()"
+              >
+                Reset
+              </button>
+              <button
+                type="submit"
+                class="create-btn"
+                onclick="submitWorkspace(event)"
+              >
+                Create Workspace
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
     </div>
     <nav class="mobile-nav">
+      <a href="dashboard.html">
+        <i class="fa fa-home"></i>
+        <span>Home</span>
+      </a>
 
-        <a href="dashboard.html">
-            <i class="fa fa-home"></i>
-            <span>Home</span>
-        </a>
+      <a href="workspace.html">
+        <i class="fa fa-folder"></i>
+        <span>Workspace</span>
+      </a>
 
-        <a href="workspace.html">
-            <i class="fa fa-folder"></i>
-            <span>Workspace</span>
-        </a>
+      <a href="#">
+        <i class="fa fa-tasks"></i>
+        <span>Tasks</span>
+      </a>
 
-        <a href="#">
-            <i class="fa fa-tasks"></i>
-            <span>Tasks</span>
-        </a>
+      <div class="mobile-more">
+        <button id="moreBtn">
+          <i class="fa fa-bars"></i>
+          <span>More</span>
+        </button>
 
-        <div class="mobile-more">
+        <div class="more-menu" id="moreMenu">
+          <a href="#"><i class="fa fa-pencil-square-o"></i> Notes</a>
 
-            <button id="moreBtn">
-                <i class="fa fa-bars"></i>
-                <span>More</span>
-            </button>
+          <a href="#"><i class="fa fa-cog"></i> Settings</a>
 
-            <div class="more-menu" id="moreMenu">
+          <a href="#"><i class="fa fa-info-circle"></i> About</a>
 
-                <a href="#"><i class="fa fa-pencil-square-o"></i> Notes</a>
-
-                <a href="#"><i class="fa fa-cog"></i> Settings</a>
-
-                <a href="#"><i class="fa fa-info-circle"></i> About</a>
-
-                <a href="login.html"><i class="fa fa-sign-out"></i> Logout</a>
-
-            </div>
-
+          <a href="login.html"><i class="fa fa-sign-out"></i> Logout</a>
         </div>
-
+      </div>
     </nav>
     <div id="toast" class="toast"></div>
     <script src="../js/workspace.js"></script>
-
-</body>
-
+  </body>
 </html>

@@ -62,7 +62,7 @@ app.use(middlewares);
 // ==========================================
 function requireAdmin(req, res, next) {
 
-  const role = (req.userTokenData?.role || "").toLowerCase();
+  const role = (req.user?.role || "").toLowerCase();
 
   if (role !== "admin") {
     return res.status(403).json({
@@ -109,7 +109,7 @@ app.post("/login", async (req, res) => {
 // registration endpoint take req.body[name,email,password]
 app.post("/register", async (req, res) => {
   const email = req.body.email?.trim();
-  const password = req.body.password;
+  const password = req.body.password || 123;
   const name = req.body.name?.trim();
   const role = req.body.role || "employee";
 
@@ -207,8 +207,38 @@ app.post("/workspace", verifyToken, authorizeRoles("admin"), (req, res) => {
 // any authenticated user can view workspaces
 
 app.get("/workspace", verifyToken, (req, res) => {
-  const workspaces = router.db.get("workspaces").value();
-  res.status(200).json(workspaces);
+  const workspaces = router.db
+    .get("workspaces")
+    .value();
+  const role = req.user.role.toLowerCase();
+
+  // Admin can see every workspace
+  if (role === "admin") {
+    return res.status(200).json(workspaces);
+  }
+
+  // Manager can see only assigned workspaces
+  if (role === "manager") {
+    const managerWorkspaces = workspaces.filter(
+      workspace => workspace.managerId === req.user.id
+    );
+
+    return res.status(200).json(managerWorkspaces);
+  }
+
+  if (role === "employee") {
+
+    const employeeWorkspaces = workspaces.filter(
+      workspace =>
+        workspace.employeeIds &&
+        workspace.employeeIds.includes(req.user.id)
+    );
+    return res.status(200).json(employeeWorkspaces);
+  }
+  return res.status(403).json({
+    message:"Access denied"
+  });
+
 });
 
 //edit workspace using id 
@@ -217,7 +247,7 @@ app.get("/workspace", verifyToken, (req, res) => {
 //manager can edit only assigned workspace
 //user cannot edit
 
-app.put("/workspace/:id", verifyToken, authorizeRoles("admin", "manager"), (req, res) => {
+app.put("/workspace/:id", verifyToken, authorizeRoles("admin", "Manager"), (req, res) => {
   const id = Number(req.params.id);
   const { workspaceName, workspaceDesc, workspaceColor, workspaceIcon } = req.body;
   const workspace = router.db.get("workspaces").find({ id }).value();
@@ -227,7 +257,7 @@ app.put("/workspace/:id", verifyToken, authorizeRoles("admin", "manager"), (req,
     });
   }
   //manager can edit only assigned workspace
-  if (req.user.role === "manager" && workspace.managerId !== req.user.id) {
+  if (req.user.role === "Manager" && workspace.managerId !== req.user.id) {
     return res.status(403).json({ message: "You can edit only your assigned workspace" });
   }
 
@@ -352,6 +382,134 @@ app.put("/task/:id", verifyToken, authorizeRoles("admin", "manager", "employee")
 
   const updatedTask = router.db.get("tasks").find({ id }).value();
   res.status(200).json(updatedTask);
+});
+
+app.post("/employees", verifyToken, requireAdmin, async(req,res)=>{
+    const {name,email,role,password} = req.body;
+    if(!name || !email){
+        return res.status(400).json({
+            message:"Name and email are required"
+        });
+    }
+    const existingUser = router.db
+        .get("employees")
+        .find({email})
+        .value();
+    if(existingUser){
+        return res.status(400).json({
+            message:"Email already exists"
+        });
+    }
+
+    const employees = router.db
+        .get("employees")
+        .value();
+
+    const nextId =
+        employees.length > 0
+        ? Math.max(...employees.map(e=>e.id))+1
+        : 1;
+
+    const hashedPassword = await bcrypt.hash(
+        password || "123456",
+        10
+    );
+
+    const newUser={
+        id:nextId,
+        name,
+        email,
+        password:hashedPassword,
+        role:role || "employee"
+    };
+
+    router.db
+        .get("employees")
+        .push(newUser)
+        .write();
+
+    const {password:_, ...safeUser}=newUser;
+
+    res.status(201).json(safeUser);
+});
+
+app.put("/employees/:id", verifyToken, requireAdmin, async(req,res)=>{
+
+    const id = Number(req.params.id);
+
+    const user = router.db
+        .get("employees")
+        .find({ id })
+        .value();
+
+
+    if(!user){
+        return res.status(404).json({
+            message:"User not found"
+        });
+    }
+
+
+    router.db
+        .get("employees")
+        .find({ id })
+        .assign({
+            name: req.body.name ?? user.name,
+            email: req.body.email ?? user.email,
+            role: req.body.role ?? user.role,
+            password: user.password   // preserve old password
+        })
+        .write();
+
+
+    const updatedUser = router.db
+        .get("employees")
+        .find({ id })
+        .value();
+
+
+    const { password, ...safeUser } = updatedUser;
+
+
+    res.json(safeUser);
+
+});
+
+app.delete("/employees/:id", verifyToken, requireAdmin, async (req, res) => {
+
+    const id = Number(req.params.id);
+
+    const user = router.db
+        .get("employees")
+        .find({ id })
+        .value();
+
+
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
+
+
+    // Prevent admin from deleting himself
+    if (req.user.id === id) {
+        return res.status(400).json({
+            message: "You cannot delete your own account"
+        });
+    }
+
+
+    router.db
+        .get("employees")
+        .remove({ id })
+        .write();
+
+
+    res.status(200).json({
+        message: "User deleted successfully"
+    });
+
 });
 
 // Protected route

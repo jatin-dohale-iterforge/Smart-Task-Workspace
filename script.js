@@ -102,7 +102,7 @@ const showSideBar = () => {
         <a href="about.html">
           <li><i class="fa fa-info-circle"></i><span>About</span></li>
         </a>
-        <a href="login.html">
+        <a onclick="logout()">
           <li><i class="fa fa-sign-out"></i><span>Logout</span></li>
         </a>
       </ul>`;
@@ -123,10 +123,20 @@ const showSideBar = () => {
   }
 };
 
+function logout() {
+  localStorage.clear()
+  window.location.href = "login.html"
+}
+
 // Showing Navbar in all pages using js innerHtml and based on pageData add elements
 const showNavbar = () => {
   try {
     const header = document.querySelector(".header");
+
+    const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const role = (loggedInUser.role || "").toLowerCase();
+    const showAddWorkspace = role === "admin";
+
     const path = window.location.pathname.split("/")[2];
     const page = pageData.find(
       (item) => item.name.toLowerCase() == path.split(".")[0],
