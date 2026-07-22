@@ -1,5 +1,8 @@
-let tasks = JSON.parse(localStorage.getItem("smart_tasks")) || [];
-const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
+let tasks = [];
+let workspaces = [];
+let employees = [];
+const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user"));
 
 const urlParams = new URLSearchParams(window.location.search);
 let currentWorkspaceFilter = urlParams.get('workspace') || "all";
@@ -7,8 +10,29 @@ let currentWorkspaceFilter = urlParams.get('workspace') || "all";
 let currentSearchQuery = "";
 let sortByPriorityMode = false;
 
-document.addEventListener("DOMContentLoaded", () => {
+async function loadTaskData() {
+    const taskResponse = await fetch(`${API_URL}/task`, {
+        headers: {token}
+    });
+    tasks = await taskResponse.json();
+    const workspaceResponse = await fetch(`${API_URL}/workspace`, {
+        headers: {token}
+    });
+    workspaces = await workspaceResponse.json();
+    if (user.role === "admin" || user.role === "manager") {
+        const employeeResponse = await fetch(`${API_URL}/employees`, {
+            headers: {token}
+        });
+        employees = await employeeResponse.json();
+        employees = employees.filter(emp => emp.role === "employee");
+    }
+
     populateWorkspaceDropdowns();
+    renderTasks();
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadTaskData();
 
     const boardTitleElement = document.querySelector(".board-title");
     if (boardTitleElement) {
@@ -48,21 +72,33 @@ document.addEventListener("DOMContentLoaded", () => {
 function populateWorkspaceDropdowns() {
     const boardFilterSelect = document.getElementById("board-workspace-filter");
     const taskAssignSelect = document.getElementById("task-workspace-assign");
+    const employeeSelect = document.getElementById("task-assigned-to");
 
     if (boardFilterSelect) {
         boardFilterSelect.innerHTML = `<option value="all">All Workspaces</option>`;
         workspaces.forEach(ws => {
-            boardFilterSelect.innerHTML += `<option value="${ws.workspaceName}">${ws.workspaceName}</option>`;
+            boardFilterSelect.innerHTML += `<option value="${ws.id}">${ws.workspaceName}</option>`;
         });
     }
 
     if (taskAssignSelect) {
         taskAssignSelect.innerHTML = `<option value="" selected disabled>Select Workspace</option>`;
         if (workspaces.length === 0) {
-            taskAssignSelect.innerHTML += `<option value="Default">Default Workspace</option>`;
+            taskAssignSelect.innerHTML += `<option value="" disabled>No workspace available</option>`;
         } else {
             workspaces.forEach(ws => {
-                taskAssignSelect.innerHTML += `<option value="${ws.workspaceName}">${ws.workspaceName}</option>`;
+                taskAssignSelect.innerHTML += `<option value="${ws.id}">${ws.workspaceName}</option>`;
+            });
+        }
+    }
+
+    if (employeeSelect) {
+        employeeSelect.innerHTML = `<option value="" selected disabled>Select Employee</option>`;
+        if (employees.length === 0) {
+            employeeSelect.innerHTML += `<option value="" disabled>No employee available</option>`;
+        } else {
+            employees.forEach(emp => {
+                employeeSelect.innerHTML += `<option value="${emp.id}">${emp.name}</option>`;
             });
         }
     }
@@ -82,10 +118,6 @@ function handleWorkspaceFilterChange(e) {
     window.history.pushState({ path: newUrl }, '', newUrl);
 
     renderTasks();
-}
-
-function saveTasks() {
-    localStorage.setItem("smart_tasks", JSON.stringify(tasks));
 }
 
 // This function watches the web address hash fragment to figure out which window state should display.
@@ -139,15 +171,15 @@ function openTaskForm(id = null) {
         const targetTask = tasks.find(t => t.id === id);
         
         if (targetTask) {
-            document.getElementById("task-id").value = targetTask.id;
-            document.getElementById("task-name").value = targetTask.name;
-            document.getElementById("task-desc").value = targetTask.description || "";
-            document.getElementById("task-type").value = targetTask.type;
-            document.getElementById("task-priority").value = targetTask.priority;
-            document.getElementById("task-date").value = targetTask.date;
-
-            const workspaceExists = workspaces.some(ws => ws.workspaceName === targetTask.workspace);
-            document.getElementById("task-workspace-assign").value = workspaceExists ? targetTask.workspace : "Default";
+            document.getElementById("task-name").value = targetTask.taskName;
+            document.getElementById("task-desc").value = targetTask.taskDesc || "";
+            document.getElementById("task-type").value = targetTask.taskType;
+            document.getElementById("task-priority").value = targetTask.taskPriority;
+            document.getElementById("task-date").value = targetTask.duedate;
+            document.getElementById("task-workspace-assign").value = targetTask.workspaceId;
+            if (document.getElementById("task-assigned-to")) {
+                document.getElementById("task-assigned-to").value = targetTask.assignedTo;
+            }
         }
         else {
             window.location.hash = "/tasks";
@@ -164,45 +196,58 @@ function closeTaskFormModal() {
 }
 
 // This function handles form submission by getting all the values from the form and submitting it.
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
 
     const idValue = document.getElementById("task-id").value;
-    const name = document.getElementById("task-name").value;
-    const description = document.getElementById("task-desc").value;
-    const type = document.getElementById("task-type").value;
-    const priority = document.getElementById("task-priority").value;
-    const date = document.getElementById("task-date").value;
-    const workspace = document.getElementById("task-workspace-assign").value;
-
+    const taskName = document.getElementById("task-name").value;
+    const taskDesc = document.getElementById("task-desc").value;
+    const taskType = document.getElementById("task-type").value;
+    const taskPriority = document.getElementById("task-priority").value;
+    const duedate = document.getElementById("task-date").value;
+    const workspaceId = document.getElementById("task-workspace-assign").value;
+    const assignedTo = document.getElementById("task-assigned-to")?.value;
+    if (!workspaceId) {
+        alert("Please select workspace");
+        return;
+    }
     const todayStr = new Date().toISOString().split('T')[0];
-    if (date < todayStr) {
+    if (duedate < todayStr) {
         alert("Due date cannot be in the past! Please choose a valid target deadline.");
         document.getElementById("task-date").focus();
         return; 
     }
 
-    if (idValue) {
-        const taskId = parseInt(idValue, 10);
-        tasks = tasks.map(task => task.id === taskId ? {
-            ...task, name, description, type, priority, date, workspace
-        } : task);
-    } else {
-        const newTask = {
-            id: Date.now(),
-            name: name,
-            type: type,
-            description: description,
-            priority: priority,
-            date: date,
-            workspace: workspace
+        const payload = {
+            taskName,
+            taskDesc,
+            taskType,
+            taskPriority,
+            duedate,
+            workspaceId: Number(workspaceId),
+            assignedTo: Number(assignedTo)
         };
-        tasks.push(newTask);
+        let url=`${API_URL}/task`
+        let method="POST"
+       
+        if (idValue) {
+            url += `/${idValue}`;
+            method = "PUT";
+        }
+        const response = await fetch(url, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                token
+            },
+            body: JSON.stringify(payload)
+        });
+        if (response.ok) {
+            showToast(idValue ? "Task updated successfully" : "Task created successfully", "success" );
+            await loadTaskData();
+            window.location.hash = "/tasks";
+        }
     }
-    showToast("Task created successfully!", "success");
-    saveTasks();
-    window.location.hash = "/tasks";
-}
 
 // This function switches the task sorting mode between default ordering and high-to-low priority levels.
 function togglePrioritySort() {
@@ -234,20 +279,19 @@ function renderTasks() {
     const todayStr = new Date().toISOString().split('T')[0];
 
     let processedTasks = tasks.filter(task => {
-        const matchesWorkspace = (currentWorkspaceFilter === "all" || task.workspace === currentWorkspaceFilter);
-        const matchesSearch = task.name.toLowerCase().includes(currentSearchQuery) || 
-                              (task.description && task.description.toLowerCase().includes(currentSearchQuery));
-        return matchesWorkspace && matchesSearch;
-    });
+        const matchesWorkspace = currentWorkspaceFilter === "all" || Number(task.workspaceId) === Number(currentWorkspaceFilter);
+        const matchesSearch = task.taskName .toLowerCase().includes(currentSearchQuery) || (task.taskDesc && task.taskDesc.toLowerCase().includes(currentSearchQuery));
+            return matchesWorkspace && matchesSearch;
+        });
 
     if (sortByPriorityMode) {
         const priorityWeight = { "High": 3, "Medium": 2, "Low": 1 };
-        processedTasks.sort((a, b) => (priorityWeight[b.priority] || 0) - (priorityWeight[a.priority] || 0));
+        processedTasks.sort((a, b) => (priorityWeight[b.taskPriority] || 0) - (priorityWeight[a.taskPriority] || 0));
     }
 
     processedTasks.forEach(task => {
-        let targetType = task.type;
-        if (task.type !== "completed" && task.date && task.date < todayStr) {
+        let targetType = task.taskType;
+        if (task.taskType !== "completed" && task.duedate && task.duedate < todayStr) {
             targetType = "overdue";
         }
 
@@ -260,14 +304,14 @@ function renderTasks() {
         taskElement.classList.add("task-item");
         taskElement.style.textDecoration = "none";
 
-        let priorityClass = task.priority.toLowerCase();
+        let priorityClass = task.taskPriority.toLowerCase();
         taskElement.innerHTML = `
             <div class="task-row-top">
-                <h5 class="task-item-title">${task.name}</h5>
-                <span class="priority-badge ${priorityClass}">${task.priority}</span>
+                <h5 class="task-item-title">${task.taskName}</h5>
+                <span class="priority-badge ${priorityClass}">${task.taskPriority}</span>
             </div>
             <div class="task-row-bottom">
-                <span class="task-date">📅 ${task.date}</span>
+                <span class="task-date">📅 ${task.duedate}</span>
             </div>
         `;
 
@@ -282,10 +326,9 @@ function renderTasks() {
         }
     });
 
-    if(document.querySelector(".todo-card .task-count")) document.querySelector(".todo-card .task-count").innerText = counts.todo;
-    if(document.querySelector(".inprogress-card .task-count")) document.querySelector(".inprogress-card .task-count").innerText = counts.inprogress;
-    if(document.querySelector(".completed-card .task-count")) document.querySelector(".completed-card .task-count").innerText = counts.completed;
-    if(document.querySelector(".overdue-card .task-count")) document.querySelector(".overdue-card .task-count").innerText = counts.overdue;
+    document.querySelector(".todo-card .task-count").innerText = counts.todo;
+    document.querySelector(".inprogress-card .task-count").innerText = counts.inprogress;
+    document.querySelector(".completed-card .task-count").innerText = counts.completed;
+    document.querySelector(".overdue-card .task-count").innerText = counts.overdue;
 
-    localStorage.setItem("smart_task_counts", JSON.stringify(counts));
-}
+    }

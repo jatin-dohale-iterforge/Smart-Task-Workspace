@@ -264,33 +264,94 @@ app.delete("/workspace/:id", verifyToken, authorizeRoles("admin"), (req, res) =>
 //manager can create task only inside assigned workspace
 //user cannot create task
 
-app.post( "/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) => {
-  const { taskName, taskDesc, taskType, taskPriority, duedate, workspaceId, assignedTo } = req.body;
-   //validate required fields
-    if ( !taskName || !taskDesc || !taskType || !taskPriority || !duedate ||!workspaceId ) {
-      return res.status(400).json({message: "taskName, description, type, priority, workspaceId and duedate are required"
+// ==========================================
+// Create Task
+// ==========================================
+
+app.post("/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) => {
+    const {
+      taskName,
+      taskDesc,
+      taskType,
+      taskPriority,
+      duedate,
+      workspaceId,
+      assignedTo
+    } = req.body;
+
+    if (
+      !taskName ||
+      !taskDesc ||
+      !taskType ||
+      !taskPriority ||
+      !duedate ||
+      !workspaceId
+    ) {
+      return res.status(400).json({
+        message:
+          "taskName, description, type, priority, workspaceId and duedate are required"
       });
     }
-    //check workspace exists
-    const workspace = router.db.get("workspaces").find({ id: Number(workspaceId) }).value();
+
+    const workspace = router.db
+      .get("workspaces")
+      .find({ id: Number(workspaceId) })
+      .value();
+
     if (!workspace) {
-      return res.status(404).json({message: "Workspace not found"});
-    }
-    //manager can create task only in assigned workspace
-    if ( req.user.role === "manager" && workspace.managerId !== req.user.id) {
-      return res.status(403).json({ message: "You cannot create task in this workspace"});
+      return res.status(404).json({
+        message: "Workspace not found"
+      });
     }
 
-    const tasks = router.db
-      .get("tasks")
-      .value();
-    // generate task id
+    // Manager can create task only in assigned workspace
+    if (
+      req.user.role === "manager" &&
+      workspace.managerId !== req.user.id
+    ) {
+      return res.status(403).json({
+        message: "You cannot create task in this workspace"
+      });
+    }
+
+    // Validate assigned employee
+    if (assignedTo) {
+      const employee = router.db
+        .get("employees")
+        .find({ id: Number(assignedTo) })
+        .value();
+
+      if (!employee || employee.role !== "employee") {
+        return res.status(400).json({
+          message: "Please select a valid employee"
+        });
+      }
+
+      // Automatically add employee to workspace
+      if (!workspace.employeeIds.includes(Number(assignedTo))) {
+        router.db
+          .get("workspaces")
+          .find({ id: workspace.id })
+          .assign({
+            employeeIds: [
+              ...workspace.employeeIds,
+              Number(assignedTo)
+            ],
+            updatedAt: new Date().toISOString()
+          })
+          .write();
+      }
+    }
+
+    const tasks = router.db.get("tasks").value();
+
     const nextId =
       tasks.length > 0
         ? Math.max(...tasks.map(task => task.id)) + 1
         : 1;
 
     const now = new Date().toISOString();
+
     const task = {
       id: nextId,
       taskName,
@@ -299,60 +360,176 @@ app.post( "/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) =
       taskPriority,
       duedate,
       workspaceId: Number(workspaceId),
-      //user assigned to complete task
-      assignedTo: assignedTo || null,
-      //user who created task
+      assignedTo: assignedTo ? Number(assignedTo) : null,
       assignedBy: req.user.id,
       createdAt: now,
       updatedAt: now
     };
 
     router.db.get("tasks").push(task).write();
-    res.status(201).json(task);
 
+    res.status(201).json(task);
   }
 );
 
-// get all task data endpoint
+
+
+// ==========================================
+// Get Tasks
+// ==========================================
 
 app.get("/task", verifyToken, (req, res) => {
+
   const tasks = router.db.get("tasks").value();
-  res.status(200).json(tasks);
+  const workspaces = router.db.get("workspaces").value();
+
+  // Admin -> all tasks
+  if (req.user.role === "admin") {
+    return res.status(200).json(tasks);
+  }
+
+  // Manager -> only tasks of managed workspaces
+  if (req.user.role === "manager") {
+
+    const workspaceIds = workspaces
+      .filter(ws => ws.managerId === req.user.id)
+      .map(ws => ws.id);
+
+    const managerTasks = tasks.filter(task =>
+      workspaceIds.includes(task.workspaceId)
+    );
+
+    return res.status(200).json(managerTasks);
+  }
+
+  // Employee -> tasks of workspaces employee belongs to
+
+  const workspaceIds = workspaces
+    .filter(ws => ws.employeeIds.includes(req.user.id))
+    .map(ws => ws.id);
+
+  const employeeTasks = tasks.filter(task =>
+    workspaceIds.includes(task.workspaceId)
+  );
+
+  res.status(200).json(employeeTasks);
+
 });
 
-//edit task using id 
+
+
+// ==========================================
+// Update Task
+// ==========================================
 
 app.put("/task/:id", verifyToken, authorizeRoles("admin", "manager", "employee"), (req, res) => {
-  const id = Number(req.params.id);
+    const id = Number(req.params.id);
+    const { taskName, taskDesc, taskType, taskPriority, duedate, workspaceId, assignedTo } = req.body;
+    const task = router.db.get("tasks").find({ id }).value();
 
-  const { taskName, taskDesc, taskType, taskPriority, duedate, workspaceId, assignedTo, assignedBy } = req.body;
-  const task = router.db.get("tasks").find({ id }).value();
+    if (!task) {
+      return res.status(404).json({message: "Task not found"});
+    }
 
-  if (!task) {
-    return res.status(404).json({message: "Task not found"});
+    // Employee can edit only assigned task
+    if (req.user.role === "employee" && task.assignedTo !== req.user.id) {
+      return res.status(403).json({
+        message: "You can edit only assigned tasks"
+      });
+    }
+
+    // Manager can edit only tasks of own workspace
+    if (req.user.role === "manager") {
+
+      const workspace = router.db
+        .get("workspaces")
+        .find({ id: task.workspaceId })
+        .value();
+
+      if (workspace.managerId !== req.user.id) {
+        return res.status(403).json({
+          message: "You can edit only tasks of your workspace"
+        });
+      }
+    }
+
+    // Employee
+    if (req.user.role === "employee") {
+
+      router.db
+        .get("tasks")
+        .find({ id })
+        .assign({
+
+          taskName: taskName ?? task.taskName,
+          taskDesc: taskDesc ?? task.taskDesc,
+          taskType: taskType ?? task.taskType,
+          updatedAt: new Date().toISOString()
+
+        })
+        .write();
+
+    }
+
+    // Admin / Manager
+
+    else {
+
+      // If task is assigned to a new employee
+      if (assignedTo) {
+
+        const workspace = router.db
+          .get("workspaces")
+          .find({
+            id: Number(workspaceId ?? task.workspaceId)
+          })
+          .value();
+
+        if (!workspace.employeeIds.includes(Number(assignedTo))) {
+
+          router.db
+            .get("workspaces")
+            .find({ id: workspace.id })
+            .assign({
+              employeeIds: [
+                ...workspace.employeeIds,
+                Number(assignedTo)
+              ],
+              updatedAt: new Date().toISOString()
+            })
+            .write();
+        }
+
+      }
+
+      router.db
+        .get("tasks")
+        .find({ id })
+        .assign({
+
+          taskName: taskName ?? task.taskName,
+          taskDesc: taskDesc ?? task.taskDesc,
+          taskType: taskType ?? task.taskType,
+          taskPriority: taskPriority ?? task.taskPriority,
+          duedate: duedate ?? task.duedate,
+          workspaceId: workspaceId ?? task.workspaceId,
+          assignedTo: assignedTo ?? task.assignedTo,
+          updatedAt: new Date().toISOString()
+
+        })
+        .write();
+
+    }
+
+    const updatedTask = router.db
+      .get("tasks")
+      .find({ id })
+      .value();
+
+    res.status(200).json(updatedTask);
+
   }
-  if (req.user.role === "employee" && task.assignedTo !== req.user.id) {
-    return res.status(403).json({message: "You can edit only assigned tasks"});
-  }
-
-  router.db.get("tasks")
-    .find({ id })
-    .assign({
-      taskName: taskName ?? task.taskName,
-      taskDesc: taskDesc ?? task.taskDesc,
-      taskType: taskType ?? task.taskType,
-      taskPriority: taskPriority ?? task.taskPriority,
-      duedate: duedate ?? task.duedate,
-      workspaceId: workspaceId ?? task.workspaceId,
-      assignedTo: assignedTo ?? task.assignedTo,
-      assignedBy: assignedBy ?? task.assignedBy,
-      updatedAt: new Date().toISOString()
-    })
-    .write();
-
-  const updatedTask = router.db.get("tasks").find({ id }).value();
-  res.status(200).json(updatedTask);
-});
+);
 
 // Protected route
 app.use("/employees", verifyToken, requireAdmin);

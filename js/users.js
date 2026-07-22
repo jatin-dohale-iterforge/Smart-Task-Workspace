@@ -68,7 +68,7 @@ function renderUsers(users){
         tr.innerHTML=`
         <td>${user.name}</td>
         <td>${user.email}</td>
-        <td>${user.role||"User"}</td>
+        <td>${user.role||"Employee"}</td>
         <td>
             <div class="action-btns">
                 <button class="btn-action btn-edit" onclick="editUser('${user.id}','${user.name}','${user.email}','${user.role}')">
