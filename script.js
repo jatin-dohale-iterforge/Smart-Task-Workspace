@@ -1,3 +1,10 @@
+const Authtoken = localStorage.getItem("token");
+const loggedUser = localStorage.getItem("user");
+
+if (!Authtoken || !loggedUser) {
+    localStorage.clear();
+    window.location.href = "login.html";
+}
 // Json Data of all pages
 const pageData = [
   {
