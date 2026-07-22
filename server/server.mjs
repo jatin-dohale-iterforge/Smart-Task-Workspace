@@ -43,6 +43,8 @@ function verifyToken(req, res, next) {
 
 function authorizeRoles(...roles) {
   return (req, res, next) => {
+    console.log("User role:", req.user.role);
+    console.log("Allowed:", roles);
 
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
@@ -207,10 +209,10 @@ app.post("/workspace", verifyToken, authorizeRoles("admin"), (req, res) => {
 // any authenticated user can view workspaces
 
 app.get("/workspace", verifyToken, (req, res) => {
+  const role=req.user.role;
   const workspaces = router.db
     .get("workspaces")
     .value();
-  const role = req.user.role.toLowerCase();
 
   // Admin can see every workspace
   if (role === "admin") {
@@ -218,7 +220,7 @@ app.get("/workspace", verifyToken, (req, res) => {
   }
 
   // Manager can see only assigned workspaces
-  if (role === "manager") {
+  if (role === "Manager") {
     const managerWorkspaces = workspaces.filter(
       workspace => workspace.managerId === req.user.id
     );
@@ -298,7 +300,7 @@ app.delete("/workspace/:id", verifyToken, authorizeRoles("admin"), (req, res) =>
 // Create Task
 // ==========================================
 
-app.post("/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) => {
+app.post("/task", verifyToken, authorizeRoles("admin", "Manager"), (req, res) => {
     const {
       taskName,
       taskDesc,
@@ -311,7 +313,6 @@ app.post("/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) =>
 
     if (
       !taskName ||
-      !taskDesc ||
       !taskType ||
       !taskPriority ||
       !duedate ||
@@ -319,7 +320,7 @@ app.post("/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) =>
     ) {
       return res.status(400).json({
         message:
-          "taskName, description, type, priority, workspaceId and duedate are required"
+          "taskName, type, priority, workspaceId and duedate are required"
       });
     }
 
@@ -336,7 +337,7 @@ app.post("/task", verifyToken, authorizeRoles("admin", "manager"), (req, res) =>
 
     // Manager can create task only in assigned workspace
     if (
-      req.user.role === "manager" &&
+      req.user.role === "Manager" &&
       workspace.managerId !== req.user.id
     ) {
       return res.status(403).json({
@@ -419,7 +420,7 @@ app.get("/task", verifyToken, (req, res) => {
   }
 
   // Manager -> only tasks of managed workspaces
-  if (req.user.role === "manager") {
+  if (req.user.role === "Manager") {
 
     const workspaceIds = workspaces
       .filter(ws => ws.managerId === req.user.id)
@@ -452,7 +453,7 @@ app.get("/task", verifyToken, (req, res) => {
 // Update Task
 // ==========================================
 
-app.put("/task/:id", verifyToken, authorizeRoles("admin", "manager", "employee"), (req, res) => {
+app.put("/task/:id", verifyToken, authorizeRoles("admin", "Manager", "employee"), (req, res) => {
     const id = Number(req.params.id);
     const { taskName, taskDesc, taskType, taskPriority, duedate, workspaceId, assignedTo } = req.body;
     const task = router.db.get("tasks").find({ id }).value();
@@ -469,7 +470,7 @@ app.put("/task/:id", verifyToken, authorizeRoles("admin", "manager", "employee")
     }
 
     // Manager can edit only tasks of own workspace
-    if (req.user.role === "manager") {
+    if (req.user.role === "Manager") {
 
       const workspace = router.db
         .get("workspaces")
@@ -490,11 +491,11 @@ app.put("/task/:id", verifyToken, authorizeRoles("admin", "manager", "employee")
         .get("tasks")
         .find({ id })
         .assign({
-
           taskName: taskName ?? task.taskName,
           taskDesc: taskDesc ?? task.taskDesc,
           taskType: taskType ?? task.taskType,
-          updatedAt: new Date().toISOString()
+          updatedAt: new Date().toISOString(),
+          taskPriority: taskPriority ?? task.taskPriority
 
         })
         .write();
@@ -688,6 +689,12 @@ app.delete("/employees/:id", verifyToken, requireAdmin, async (req, res) => {
     });
 
 });
+
+app.get( "/user", verifyToken, (req, res) => {
+  const users = router.db.get("employees").value().map(({ password, ...user }) => user);
+  res.status(200).json(users);
+  }
+);
 
 // Protected route
 app.use("/employees", verifyToken, requireAdmin);

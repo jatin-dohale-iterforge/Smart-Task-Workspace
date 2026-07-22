@@ -19,13 +19,11 @@ async function loadTaskData() {
         headers: {token}
     });
     workspaces = await workspaceResponse.json();
-    if (user.role === "admin" || user.role === "manager") {
-        const employeeResponse = await fetch(`${API_URL}/employees`, {
-            headers: {token}
-        });
-        employees = await employeeResponse.json();
-        employees = employees.filter(emp => emp.role === "employee");
-    }
+    const employeeResponse = await fetch(`${API_URL}/user`, {
+        headers:{token}
+    });
+    employees = await employeeResponse.json();
+    employees = employees.filter(emp => emp.role.toLowerCase() === "employee");
 
     populateWorkspaceDropdowns();
     renderTasks();
@@ -162,8 +160,18 @@ function openTaskForm(id = null) {
     const modal = document.getElementById("task-modal");
     const form = document.getElementById("task-form");
     const title = document.getElementById("form-title");
-    
-    form.reset(); 
+    const workspaceSelect = document.getElementById("task-workspace-assign");
+    const employeeSelect = document.getElementById("task-assigned-to");
+
+    // Reset readonly state every time modal opens
+    workspaceSelect.style.pointerEvents = "auto";
+    workspaceSelect.style.backgroundColor = "";
+
+    if (employeeSelect) {
+        employeeSelect.style.pointerEvents = "auto";
+        employeeSelect.style.backgroundColor = "";
+    }
+    form.reset();
     modal.style.display = "flex";
 
     if (id) {
@@ -171,23 +179,37 @@ function openTaskForm(id = null) {
         const targetTask = tasks.find(t => t.id === id);
         
         if (targetTask) {
-            document.getElementById("task-name").value = targetTask.taskName;
-            document.getElementById("task-desc").value = targetTask.taskDesc || "";
-            document.getElementById("task-type").value = targetTask.taskType;
-            document.getElementById("task-priority").value = targetTask.taskPriority;
-            document.getElementById("task-date").value = targetTask.duedate;
-            document.getElementById("task-workspace-assign").value = targetTask.workspaceId;
-            if (document.getElementById("task-assigned-to")) {
-                document.getElementById("task-assigned-to").value = targetTask.assignedTo;
+            document.getElementById("task-id").value=targetTask.id;
+            document.getElementById("task-name").value=targetTask.taskName;
+            document.getElementById("task-desc").value=targetTask.taskDesc || "";
+            document.getElementById("task-type").value=targetTask.taskType;
+            document.getElementById("task-priority").value=targetTask.taskPriority;
+            document.getElementById("task-date").value=targetTask.duedate;
+            // Set workspace
+            workspaceSelect.value =String(targetTask.workspaceId);
+            // Set employee
+            if (employeeSelect) {
+                employeeSelect.value = targetTask.assignedTo ? String(targetTask.assignedTo) : "";
             }
-        }
-        else {
+            // Employee can see but cannot change
+            if (user.role.toLowerCase() === "employee") {
+                workspaceSelect.style.pointerEvents = "none";
+                workspaceSelect.style.backgroundColor = "#eee";
+                if(employeeSelect){
+                    employeeSelect.style.pointerEvents = "none";
+                    employeeSelect.style.backgroundColor = "#eee";
+                }
+            }
+        } else {
             window.location.hash = "/tasks";
         }
     } else {
         title.innerText = "Create New Task";
         document.getElementById("task-id").value = "";
-        document.getElementById("task-workspace-assign").value = "";
+        workspaceSelect.value = "";
+        if(employeeSelect){
+            employeeSelect.value = "";
+        }
     }
 }
 
@@ -196,7 +218,7 @@ function closeTaskFormModal() {
 }
 
 // This function handles form submission by getting all the values from the form and submitting it.
-async function handleFormSubmit(e) {
+async function handleFormSubmit(e){
     e.preventDefault();
 
     const idValue = document.getElementById("task-id").value;
@@ -205,9 +227,12 @@ async function handleFormSubmit(e) {
     const taskType = document.getElementById("task-type").value;
     const taskPriority = document.getElementById("task-priority").value;
     const duedate = document.getElementById("task-date").value;
-    const workspaceId = document.getElementById("task-workspace-assign").value;
-    const assignedTo = document.getElementById("task-assigned-to")?.value;
-    if (!workspaceId) {
+    const workspaceSelect = document.getElementById("task-workspace-assign");
+    const employeeSelect = document.getElementById("task-assigned-to");
+    const workspaceId = workspaceSelect.value;
+    const assignedTo = employeeSelect ? employeeSelect.value : null;
+
+    if(!workspaceId){
         alert("Please select workspace");
         return;
     }
@@ -225,7 +250,7 @@ async function handleFormSubmit(e) {
             taskPriority,
             duedate,
             workspaceId: Number(workspaceId),
-            assignedTo: Number(assignedTo)
+            assignedTo: assignedTo ? Number(assignedTo) : null
         };
         let url=`${API_URL}/task`
         let method="POST"
