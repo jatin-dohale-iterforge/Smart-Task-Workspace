@@ -2,50 +2,75 @@
   "employees": [
     {
       "id": 1,
-      "name": "Himanshi",
-      "email": "admin@test.com",
-      "password": "$2b$10$X.Tf8ns12pNPr/ws98H4Hu7c5o2dVA9t1a2nM.taz9ORdxzQCE/0q",
+      "name": "admin",
+      "email": "admin@iterforge.com",
+      "password": "$2b$10$3yz.oEERZgPcV7tftQKgyulcJLP6VN8oUbgKKomHvJ8E/4soqDF5C",
       "role": "admin"
     },
     {
       "id": 2,
-      "name": "Himanshii",
-      "email": "admin1@test.com",
-      "password": "$2b$10$kNVrX90cfHmLt9ExNozuMemn3QR0ddVkqTqNpOUAoc1HMsL0wbR6G",
-      "role": "admin"
+      "name": "Atharva Phadtare",
+      "email": "atharva@gmail.com",
+      "password": "$2b$10$IWPkDXxIwMd1uLTNuHtNC.bZofrQxl4z3BeUGCJjjXebd43dUu7Tm",
+      "role": "Manager"
+    },
+    {
+      "id": 3,
+      "name": "Manger Second",
+      "email": "manager2@iterforge.com",
+      "password": "$2b$10$etcx1zDfOAH/KdV7eIKrY.iSXBRgMfuUmrWtsvfIcRVUfINGjvUWK",
+      "role": "Manager"
     }
   ],
   "workspaces": [
     {
       "id": 1,
-      "workspaceName": "Updated E-Commerce Project",
-      "workspaceDesc": "Updated description",
-      "workspaceColor": "black",
-      "workspaceIcon": "store",
+      "workspaceName": "Atharva",
+      "workspaceDesc": "",
+      "workspaceColor": "Blue",
+      "workspaceIcon": "fa fa-folder",
       "managerId": 2,
-      "employeeIds": [
-        3,
-        4,
-        5
-      ],
-      "createdBy": 2,
-      "createdAt": "2026-07-21T16:50:24.706Z",
-      "updatedAt": "2026-07-21T16:52:06.245Z"
+      "employeeIds": [],
+      "createdBy": 1,
+      "createdAt": "2026-07-22T07:53:56.062Z",
+      "updatedAt": "2026-07-22T08:10:41.523Z"
+    },
+    {
+      "id": 2,
+      "workspaceName": "Manager Seond",
+      "workspaceDesc": "",
+      "workspaceColor": "Yellow",
+      "workspaceIcon": "fa fa-folder",
+      "managerId": 3,
+      "employeeIds": [],
+      "createdBy": 1,
+      "createdAt": "2026-07-22T07:54:12.691Z",
+      "updatedAt": "2026-07-22T08:12:19.378Z"
+    },
+    {
+      "id": 3,
+      "workspaceName": "Aur ek",
+      "workspaceDesc": "",
+      "workspaceColor": "Red",
+      "workspaceIcon": "fa fa-laptop",
+      "managerId": 3,
+      "employeeIds": [],
+      "createdBy": 1,
+      "createdAt": "2026-07-22T07:55:03.727Z",
+      "updatedAt": "2026-07-22T07:55:03.727Z"
+    },
+    {
+      "id": 4,
+      "workspaceName": "Third Work",
+      "workspaceDesc": "",
+      "workspaceColor": "Green",
+      "workspaceIcon": "fa fa-user",
+      "managerId": 3,
+      "employeeIds": [],
+      "createdBy": 1,
+      "createdAt": "2026-07-22T08:05:01.787Z",
+      "updatedAt": "2026-07-22T08:09:47.764Z"
     }
   ],
-  "tasks": [
-    {
-      "id": 1,
-      "taskName": "Create Dashboard",
-      "taskDesc": "Build login UI with validation",
-      "taskType": "Frontend",
-      "taskPriority": "Medium",
-      "duedate": "2026-08-10",
-      "workspaceId": 1,
-      "assignedTo": 4,
-      "assignedBy": 2,
-      "createdAt": "2026-07-21T16:51:21.334Z",
-      "updatedAt": "2026-07-21T16:52:40.866Z"
-    }
-  ]
+  "tasks": []
 }
