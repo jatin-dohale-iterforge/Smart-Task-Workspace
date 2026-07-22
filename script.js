@@ -1,4 +1,4 @@
-// Json Data of all pages 
+// Json Data of all pages
 const pageData = [
   {
     name: "DashBoard",
@@ -57,7 +57,7 @@ const pageData = [
     rootPath: "/",
     child: "",
   },
-    {
+  {
     name: "Users",
     select: false,
     search: true,
@@ -68,10 +68,13 @@ const pageData = [
   },
 ];
 
-// Showing SideBar in all pages using js innerHtml 
+// Showing SideBar in all pages using js innerHtml
 const showSideBar = () => {
   try {
     const sideBar = document.querySelector(".app-sidebar");
+    const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+    const role = (loggedInUser.role || "").toLowerCase();
+    const showUsersTab = role === "admin";
     sideBar.innerHTML = `  <h2>Smart Task</h2>
 
       <ul class="sidebar-menu">
@@ -89,9 +92,10 @@ const showSideBar = () => {
         <a href="notes.html">
           <li><i class="fa fa-pencil-square-o"></i><span>Notes</span></li>
         </a>
+        ${showUsersTab ? `
         <a href="users.html">
           <li><i class="fa fa-users"></i><span>Users</span></li>
-        </a>
+        </a>` : ""}
         <a href="setting.html">
           <li><i class="fa fa-cog"></i><span>Settings</span></li>
         </a>
@@ -132,7 +136,7 @@ const showNavbar = () => {
                 <div class="header-box">
                 </div>
   `;
-   const headerBox = document.querySelector(".header-box");
+    const headerBox = document.querySelector(".header-box");
     if (page.select) {
       headerBox.innerHTML += `
       <div class="header-select">
@@ -173,12 +177,19 @@ const showNavbar = () => {
     if (page.addButton) {
       if (page.name == "Notes") {
         headerBox.innerHTML += `
-         <a onclick="toggleCreateWindow()" class="header-button">+ <span class="header-button-span">Add ${page.child}</span></a>
-      `;
+        <a onclick="toggleCreateWindow()" class="header-button">
+            + <span class="header-button-span">Add ${page.child}</span>
+        </a>`;
+      } else if (page.name == "Users") {
+        headerBox.innerHTML += `
+        <a onclick="openAddUserModal()" class="header-button">
+            + <span class="header-button-span">Add ${page.child}</span>
+        </a>`;
       } else {
         headerBox.innerHTML += `
-         <a href=${page.rootPath} class="header-button">+ <span class="header-button-span">Add ${page.child}</a>
-      `;
+        <a href="${page.rootPath}" class="header-button">
+            + <span class="header-button-span">Add ${page.child}</span>
+        </a>`;
       }
     }
   } catch (error) {
@@ -186,7 +197,7 @@ const showNavbar = () => {
   }
 };
 
-// Showing Bottom bar in Mobile version in all pages using js innerHtml 
+// Showing Bottom bar in Mobile version in all pages using js innerHtml
 const showBottomBar = () => {
   try {
     const navBox = document.querySelector(".mobile-nav");
@@ -229,7 +240,6 @@ const showBottomBar = () => {
   }
 };
 
-
 // main function
 const main = () => {
   showSideBar();
@@ -237,4 +247,3 @@ const main = () => {
   showBottomBar();
 };
 main();
-

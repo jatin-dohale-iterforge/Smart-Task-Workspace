@@ -89,7 +89,7 @@ function signup(e) {
         if (!(nameValid && emailValid && passwordValid)) {
             return;
         }
-        fetch("http://localhost:3000/signup", {
+        fetch("http://localhost:3000/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -101,6 +101,7 @@ function signup(e) {
             })
         })
         .then(response => {
+            console.log(response)
             return response.json().then(data => ({
                 status: response.status,
                 data: data
