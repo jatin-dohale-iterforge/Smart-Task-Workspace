@@ -97,7 +97,7 @@ function login(e) {
             return;
         }
         // Send login request
-        fetch("http://localhost:3000/login", {
+        fetch(`${API_URL}/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

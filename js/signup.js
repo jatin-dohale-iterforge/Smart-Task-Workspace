@@ -89,7 +89,7 @@ function signup(e) {
         if (!(nameValid && emailValid && passwordValid)) {
             return;
         }
-        fetch("http://localhost:3000/register", {
+        fetch(`${API_URL}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
