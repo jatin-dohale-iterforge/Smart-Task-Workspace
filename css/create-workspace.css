@@ -25,7 +25,12 @@ body {
     border-radius: 12px;
     padding: 35px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    height: 85vh;
+    overflow: auto;
+}
 
+.form-wrapper::-webkit-scrollbar {
+    display: none;
 }
 
 .form-header {

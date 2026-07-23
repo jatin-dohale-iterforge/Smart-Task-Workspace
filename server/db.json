@@ -39,7 +39,7 @@
   "workspaces": [
     {
       "id": 1,
-      "workspaceName": "Atharva's Work",
+      "workspaceName": "Atharva's Space",
       "workspaceDesc": "",
       "workspaceColor": "Red",
       "workspaceIcon": "fa fa-laptop",
@@ -49,7 +49,7 @@
       ],
       "createdBy": 1,
       "createdAt": "2026-07-23T05:17:51.829Z",
-      "updatedAt": "2026-07-23T08:44:11.846Z"
+      "updatedAt": "2026-07-23T11:08:43.823Z"
     },
     {
       "id": 2,
@@ -68,17 +68,17 @@
     },
     {
       "id": 3,
-      "workspaceName": "ABC",
+      "workspaceName": "ABCD",
       "workspaceDesc": "",
-      "workspaceColor": "Grey",
-      "workspaceIcon": "fa fa-laptop",
+      "workspaceColor": "Red",
+      "workspaceIcon": "fa fa-user",
       "managerId": 2,
       "employeeIds": [
         4
       ],
       "createdBy": 1,
       "createdAt": "2026-07-23T09:09:55.296Z",
-      "updatedAt": "2026-07-23T10:28:47.501Z"
+      "updatedAt": "2026-07-23T11:03:02.373Z"
     },
     {
       "id": 4,
@@ -105,12 +105,24 @@
       "createdBy": 1,
       "createdAt": "2026-07-23T09:21:16.106Z",
       "updatedAt": "2026-07-23T09:21:16.106Z"
+    },
+    {
+      "id": 6,
+      "workspaceName": "XYZ",
+      "workspaceDesc": "",
+      "workspaceColor": "Yellow",
+      "workspaceIcon": "fa fa-user",
+      "managerId": 2,
+      "employeeIds": [],
+      "createdBy": 1,
+      "createdAt": "2026-07-23T10:56:20.271Z",
+      "updatedAt": "2026-07-23T10:56:20.271Z"
     }
   ],
   "tasks": [
     {
       "id": 1,
-      "taskName": "Himanshi Task",
+      "taskName": "Himanshi Work",
       "taskDesc": "",
       "taskType": "todo",
       "taskPriority": "Medium",
@@ -119,7 +131,7 @@
       "assignedTo": 4,
       "assignedBy": 2,
       "createdAt": "2026-07-23T05:19:13.146Z",
-      "updatedAt": "2026-07-23T10:39:24.147Z"
+      "updatedAt": "2026-07-23T10:59:56.543Z"
     },
     {
       "id": 2,
@@ -240,7 +252,7 @@
     },
     {
       "id": 11,
-      "taskName": "Update UI",
+      "taskName": "Update UI Form",
       "taskDesc": "",
       "taskType": "todo",
       "taskPriority": "Medium",
@@ -249,7 +261,7 @@
       "assignedTo": 4,
       "assignedBy": 2,
       "createdAt": "2026-07-23T08:35:45.988Z",
-      "updatedAt": "2026-07-23T08:35:45.988Z"
+      "updatedAt": "2026-07-23T11:14:57.109Z"
     },
     {
       "id": 12,
@@ -302,6 +314,19 @@
       "assignedBy": 1,
       "createdAt": "2026-07-23T10:38:13.370Z",
       "updatedAt": "2026-07-23T10:38:22.093Z"
+    },
+    {
+      "id": 16,
+      "taskName": "Completed task",
+      "taskDesc": "",
+      "taskType": "completed",
+      "taskPriority": "High",
+      "duedate": "2026-07-30",
+      "workspaceId": 1,
+      "assignedTo": 4,
+      "assignedBy": 2,
+      "createdAt": "2026-07-23T11:00:17.997Z",
+      "updatedAt": "2026-07-23T11:00:17.997Z"
     }
   ]
 }

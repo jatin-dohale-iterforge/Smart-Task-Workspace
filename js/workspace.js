@@ -6,6 +6,11 @@ const error = document.querySelectorAll(".error");
 const workspaceCard = document.querySelector(".workspace-lists");
 let editIndex = -1;
 
+const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+const role = (loggedInUser.role || "").toLowerCase();
+const canManageWorkspace = role === "admin" || role === "manager";
+const canDelete = role === "admin"
+
 const createWorkspaceBtn = document.querySelector(".create-btn");
 const breadcrumbAction = document.querySelector("#breadcrumb-action");
 const workspaceFormTitle = document.querySelector("#workspace-form-title");
@@ -230,7 +235,7 @@ function datashow() {
     }
     filteredWorkspaces.forEach((elem) => {
       // Encode workspace name for safe URL usage
-      const encodedName = encodeURIComponent(elem.workspaceName);
+      const encodedName = encodeURIComponent(elem.id);
       const index = elem.id;
       workspaceCard.innerHTML += `
        <div class="workspace-card">
@@ -242,11 +247,16 @@ function datashow() {
             <p class="workspace-update-time">Updated: ${formatDate(elem.updatedAt)}</p>
             </div>
             </a>
-            <div class="workspace-action-btn">
-                        <div class="action-btns">
-                           <button class="edit-icon" onclick="editWorkspace(${index})"><i class="fa fa-edit"></i></button>
+            ${canManageWorkspace ? `
+              <div class="workspace-action-btn">
+              <div class="action-btns">
+              <button class="edit-icon" onclick="editWorkspace(${index})"><i class="fa fa-edit"></i></button>
+              ${canDelete ? `
                            <button class="delete-icon" onclick="openDeleteModal(${index})"><i class="fa fa-trash"></i></button>
+                           ` : ""} 
                         </div>
+                                    </div>
+            ` : ""} 
             </div>           
         </div>
         `;
