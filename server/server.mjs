@@ -431,14 +431,14 @@ app.get("/task", verifyToken, (req, res) => {
     return res.status(200).json(managerTasks);
   }
 
-  // Employee -> tasks of workspaces employee belongs to
+  // Employee -> tasks of workspaces employee belongs to and assigned to employee
 
   const workspaceIds = workspaces
     .filter(ws => ws.employeeIds.includes(req.user.id))
     .map(ws => ws.id);
 
   const employeeTasks = tasks.filter(task =>
-    workspaceIds.includes(task.workspaceId)
+    workspaceIds.includes(task.workspaceId) && task.assignedTo === req.user.id
   );
 
   res.status(200).json(employeeTasks);

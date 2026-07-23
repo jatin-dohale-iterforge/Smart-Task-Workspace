@@ -129,7 +129,7 @@ function handleWorkspaceFilterChange(e) {
         boardTitleElement.innerText = currentWorkspaceFilter === "all" ? "Global Task Board" : `${currentWorkspaceFilter} Board`;
     }
 
-    const newUrl = currentWorkspaceFilter === "all" ? "tasks.html" : `tasks.html?workspace=${encodeURIComponent(currentWorkspaceFilter)}`;
+    const newUrl = currentWorkspaceFilter === "all" ? "taskboard.html" : `taskboard.html?workspace=${encodeURIComponent(currentWorkspaceFilter)}`;
     window.history.pushState({ path: newUrl }, '', newUrl);
 
     renderTasks();

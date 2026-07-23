@@ -5,6 +5,7 @@ const workspaceColor = document.querySelector("#color");
 const error = document.querySelectorAll(".error");
 const workspaceCard = document.querySelector(".workspace-lists");
 let editIndex = -1;
+
 const createWorkspaceBtn = document.querySelector(".create-btn");
 const breadcrumbAction = document.querySelector("#breadcrumb-action");
 const workspaceFormTitle = document.querySelector("#workspace-form-title");
@@ -30,10 +31,6 @@ let workspace = {
 };
 const searchBar = document.querySelector("#search-board");
 
-const loggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
-const role = (loggedInUser.role || "").toLowerCase();
-const canManageWorkspace = role === "admin" || role === "manager";
-
 // Stores the workspace selected for deletion
 let deleteIndex = null;
 
@@ -50,7 +47,7 @@ function showToast(message, type = "success") {
     // Hide toast after a few seconds
     setTimeout(() => {
       toast.classList.remove("show");
-    }, 5000);
+    }, 2000);
   } catch (e) {
     console.log("Toast error:", e);
   }
@@ -132,9 +129,9 @@ function resetWorkspaceForm() {
 
 async function submitWorkspace(e) {
   e.preventDefault();
-
+  const isEditing = editIndex !== -1;
   try {
-    const isEditing = editIndex !== -1;
+    
 
     let name = validate(workspaceName, "Workspace name is required");
     let icon = validate(workspaceIcon, "Icon is required");
@@ -193,21 +190,24 @@ async function submitWorkspace(e) {
     }
 
     resetWorkspaceForm();
-
-    showToast(
-      isEditing
-        ? "Workspace updated successfully!"
-        : "Workspace created successfully!",
-    );
-
-    setTimeout(() => {
-      window.location.href = "workspace.html";
-    }, 500);
+    window.location.href = "workspace.html";
   } catch (e) {
     console.log(e);
     showToast("Something went wrong!", "error");
   }
 }
+
+function checkToast() {
+  if (document.referrer.includes("pages/create-workspace.html")){
+    if(document.referrer.includes("?")){
+       showToast("Workspace updated successfully!")
+    }else{
+       showToast("Workspace Created successfully!")
+    }
+  }
+}
+checkToast();
+
 function datashow() {
   try {
     if (!workspaceCard) return;
@@ -234,7 +234,7 @@ function datashow() {
       const index = elem.id;
       workspaceCard.innerHTML += `
        <div class="workspace-card">
-         <a href="taskboard.html?workspace=${elem.id}" class="workspace-link-wrapper" style="text-decoration: none; color: inherit; flex-grow: 1;">
+         <a href="taskboard.html?workspace=${encodedName}" class="workspace-link-wrapper" style="text-decoration: none; color: inherit; flex-grow: 1;">
         <div class="main-workspace-info">
             <i class="${elem.workspaceIcon}" style="background-color:${elem.workspaceColor}"></i>
             <h3 class="workspace-title">${elem.workspaceName}</h3>
@@ -242,14 +242,12 @@ function datashow() {
             <p class="workspace-update-time">Updated: ${formatDate(elem.updatedAt)}</p>
             </div>
             </a>
-            ${canManageWorkspace ? `
             <div class="workspace-action-btn">
                         <div class="action-btns">
                            <button class="edit-icon" onclick="editWorkspace(${index})"><i class="fa fa-edit"></i></button>
                            <button class="delete-icon" onclick="openDeleteModal(${index})"><i class="fa fa-trash"></i></button>
                         </div>
-            </div>
-            ` : ""}     
+            </div>           
         </div>
         `;
     });
@@ -260,7 +258,6 @@ function datashow() {
 
 function editWorkspace(id) {
   try {
-    if (!canManageWorkspace) return;
     window.location.href = `create-workspace.html?id=${id}`;
   } catch (e) {
     console.log("Edit error:", e);
@@ -325,11 +322,11 @@ async function deleteWorkspace() {
     if (!response.ok) {
       throw new Error("Delete failed");
     }
-
     closeDeleteModal();
+    await loadWorkspaces();
+
     showToast("Workspace deleted successfully!");
 
-    await loadWorkspaces();
   } catch (e) {
     console.log("Delete error:", e);
     showToast("Unable to delete workspace", "error");
