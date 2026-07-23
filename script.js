@@ -192,6 +192,13 @@ const showNavbar = () => {
     }
 
     if (page.addButton) {
+      if ((role === "employee" || role === "manager") && page.name === "Workspace") {
+        return;
+      }
+
+      if (role === "employee" && page.name === "TaskBoard") {
+        return;
+      }
       if (page.name == "Notes") {
         headerBox.innerHTML += `
         <a onclick="toggleCreateWindow()" class="header-button">

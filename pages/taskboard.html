@@ -31,7 +31,7 @@
                         <span class="task-count">6</span>
                     </div>
                     <div class="task-banner"></div>
-                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
+                    <a href="#/tasks/create?type=todo" class="add-task-btn">Add Task +</a>
                 </div>
                 <div class="inprogress-card">
                     <div class="title-flex">
@@ -39,7 +39,7 @@
                         <span class="task-count">7</span>
                     </div>
                     <div class="task-banner"></div>
-                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
+                    <a href="#/tasks/create?type=inprogress" class="add-task-btn">Add Task +</a>
                 </div>
                 <div class="completed-card">
                     <div class="title-flex">
@@ -47,7 +47,7 @@
                         <span class="task-count">1</span>
                     </div>
                     <div class="task-banner"></div>
-                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
+                    <a href="#/tasks/create?type=completed" class="add-task-btn">Add Task +</a>
                 </div>
                 <div class="overdue-card">
                     <div class="title-flex">
@@ -55,7 +55,7 @@
                         <span class="task-count">6</span>
                     </div>
                     <div class="task-banner"></div>
-                    <a href="#/tasks/create" class="add-task-btn">Add Task +</a>
+                    <a href="#/tasks/create?type=overdue" class="add-task-btn">Add Task +</a>
                 </div>
 
             </div>
@@ -67,7 +67,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="form-title">Create New Task</h3>
-                <a href="#/tasks" class="close-modal-btn">✕</a>
+                <button type="button" class="close-modal-btn" onclick="closeTaskFormModal()">✕</button>
             </div>
             <form id="task-form">
                 <input type="hidden" id="task-id">
@@ -120,7 +120,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <a href="#/tasks" class="cancel-btn">Cancel</a>
+                    <button type="button" class="cancel-btn" onclick="closeTaskFormModal()">Cancel</button>
                     <button type="submit" class="save-btn">Save Task</button>
                 </div>
             </form>

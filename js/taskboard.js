@@ -25,11 +25,28 @@ async function loadTaskData() {
     employees = await employeeResponse.json();
     employees = employees.filter((emp) => emp.role.toLowerCase() === "employee");
 
+    const pendingMsg = sessionStorage.getItem("pending_toast_msg");
+
+    if (pendingMsg) {
+        sessionStorage.removeItem("pending_toast_msg");
+
+    setTimeout(() => {
+        showToast(pendingMsg, "success");
+    }, 300);
+}
+
     populateWorkspaceDropdowns();
     renderTasks();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+    if (user.role.toLowerCase() === "employee") {
+    document.querySelectorAll(".add-task-btn").forEach(btn => {
+        btn.style.display = "none";
+    });
+    }
+
     await loadTaskData();
 
     const boardTitleElement = document.querySelector(".board-title");
@@ -119,11 +136,8 @@ function handleWorkspaceFilterChange(e) {
                 : `${currentWorkspaceFilter} Board`;
     }
 
-    const newUrl =
-        currentWorkspaceFilter === "all"
-            ? "tasks.html"
-            : `tasks.html?workspace=${encodeURIComponent(currentWorkspaceFilter)}`;
-    window.history.pushState({ path: newUrl }, "", newUrl);
+    const newUrl = currentWorkspaceFilter === "all" ? "taskboard.html" : `taskboard.html?workspace=${encodeURIComponent(currentWorkspaceFilter)}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
 
     renderTasks();
 }
@@ -135,10 +149,17 @@ function handleRouting() {
 
     renderTasks();
 
-    if (hashPath === "/tasks/create") {
-        openTaskForm(null);
-    } else if (hashPath.startsWith("/tasks/edit/")) {
-        const idToEdit = parseInt(hashPath.split("/tasks/edit/")[1], 10);
+    if (hashPath.startsWith('/tasks/create')) {
+
+        const type = new URLSearchParams(
+            window.location.hash.split("?")[1]
+        ).get("type");
+        openTaskForm(null, type);
+    } else if (hashPath.startsWith('/tasks/edit/')) {
+        const idToEdit = parseInt(
+            hashPath.split('/tasks/edit/')[1],
+            10
+        );
         openTaskForm(idToEdit);
     } else {
         closeTaskFormModal();
@@ -147,25 +168,27 @@ function handleRouting() {
 
 // This function shows a brief toast notification on successful creation of tasks as well as shows toast notification if there is something wrong.
 function showToast(message, type = "success") {
-    try {
-        const toast = document.querySelector("#toast");
-        if (!toast) return;
-        toast.innerHTML = message;
-        toast.className = `toast ${type}`;
-        setTimeout(() => {
-            toast.classList.add("show");
-        }, 10);
-        setTimeout(() => {
-            toast.classList.remove("show");
-        }, 1500);
-    } catch (e) {
-        console.log("Toast error:", e);
+    const toast = document.getElementById("toast");
+    if (!toast) {
+        console.log("Toast element missing");
+        return;
     }
+    toast.innerText = message;
+    toast.className = `toast ${type}`;
+    requestAnimationFrame(() => {
+        toast.classList.add("show");
+    });
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
 }
 
 // This function opens a task modal form, changes the form title, resets the form in the beginning.
-function openTaskForm(id = null) {
+function openTaskForm(id = null, defaultType = null) {
     const modal = document.getElementById("task-modal");
+        if (modal.style.display === "flex") {
+        return;
+    }
     const form = document.getElementById("task-form");
     const title = document.getElementById("form-title");
     const workspaceSelect = document.getElementById("task-workspace-assign");
@@ -213,14 +236,19 @@ function openTaskForm(id = null) {
         } else {
             window.location.hash = "/tasks";
         }
+   } else {
+    title.innerText = "Create New Task";
+    document.getElementById("task-id").value = "";
+    if(defaultType){
+        document.getElementById("task-type").value = defaultType;
     } else {
-        title.innerText = "Create New Task";
-        document.getElementById("task-id").value = "";
-        workspaceSelect.value = "";
-        if (employeeSelect) {
-            employeeSelect.value = "";
-        }
+        document.getElementById("task-type").value = "todo";
     }
+    workspaceSelect.value = "";
+    if(employeeSelect){
+        employeeSelect.value = "";
+    }
+}
 }
 
 function closeTaskFormModal() {
@@ -255,37 +283,48 @@ async function handleFormSubmit(e) {
         return;
     }
 
-    const payload = {
-        taskName,
-        taskDesc,
-        taskType,
-        taskPriority,
-        duedate,
-        workspaceId: Number(workspaceId),
-        assignedTo: assignedTo ? Number(assignedTo) : null,
-    };
-    let url = `${API_URL}/task`;
-    let method = "POST";
+        const payload = {
+            taskName,
+            taskDesc,
+            taskType,
+            taskPriority,
+            duedate,
+            workspaceId: Number(workspaceId),
+            assignedTo: assignedTo ? Number(assignedTo) : null
+        };
+        let url=`${API_URL}/task`
+        let method="POST"
+       
+        if (idValue) {
+            url += `/${idValue}`;
+            method = "PUT";
+        }
+        const response = await fetch(url, {
+            method,
+            headers: {
+                "Content-Type": "application/json",
+                token
+            },
+            body: JSON.stringify(payload)
+        });
+        if (response.ok) {
 
-    if (idValue) {
-        url += `/${idValue}`;
-        method = "PUT";
-    }
-    const response = await fetch(url, {
-        method,
-        headers: {
-            "Content-Type": "application/json",
-            token,
-        },
-        body: JSON.stringify(payload),
-    });
-    if (response.ok) {
-        showToast(
-            idValue ? "Task updated successfully" : "Task created successfully",
-            "success",
-        );
-        await loadTaskData();
+        const message = idValue
+        ? "Task updated successfully"
+        : "Task created successfully";
+
+        // Save toast message before route change/refresh
+        sessionStorage.setItem("pending_toast_msg", message);
+
+        // Close modal
+        closeTaskFormModal();
+
+        // Go back to task board
         window.location.hash = "/tasks";
+
+        // Refresh page so routing resets properly
+        window.location.reload();
+        }
     }
 }
 
@@ -359,14 +398,7 @@ function renderTasks() {
         const taskElement = document.createElement("a");
         taskElement.classList.add("task-item");
         taskElement.style.textDecoration = "none";
-        taskElement.dataset.taskId = task.id;
-
-        if (task.assignedTo == user.id) {
-            taskElement.href = `#/tasks/edit/${task.id}`;
-        } else {
-            taskElement.href = `#`;
-            taskElement.onclick = () => showToast('You Cannot Edit This Task', 'warning');
-        }
+        
 
         let priorityClass = task.taskPriority.toLowerCase();
         taskElement.innerHTML = `
