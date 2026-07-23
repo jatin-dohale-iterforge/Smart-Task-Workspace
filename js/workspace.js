@@ -5,6 +5,7 @@ const workspaceColor = document.querySelector("#color");
 const error = document.querySelectorAll(".error");
 const workspaceCard = document.querySelector(".workspace-lists");
 let editIndex = -1;
+
 const createWorkspaceBtn = document.querySelector(".create-btn");
 const breadcrumbAction = document.querySelector("#breadcrumb-action");
 const workspaceFormTitle = document.querySelector("#workspace-form-title");
@@ -46,7 +47,7 @@ function showToast(message, type = "success") {
     // Hide toast after a few seconds
     setTimeout(() => {
       toast.classList.remove("show");
-    }, 5000);
+    }, 2000);
   } catch (e) {
     console.log("Toast error:", e);
   }
@@ -128,9 +129,9 @@ function resetWorkspaceForm() {
 
 async function submitWorkspace(e) {
   e.preventDefault();
-
+  const isEditing = editIndex !== -1;
   try {
-    const isEditing = editIndex !== -1;
+    
 
     let name = validate(workspaceName, "Workspace name is required");
     let icon = validate(workspaceIcon, "Icon is required");
@@ -189,21 +190,24 @@ async function submitWorkspace(e) {
     }
 
     resetWorkspaceForm();
-
-    showToast(
-      isEditing
-        ? "Workspace updated successfully!"
-        : "Workspace created successfully!",
-    );
-
-    setTimeout(() => {
-      window.location.href = "workspace.html";
-    }, 500);
+    window.location.href = "workspace.html";
   } catch (e) {
     console.log(e);
     showToast("Something went wrong!", "error");
   }
 }
+
+function checkToast() {
+  if (document.referrer.includes("pages/create-workspace.html")){
+    if(document.referrer.includes("?")){
+       showToast("Workspace updated successfully!")
+    }else{
+       showToast("Workspace Created successfully!")
+    }
+  }
+}
+checkToast();
+
 function datashow() {
   try {
     if (!workspaceCard) return;
@@ -318,11 +322,11 @@ async function deleteWorkspace() {
     if (!response.ok) {
       throw new Error("Delete failed");
     }
-
     closeDeleteModal();
+    await loadWorkspaces();
+
     showToast("Workspace deleted successfully!");
 
-    await loadWorkspaces();
   } catch (e) {
     console.log("Delete error:", e);
     showToast("Unable to delete workspace", "error");

@@ -34,6 +34,13 @@
       "email": "bhumi@test.com",
       "password": "$2b$10$I/ZBCTuEg/JdWH3vQbdjf.Z8o8eGBdyTCpQqK7SDQGivo0JycBiDq",
       "role": "employee"
+    },
+    {
+      "id": 6,
+      "name": "jatin dohale",
+      "email": "jatin123@test.com",
+      "password": "$2b$10$7Ov9hKybNlV5IZtSoYqL9.RYQk2fKSp95keYF1YNkPil7IEgFIbxe",
+      "role": "employee"
     }
   ],
   "workspaces": [
@@ -97,7 +104,7 @@
     },
     {
       "id": 3,
-      "taskName": "testing by manager updated",
+      "taskName": "testing by manager updated 25",
       "taskDesc": "fgfh",
       "taskType": "todo",
       "taskPriority": "High",
@@ -106,24 +113,24 @@
       "assignedTo": 5,
       "assignedBy": 2,
       "createdAt": "2026-07-22T13:16:38.540Z",
-      "updatedAt": "2026-07-22T13:58:33.567Z"
+      "updatedAt": "2026-07-23T08:20:41.063Z"
     },
     {
       "id": 4,
-      "taskName": "testing for dashboardd updated",
+      "taskName": "testing for dashboardd updated 3 ",
       "taskDesc": "fgfh",
-      "taskType": "todo",
+      "taskType": "inprogress",
       "taskPriority": "High",
       "duedate": "2026-07-30",
       "workspaceId": 1,
       "assignedTo": 5,
       "assignedBy": 2,
       "createdAt": "2026-07-22T13:17:02.370Z",
-      "updatedAt": "2026-07-22T13:59:42.271Z"
+      "updatedAt": "2026-07-23T08:18:40.230Z"
     },
     {
       "id": 5,
-      "taskName": "created by admin",
+      "taskName": "created by admin updated  23",
       "taskDesc": "xyz",
       "taskType": "completed",
       "taskPriority": "High",
@@ -132,7 +139,7 @@
       "assignedTo": 5,
       "assignedBy": 1,
       "createdAt": "2026-07-22T14:05:59.909Z",
-      "updatedAt": "2026-07-22T14:06:12.073Z"
+      "updatedAt": "2026-07-23T08:20:25.737Z"
     },
     {
       "id": 6,
