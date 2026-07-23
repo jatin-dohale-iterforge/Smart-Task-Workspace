@@ -5,25 +5,25 @@ const token = localStorage.getItem("token");
 const user = JSON.parse(localStorage.getItem("user"));
 
 const urlParams = new URLSearchParams(window.location.search);
-let currentWorkspaceFilter = urlParams.get('workspace') || "all";
+let currentWorkspaceFilter = urlParams.get("workspace") || "all";
 
 let currentSearchQuery = "";
 let sortByPriorityMode = false;
 
 async function loadTaskData() {
     const taskResponse = await fetch(`${API_URL}/task`, {
-        headers: {token}
+        headers: { token },
     });
     tasks = await taskResponse.json();
     const workspaceResponse = await fetch(`${API_URL}/workspace`, {
-        headers: {token}
+        headers: { token },
     });
     workspaces = await workspaceResponse.json();
     const employeeResponse = await fetch(`${API_URL}/user`, {
-        headers:{token}
+        headers: { token },
     });
     employees = await employeeResponse.json();
-    employees = employees.filter(emp => emp.role.toLowerCase() === "employee");
+    employees = employees.filter((emp) => emp.role.toLowerCase() === "employee");
 
     populateWorkspaceDropdowns();
     renderTasks();
@@ -34,9 +34,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const boardTitleElement = document.querySelector(".board-title");
     if (boardTitleElement) {
-        boardTitleElement.innerText = currentWorkspaceFilter === "all" 
-            ? "Global Task Board" 
-            : `${currentWorkspaceFilter} Board`;
+        boardTitleElement.innerText =
+            currentWorkspaceFilter === "all"
+                ? "Global Task Board"
+                : `${currentWorkspaceFilter} Board`;
     }
 
     const boardFilterSelect = document.getElementById("board-workspace-filter");
@@ -47,14 +48,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const dateInputElement = document.getElementById("task-date");
     if (dateInputElement) {
-        const todayStr = new Date().toISOString().split('T')[0];
+        const todayStr = new Date().toISOString().split("T")[0];
         dateInputElement.min = todayStr;
     }
 
-    document.getElementById("task-form").addEventListener("submit", handleFormSubmit);
+    document
+        .getElementById("task-form")
+        .addEventListener("submit", handleFormSubmit);
 
-    document.getElementById("sort-priority-btn").addEventListener("click", togglePrioritySort);
-
+    document
+        .getElementById("sort-priority-btn")
+        .addEventListener("click", togglePrioritySort);
 
     window.addEventListener("hashchange", handleRouting);
 
@@ -74,7 +78,7 @@ function populateWorkspaceDropdowns() {
 
     if (boardFilterSelect) {
         boardFilterSelect.innerHTML = `<option value="all">All Workspaces</option>`;
-        workspaces.forEach(ws => {
+        workspaces.forEach((ws) => {
             boardFilterSelect.innerHTML += `<option value="${ws.id}">${ws.workspaceName}</option>`;
         });
     }
@@ -84,7 +88,7 @@ function populateWorkspaceDropdowns() {
         if (workspaces.length === 0) {
             taskAssignSelect.innerHTML += `<option value="" disabled>No workspace available</option>`;
         } else {
-            workspaces.forEach(ws => {
+            workspaces.forEach((ws) => {
                 taskAssignSelect.innerHTML += `<option value="${ws.id}">${ws.workspaceName}</option>`;
             });
         }
@@ -95,7 +99,7 @@ function populateWorkspaceDropdowns() {
         if (employees.length === 0) {
             employeeSelect.innerHTML += `<option value="" disabled>No employee available</option>`;
         } else {
-            employees.forEach(emp => {
+            employees.forEach((emp) => {
                 employeeSelect.innerHTML += `<option value="${emp.id}">${emp.name}</option>`;
             });
         }
@@ -106,14 +110,20 @@ function populateWorkspaceDropdowns() {
 // It updates the titles, modifies the web browser address bar text, and redraws the matching filtered tasks.
 function handleWorkspaceFilterChange(e) {
     currentWorkspaceFilter = e.target.value;
-    
+
     const boardTitleElement = document.querySelector(".board-title");
     if (boardTitleElement) {
-        boardTitleElement.innerText = currentWorkspaceFilter === "all" ? "Global Task Board" : `${currentWorkspaceFilter} Board`;
+        boardTitleElement.innerText =
+            currentWorkspaceFilter === "all"
+                ? "Global Task Board"
+                : `${currentWorkspaceFilter} Board`;
     }
 
-    const newUrl = currentWorkspaceFilter === "all" ? "tasks.html" : `tasks.html?workspace=${encodeURIComponent(currentWorkspaceFilter)}`;
-    window.history.pushState({ path: newUrl }, '', newUrl);
+    const newUrl =
+        currentWorkspaceFilter === "all"
+            ? "tasks.html"
+            : `tasks.html?workspace=${encodeURIComponent(currentWorkspaceFilter)}`;
+    window.history.pushState({ path: newUrl }, "", newUrl);
 
     renderTasks();
 }
@@ -121,14 +131,14 @@ function handleWorkspaceFilterChange(e) {
 // This function watches the web address hash fragment to figure out which window state should display.
 // It automatically reads the URL path to open the creation popup, the editing popup, or close everything.
 function handleRouting() {
-    const hashPath = window.location.hash.replace("#", ""); 
+    const hashPath = window.location.hash.replace("#", "");
 
     renderTasks();
 
-    if (hashPath === '/tasks/create') {
+    if (hashPath === "/tasks/create") {
         openTaskForm(null);
-    } else if (hashPath.startsWith('/tasks/edit/')) {
-        const idToEdit = parseInt(hashPath.split('/tasks/edit/')[1], 10);
+    } else if (hashPath.startsWith("/tasks/edit/")) {
+        const idToEdit = parseInt(hashPath.split("/tasks/edit/")[1], 10);
         openTaskForm(idToEdit);
     } else {
         closeTaskFormModal();
@@ -147,10 +157,8 @@ function showToast(message, type = "success") {
         }, 10);
         setTimeout(() => {
             toast.classList.remove("show");
-        }, 5000);
-
-    }
-    catch (e) {
+        }, 1500);
+    } catch (e) {
         console.log("Toast error:", e);
     }
 }
@@ -176,26 +184,28 @@ function openTaskForm(id = null) {
 
     if (id) {
         title.innerText = "Edit Task Window";
-        const targetTask = tasks.find(t => t.id === id);
-        
+        const targetTask = tasks.find((t) => t.id === id);
+
         if (targetTask) {
-            document.getElementById("task-id").value=targetTask.id;
-            document.getElementById("task-name").value=targetTask.taskName;
-            document.getElementById("task-desc").value=targetTask.taskDesc || "";
-            document.getElementById("task-type").value=targetTask.taskType;
-            document.getElementById("task-priority").value=targetTask.taskPriority;
-            document.getElementById("task-date").value=targetTask.duedate;
+            document.getElementById("task-id").value = targetTask.id;
+            document.getElementById("task-name").value = targetTask.taskName;
+            document.getElementById("task-desc").value = targetTask.taskDesc || "";
+            document.getElementById("task-type").value = targetTask.taskType;
+            document.getElementById("task-priority").value = targetTask.taskPriority;
+            document.getElementById("task-date").value = targetTask.duedate;
             // Set workspace
-            workspaceSelect.value =String(targetTask.workspaceId);
+            workspaceSelect.value = String(targetTask.workspaceId);
             // Set employee
             if (employeeSelect) {
-                employeeSelect.value = targetTask.assignedTo ? String(targetTask.assignedTo) : "";
+                employeeSelect.value = targetTask.assignedTo
+                    ? String(targetTask.assignedTo)
+                    : "";
             }
             // Employee can see but cannot change
             if (user.role.toLowerCase() === "employee") {
                 workspaceSelect.style.pointerEvents = "none";
                 workspaceSelect.style.backgroundColor = "#eee";
-                if(employeeSelect){
+                if (employeeSelect) {
                     employeeSelect.style.pointerEvents = "none";
                     employeeSelect.style.backgroundColor = "#eee";
                 }
@@ -207,7 +217,7 @@ function openTaskForm(id = null) {
         title.innerText = "Create New Task";
         document.getElementById("task-id").value = "";
         workspaceSelect.value = "";
-        if(employeeSelect){
+        if (employeeSelect) {
             employeeSelect.value = "";
         }
     }
@@ -218,7 +228,7 @@ function closeTaskFormModal() {
 }
 
 // This function handles form submission by getting all the values from the form and submitting it.
-async function handleFormSubmit(e){
+async function handleFormSubmit(e) {
     e.preventDefault();
 
     const idValue = document.getElementById("task-id").value;
@@ -232,67 +242,76 @@ async function handleFormSubmit(e){
     const workspaceId = workspaceSelect.value;
     const assignedTo = employeeSelect ? employeeSelect.value : null;
 
-    if(!workspaceId){
+    if (!workspaceId) {
         alert("Please select workspace");
         return;
     }
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = new Date().toISOString().split("T")[0];
     if (duedate < todayStr) {
-        alert("Due date cannot be in the past! Please choose a valid target deadline.");
+        alert(
+            "Due date cannot be in the past! Please choose a valid target deadline.",
+        );
         document.getElementById("task-date").focus();
-        return; 
+        return;
     }
 
-        const payload = {
-            taskName,
-            taskDesc,
-            taskType,
-            taskPriority,
-            duedate,
-            workspaceId: Number(workspaceId),
-            assignedTo: assignedTo ? Number(assignedTo) : null
-        };
-        let url=`${API_URL}/task`
-        let method="POST"
-       
-        if (idValue) {
-            url += `/${idValue}`;
-            method = "PUT";
-        }
-        const response = await fetch(url, {
-            method,
-            headers: {
-                "Content-Type": "application/json",
-                token
-            },
-            body: JSON.stringify(payload)
-        });
-        if (response.ok) {
-            showToast(idValue ? "Task updated successfully" : "Task created successfully", "success" );
-            await loadTaskData();
-            window.location.hash = "/tasks";
-        }
+    const payload = {
+        taskName,
+        taskDesc,
+        taskType,
+        taskPriority,
+        duedate,
+        workspaceId: Number(workspaceId),
+        assignedTo: assignedTo ? Number(assignedTo) : null,
+    };
+    let url = `${API_URL}/task`;
+    let method = "POST";
+
+    if (idValue) {
+        url += `/${idValue}`;
+        method = "PUT";
     }
+    const response = await fetch(url, {
+        method,
+        headers: {
+            "Content-Type": "application/json",
+            token,
+        },
+        body: JSON.stringify(payload),
+    });
+    if (response.ok) {
+        showToast(
+            idValue ? "Task updated successfully" : "Task created successfully",
+            "success",
+        );
+        await loadTaskData();
+        window.location.hash = "/tasks";
+    }
+}
 
 // This function switches the task sorting mode between default ordering and high-to-low priority levels.
 function togglePrioritySort() {
     sortByPriorityMode = !sortByPriorityMode;
-    
+
     const btn = document.getElementById("sort-priority-btn");
     if (btn) {
         btn.style.background = sortByPriorityMode ? "#e0e7ff" : "";
         btn.style.color = sortByPriorityMode ? "#4f46e5" : "";
         btn.style.borderColor = sortByPriorityMode ? "#4f46e5" : "";
     }
-    
+
     renderTasks();
 }
 
 // This function filters your entire task collection by workspaces and search matches to clean out columns.
 function renderTasks() {
     const todoBanner = document.querySelector(".todo-card .task-banner");
-    const inprogressBanner = document.querySelector(".inprogress-card .task-banner");
-    const completedBanner = document.querySelector(".completed-card .task-banner");
+    const inprogressBanner = document.querySelector(
+        ".inprogress-card .task-banner",
+    );
+    const completedBanner = document.querySelector(
+        ".completed-card .task-banner",
+    );
     const overdueBanner = document.querySelector(".overdue-card .task-banner");
 
     if (todoBanner) todoBanner.innerHTML = "";
@@ -301,22 +320,35 @@ function renderTasks() {
     if (overdueBanner) overdueBanner.innerHTML = "";
 
     let counts = { todo: 0, inprogress: 0, completed: 0, overdue: 0 };
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = new Date().toISOString().split("T")[0];
 
-    let processedTasks = tasks.filter(task => {
-        const matchesWorkspace = currentWorkspaceFilter === "all" || Number(task.workspaceId) === Number(currentWorkspaceFilter);
-        const matchesSearch = task.taskName .toLowerCase().includes(currentSearchQuery) || (task.taskDesc && task.taskDesc.toLowerCase().includes(currentSearchQuery));
-            return matchesWorkspace && matchesSearch;
-        });
+    let processedTasks = tasks.filter((task) => {
+        const matchesWorkspace =
+            currentWorkspaceFilter === "all" ||
+            Number(task.workspaceId) === Number(currentWorkspaceFilter);
+        const matchesSearch =
+            task.taskName.toLowerCase().includes(currentSearchQuery) ||
+            (task.taskDesc &&
+                task.taskDesc.toLowerCase().includes(currentSearchQuery));
+        return matchesWorkspace && matchesSearch;
+    });
 
     if (sortByPriorityMode) {
-        const priorityWeight = { "High": 3, "Medium": 2, "Low": 1 };
-        processedTasks.sort((a, b) => (priorityWeight[b.taskPriority] || 0) - (priorityWeight[a.taskPriority] || 0));
+        const priorityWeight = { High: 3, Medium: 2, Low: 1 };
+        processedTasks.sort(
+            (a, b) =>
+                (priorityWeight[b.taskPriority] || 0) -
+                (priorityWeight[a.taskPriority] || 0),
+        );
     }
 
-    processedTasks.forEach(task => {
+    processedTasks.forEach((task) => {
         let targetType = task.taskType;
-        if (task.taskType !== "completed" && task.duedate && task.duedate < todayStr) {
+        if (
+            task.taskType !== "completed" &&
+            task.duedate &&
+            task.duedate < todayStr
+        ) {
             targetType = "overdue";
         }
 
@@ -325,9 +357,16 @@ function renderTasks() {
         }
 
         const taskElement = document.createElement("a");
-        taskElement.href = `#/tasks/edit/${task.id}`;
         taskElement.classList.add("task-item");
         taskElement.style.textDecoration = "none";
+        taskElement.dataset.taskId = task.id;
+
+        if (task.assignedTo == user.id) {
+            taskElement.href = `#/tasks/edit/${task.id}`;
+        } else {
+            taskElement.href = `#`;
+            taskElement.onclick = () => showToast('You Cannot Edit This Task', 'warning');
+        }
 
         let priorityClass = task.taskPriority.toLowerCase();
         taskElement.innerHTML = `
@@ -352,8 +391,10 @@ function renderTasks() {
     });
 
     document.querySelector(".todo-card .task-count").innerText = counts.todo;
-    document.querySelector(".inprogress-card .task-count").innerText = counts.inprogress;
-    document.querySelector(".completed-card .task-count").innerText = counts.completed;
-    document.querySelector(".overdue-card .task-count").innerText = counts.overdue;
-
-    }
+    document.querySelector(".inprogress-card .task-count").innerText =
+        counts.inprogress;
+    document.querySelector(".completed-card .task-count").innerText =
+        counts.completed;
+    document.querySelector(".overdue-card .task-count").innerText =
+        counts.overdue;
+}
