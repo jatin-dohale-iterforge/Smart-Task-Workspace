@@ -452,7 +452,7 @@ function showToast(message, type = "success") {
     }, 10);
     setTimeout(() => {
       toast.classList.remove("show");
-    }, 5000);
+    }, 1500);
   } catch (e) {
     console.log("Toast error:", e);
   }

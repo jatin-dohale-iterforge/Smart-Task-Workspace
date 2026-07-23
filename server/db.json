@@ -34,6 +34,13 @@
       "email": "nidhi@gmail.com",
       "password": "$2b$10$qRjajxvLlLnrOZbUqVQqPueXTbZF/KKQTxtxkKFtki8H8vmzhba9y",
       "role": "employee"
+    },
+    {
+      "id": 6,
+      "name": "jatin dohale",
+      "email": "jatin123@test.com",
+      "password": "$2b$10$7Ov9hKybNlV5IZtSoYqL9.RYQk2fKSp95keYF1YNkPil7IEgFIbxe",
+      "role": "employee"
     }
   ],
   "workspaces": [
