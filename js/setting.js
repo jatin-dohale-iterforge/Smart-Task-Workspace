@@ -33,10 +33,7 @@ function renderSessionData() {
 function clearSessionStorage() {
     if (confirm("Are you sure you want to clear your logs?")) {
 
-        localStorage.removeItem("smart_last_visit_time");
-
-        localStorage.removeItem("smart_tasks");
-        localStorage.removeItem("workspaces");
+        localStorage.clear()
         alert("Session parameters cleaned successfully!");
         window.location.reload();
     }
